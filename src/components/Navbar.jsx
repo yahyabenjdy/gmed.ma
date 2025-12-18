@@ -190,9 +190,11 @@ const Navbar = ({ lang, setLang }) => {
                       onMouseEnter={() => setDoctorOpen(true)}
                       onMouseLeave={() => setDoctorOpen(false)}
                     >
-                      <div
+                      {/* UPDATED: Changed div to Link to make the "Doctor" text clickable */}
+                      <Link
+                        to="/work/doctor" // <--- FIXED PATH
                         className={`flex items-center justify-between px-4 py-2.5 hover:bg-slate-50 text-sm font-bold cursor-pointer transition-colors ${
-                          location.pathname !== "/work/nurse" && isWorkActive
+                          isActive("/work/doctor")
                             ? "text-medical-cyan"
                             : "text-medical-navy"
                         }`}
@@ -212,9 +214,9 @@ const Navbar = ({ lang, setLang }) => {
                           size={12}
                           className={lang === "ar" ? "rotate-90" : "-rotate-90"}
                         />
-                      </div>
+                      </Link>
 
-                      {/* Doctor Sub-Menu */}
+                      {/* Doctor Sub-Menu Items */}
                       {doctorOpen && (
                         <div
                           className={`absolute top-0 w-48 bg-white border border-slate-100 shadow-xl rounded-xl py-2 animate-fade-in ${
@@ -243,10 +245,11 @@ const Navbar = ({ lang, setLang }) => {
                       )}
                     </div>
 
+                    {/* Nurse Link */}
                     <Link
-                      to="/work-as-nurse"
+                      to="/work/nurse" // <--- FIXED PATH
                       className={`flex items-center gap-2 px-4 py-2.5 hover:bg-slate-50 font-bold transition-colors border-t border-slate-50 ${
-                        isActive("/work-as-nurse")
+                        isActive("/work/nurse")
                           ? "text-medical-cyan"
                           : "text-medical-navy"
                       } ${lang === "ar" ? "flex-row-reverse justify-end" : ""}`}
@@ -296,7 +299,6 @@ const Navbar = ({ lang, setLang }) => {
               </div>
             </div>
 
-            {/* CHANGED LINK TO /register */}
             <Link
               to="/register"
               className={`btn-primary py-3 px-6 text-sm flex items-center gap-2 whitespace-nowrap shadow-md hover:scale-105 transition-transform ${
@@ -356,24 +358,23 @@ const Navbar = ({ lang, setLang }) => {
               {labels.ausbildung}
             </Link>
 
-            {/* Mobile Links for Work items */}
+            {/* Mobile Links for Work items - FIXED PATHS */}
             <Link
-              to="/work-as-doctor"
-              className="block font-bold py-2 text-lg text-medical-navy"
+              to="/work/doctor" // <--- FIXED PATH
+              className="block font-bold py-2 text-lg text-medical-navy hover:text-medical-cyan"
               onClick={() => setIsOpen(false)}
             >
               {labels.doctor}
             </Link>
             <Link
-              to="/work-as-nurse"
-              className="block font-bold py-2 text-lg text-medical-navy"
+              to="/work/nurse" // <--- FIXED PATH
+              className="block font-bold py-2 text-lg text-medical-navy hover:text-medical-cyan"
               onClick={() => setIsOpen(false)}
             >
               {labels.nurse}
             </Link>
           </div>
 
-          {/* CHANGED LINK TO /register */}
           <Link
             to="/register"
             className="btn-primary w-full py-4 rounded-xl font-bold text-center mt-4 flex justify-center items-center gap-2"
