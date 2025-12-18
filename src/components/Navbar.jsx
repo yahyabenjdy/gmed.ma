@@ -7,12 +7,17 @@ import {
   UserPlus,
   Stethoscope,
   Syringe,
+  Map,
+  FileText,
+  Euro,
+  Users,
 } from "lucide-react";
 
 const Navbar = ({ lang, setLang }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [workOpen, setWorkOpen] = useState(false);
   const [doctorOpen, setDoctorOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
 
   const location = useLocation();
 
@@ -164,7 +169,7 @@ const Navbar = ({ lang, setLang }) => {
               >
                 <button
                   className={`flex items-center gap-1 font-semibold transition-colors cursor-pointer py-4 ${
-                    isWorkActive
+                    isWorkActive || workOpen
                       ? "text-medical-cyan"
                       : "text-medical-navy hover:text-medical-cyan"
                   }`}
@@ -172,7 +177,7 @@ const Navbar = ({ lang, setLang }) => {
                   {labels.work}{" "}
                   <ChevronDown
                     size={14}
-                    className={`transition-transform ${
+                    className={`transition-transform duration-200 ${
                       workOpen ? "rotate-180" : ""
                     }`}
                   />
@@ -190,13 +195,12 @@ const Navbar = ({ lang, setLang }) => {
                       onMouseEnter={() => setDoctorOpen(true)}
                       onMouseLeave={() => setDoctorOpen(false)}
                     >
-                      {/* UPDATED: Changed div to Link to make the "Doctor" text clickable */}
                       <Link
-                        to="/work/doctor" // <--- FIXED PATH
-                        className={`flex items-center justify-between px-4 py-2.5 hover:bg-slate-50 text-sm font-bold cursor-pointer transition-colors ${
-                          isActive("/work/doctor")
-                            ? "text-medical-cyan"
-                            : "text-medical-navy"
+                        to="/work/doctor"
+                        className={`flex items-center justify-between px-4 py-2.5 text-sm font-bold cursor-pointer transition-colors ${
+                          isActive("/work/doctor") || doctorOpen
+                            ? "text-medical-cyan bg-slate-50"
+                            : "text-medical-navy hover:bg-slate-50 hover:text-medical-cyan"
                         }`}
                       >
                         <div
@@ -212,7 +216,15 @@ const Navbar = ({ lang, setLang }) => {
                         </div>
                         <ChevronDown
                           size={12}
-                          className={lang === "ar" ? "rotate-90" : "-rotate-90"}
+                          className={`transition-transform duration-200 ${
+                            lang === "ar"
+                              ? doctorOpen
+                                ? "rotate-180"
+                                : "rotate-90"
+                              : doctorOpen
+                              ? "rotate-0"
+                              : "-rotate-90"
+                          }`}
                         />
                       </Link>
 
@@ -220,24 +232,43 @@ const Navbar = ({ lang, setLang }) => {
                       {doctorOpen && (
                         <div
                           className={`absolute top-0 w-48 bg-white border border-slate-100 shadow-xl rounded-xl py-2 animate-fade-in ${
-                            lang === "ar" ? "right-full mr-1" : "left-full ml-1"
+                            lang === "ar" ? "right-full mr-0" : "left-full ml-0"
                           }`}
                         >
                           {[
-                            { to: "/choose-land", l: labels.land },
-                            { to: "/financial-aid", l: labels.finance },
-                            { to: "/integration-guide", l: labels.integration },
-                            { to: "/visa-guide", l: labels.visa },
+                            {
+                              to: "/choose-land",
+                              l: labels.land,
+                              icon: <Map size={16} />,
+                            },
+                            {
+                              to: "/visa-guide",
+                              l: labels.visa,
+                              icon: <FileText size={16} />,
+                            },
+                            {
+                              to: "/financial-aid",
+                              l: labels.finance,
+                              icon: <Euro size={16} />,
+                            },
+                            {
+                              to: "/integration-guide",
+                              l: labels.integration,
+                              icon: <Users size={16} />,
+                            },
                           ].map((sub) => (
                             <Link
                               key={sub.to}
                               to={sub.to}
-                              className={`block px-4 py-2 text-sm hover:bg-slate-50 transition-colors ${
+                              className={`flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
                                 isActive(sub.to)
-                                  ? "text-medical-cyan font-bold"
-                                  : "text-slate-600"
-                              }`}
+                                  ? "text-medical-cyan font-bold bg-medical-light/5"
+                                  : "text-slate-600 font-medium hover:text-medical-cyan hover:bg-slate-50"
+                              } ${lang === "ar" ? "flex-row-reverse" : ""}`}
                             >
+                              <span className="text-medical-cyan/80">
+                                {sub.icon}
+                              </span>
                               {sub.l}
                             </Link>
                           ))}
@@ -247,11 +278,11 @@ const Navbar = ({ lang, setLang }) => {
 
                     {/* Nurse Link */}
                     <Link
-                      to="/work/nurse" // <--- FIXED PATH
-                      className={`flex items-center gap-2 px-4 py-2.5 hover:bg-slate-50 font-bold transition-colors border-t border-slate-50 ${
+                      to="/work/nurse"
+                      className={`flex items-center gap-2 px-4 py-2.5 font-bold transition-colors border-t border-slate-50 ${
                         isActive("/work/nurse")
-                          ? "text-medical-cyan"
-                          : "text-medical-navy"
+                          ? "text-medical-cyan bg-slate-50"
+                          : "text-medical-navy hover:bg-slate-50 hover:text-medical-cyan"
                       } ${lang === "ar" ? "flex-row-reverse justify-end" : ""}`}
                     >
                       <Syringe size={16} className="text-medical-cyan" />{" "}
@@ -262,27 +293,51 @@ const Navbar = ({ lang, setLang }) => {
               </div>
             </div>
 
-            {/* Language & CTA */}
-            <div className="relative group">
-              <button className="flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-lg text-medical-navy font-bold text-sm border border-slate-200 cursor-pointer">
+            {/* Language Dropdown with Hover Effect */}
+            <div
+              className="relative"
+              onMouseEnter={() => setLangOpen(true)}
+              onMouseLeave={() => setLangOpen(false)}
+            >
+              <button
+                className={`flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-lg font-bold text-sm border transition-all duration-200 cursor-pointer ${
+                  langOpen
+                    ? "border-medical-cyan text-medical-cyan bg-slate-100"
+                    : "border-slate-200 text-medical-navy hover:border-medical-cyan/50"
+                }`}
+              >
                 <img
                   src={currentLangObj?.flag}
                   alt={lang}
                   className="w-5 h-auto rounded-sm shadow-sm"
                 />
                 <span>{lang.toUpperCase()}</span>
-                <ChevronDown size={14} className="text-slate-400" />
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-200 ${
+                    langOpen ? "rotate-180" : ""
+                  } ${langOpen ? "text-medical-cyan" : "text-slate-400"}`}
+                />
               </button>
+
               <div
-                className={`absolute mt-1 w-28 bg-white border border-slate-100 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 py-2 ${
+                className={`absolute mt-1 w-28 bg-white border border-slate-100 rounded-xl shadow-xl transition-all duration-200 z-50 py-2 ${
                   lang === "ar" ? "left-0" : "right-0"
+                } ${
+                  langOpen
+                    ? "opacity-100 visible translate-y-0"
+                    : "opacity-0 invisible -translate-y-2"
                 }`}
               >
                 {languages.map((l) => (
                   <button
                     key={l.code}
-                    onClick={() => setLang(l.code)}
-                    className={`w-full flex items-center gap-3 px-4 py-2 text-sm hover:bg-slate-50 cursor-pointer ${
+                    onClick={() => {
+                      setLang(l.code);
+                      setLangOpen(false);
+                    }}
+                    // ADDED HOVER EFFECT HERE
+                    className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors cursor-pointer hover:bg-slate-50 hover:text-medical-cyan ${
                       lang === l.code
                         ? "text-medical-cyan font-bold bg-medical-light/10"
                         : "text-medical-navy"
@@ -320,7 +375,7 @@ const Navbar = ({ lang, setLang }) => {
           <div className="md:hidden flex items-center h-full">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-medical-navy p-2 cursor-pointer"
+              className="text-medical-navy p-2 cursor-pointer hover:text-medical-cyan transition-colors"
             >
               {isOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -358,16 +413,16 @@ const Navbar = ({ lang, setLang }) => {
               {labels.ausbildung}
             </Link>
 
-            {/* Mobile Links for Work items - FIXED PATHS */}
+            {/* Mobile Links for Work items */}
             <Link
-              to="/work/doctor" // <--- FIXED PATH
+              to="/work/doctor"
               className="block font-bold py-2 text-lg text-medical-navy hover:text-medical-cyan"
               onClick={() => setIsOpen(false)}
             >
               {labels.doctor}
             </Link>
             <Link
-              to="/work/nurse" // <--- FIXED PATH
+              to="/work/nurse"
               className="block font-bold py-2 text-lg text-medical-navy hover:text-medical-cyan"
               onClick={() => setIsOpen(false)}
             >
