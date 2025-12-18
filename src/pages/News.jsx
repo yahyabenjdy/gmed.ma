@@ -5,15 +5,14 @@ import {
   useNavigate,
   useLocation,
   useNavigationType,
-} from "react-router-dom"; // <--- 1. ADDED IMPORTS
+} from "react-router-dom";
 
 const News = ({ lang }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const navType = useNavigationType(); // <--- 2. GET NAVIGATION TYPE
+  const navType = useNavigationType();
 
   useEffect(() => {
-    // <--- 3. THE LOGIC
     // Check if we were sent here with a specific Article ID (from Home)
     // AND ensure we are not "popping" (coming back via Back button)
     if (location.state && location.state.targetArticleId && navType !== "POP") {
@@ -230,9 +229,9 @@ const News = ({ lang }) => {
               <p className="text-xs text-slate-500">{t.ctaDesc}</p>
             </div>
           </div>
-          {/* TRANSLATED BUTTON HERE */}
+          {/* CHANGED LINK HERE */}
           <Link
-            to="/contact"
+            to="/#contact" // <--- Updated to point to Homepage Contact Section
             className="px-6 py-2.5 bg-medical-navy text-white text-xs font-bold rounded-lg hover:bg-medical-cyan transition-all shadow-lg shadow-medical-navy/20"
           >
             {t.contactBtn}
