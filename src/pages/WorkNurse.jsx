@@ -1,189 +1,473 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Heart,
   BookOpen,
   ClipboardCheck,
   Award,
   CheckCircle,
-  Info,
+  ArrowLeft,
+  ArrowRight,
+  Landmark,
+  AlertCircle,
+  Star,
+  Clock,
+  Euro,
 } from "lucide-react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const WorkNurse = ({ lang }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Back Button Logic
+  const handleBack = () => {
+    if (location.state && location.state.fromHomeSection) {
+      navigate("/");
+      setTimeout(() => {
+        const section = document.getElementById("work-section");
+        if (section) {
+          const yOffset = -80;
+          const y =
+            section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+      }, 150);
+    } else {
+      navigate("/");
+    }
+  };
+
   const content = {
     de: {
-      title: "Arbeiten als Pflegekraft",
-      subtitle: "Ihr Weg zur staatlichen Anerkennung in Deutschland.",
+      hero: {
+        tag: "Pflegekarriere",
+        title: "Arbeiten als Pflegekraft",
+        subtitle:
+          "Ihr Weg zur staatlichen Anerkennung in Deutschland. Wir unterstützen Sie beim Anerkennungsverfahren.",
+        cta: "Beratung starten",
+      },
+      back: "Zurück",
       intro:
-        "Pflegefachkräfte werden in Deutschland händeringend gesucht. Wir unterstützen Sie beim Anerkennungsverfahren (Anerkennung) und der sprachlichen Vorbereitung.",
+        "Pflegefachkräfte werden in Deutschland händeringend gesucht. Das deutsche Gesundheitssystem bietet sichere Arbeitsplätze, faire Bezahlung und hervorragende Arbeitsbedingungen.",
+      requirements: {
+        title: "Voraussetzungen",
+        list: [
+          "Abgeschlossenes Pflegestudium (Diplom/Bachelor)",
+          "B2-Sprachzertifikat (Telc/Goethe/ÖSD)",
+          "Gesundheitliche Eignung",
+          "Straffreiheit (Polizeiliches Führungszeugnis)",
+        ],
+      },
       process: [
         {
           title: "Sprachniveau B2",
-          desc: "Für die Berufserlaubnis ist in fast allen Bundesländern ein B2-Zertifikat (telc oder Goethe) erforderlich.",
+          desc: "Für die Berufserlaubnis ist in fast allen Bundesländern ein B2-Zertifikat erforderlich.",
           icon: <BookOpen size={24} />,
         },
         {
-          title: "Gleichwertigkeitsprüfung",
-          desc: "Ihre Ausbildung wird mit dem deutschen Lehrplan verglichen. Bei Defiziten wählen Sie eine Ausgleichsmaßnahme.",
+          title: "Anerkennungsverfahren",
+          desc: "Ihre Ausbildung wird mit dem deutschen Standard verglichen (Gleichwertigkeitsprüfung).",
           icon: <ClipboardCheck size={24} />,
         },
         {
           title: "Kenntnisprüfung (KP)",
-          desc: "Eine mündliche und praktische Prüfung über die pflegerischen Kernkompetenzen.",
+          desc: "Bei Defiziten absolvieren Sie eine mündliche und praktische Prüfung an einer Pflegeschule.",
           icon: <Award size={24} />,
         },
       ],
-      details: {
-        title: "Wichtige Informationen",
+      benefits: {
+        title: "Ihre Vorteile in Deutschland",
         items: [
-          "Vollständiges Diplom und Fächernachweis erforderlich",
-          "Möglichkeit der Finanzierung über Arbeitgeber",
-          "Unterstützung bei der Wohnungssuche",
-          "Direkte Vermittlung in Krankenhäuser oder Pflegeheime",
+          {
+            text: "Einstiegsgehalt ca. 2.800€ - 3.400€ Brutto",
+            icon: <Euro size={18} />,
+          },
+          {
+            text: "30 Tage bezahlter Urlaub pro Jahr",
+            icon: <Star size={18} />,
+          },
+          {
+            text: "Unbefristete Arbeitsverträge",
+            icon: <CheckCircle size={18} />,
+          },
+          {
+            text: "Geregelte Arbeitszeiten (Schichtsystem)",
+            icon: <Clock size={18} />,
+          },
         ],
+      },
+      services: {
+        title: "Unser Service für Pflegekräfte",
+        list: [
+          "Prüfung Ihrer Diplome & Zeugnisse",
+          "Anmeldung zu Deutschkursen (B1/B2 Pflege)",
+          "Unterstützung beim Anerkennungsantrag",
+          "Vorbereitung auf die Kenntnisprüfung",
+          "Vermittlung an Top-Arbeitgeber",
+        ],
+      },
+      ctaBox: {
+        title: "Bereit für den nächsten Schritt?",
+        desc: "Lassen Sie uns Ihre Chancen gemeinsam prüfen.",
+        btn: "Kontakt aufnehmen",
       },
     },
     fr: {
-      title: "Travailler comme Infirmier",
-      subtitle: "Votre parcours vers la reconnaissance d'État en Allemagne.",
+      hero: {
+        tag: "Carrière Soins Infirmiers",
+        title: "Travailler comme Infirmier",
+        subtitle:
+          "Votre parcours vers la reconnaissance d'État en Allemagne. Nous vous accompagnons dans toutes les démarches.",
+        cta: "Commencer la procédure",
+      },
+      back: "Retour",
       intro:
-        "Le personnel infirmier est très recherché en Allemagne. Nous vous aidons dans la procédure de reconnaissance (Anerkennung).",
+        "Le personnel infirmier est très recherché en Allemagne. Le système de santé allemand offre des emplois stables, une rémunération équitable et d'excellentes conditions de travail.",
+      requirements: {
+        title: "Conditions Requises",
+        list: [
+          "Diplôme d'infirmier (Diplôme d'État/Licence)",
+          "Certificat de langue B2 (Telc/Goethe/ÖSD)",
+          "Aptitude physique (Certificat médical)",
+          "Casier judiciaire vierge",
+        ],
+      },
       process: [
         {
           title: "Niveau de langue B2",
-          desc: "Un certificat B2 (telc ou Goethe) est requis pour l'autorisation d'exercer dans presque tous les Länder.",
+          desc: "Un certificat B2 est requis pour l'autorisation d'exercer dans presque tous les Länder.",
           icon: <BookOpen size={24} />,
         },
         {
-          title: "Examen d'équivalence",
-          desc: "Votre formation est comparée au programme allemand pour identifier d'éventuels écarts.",
+          title: "Procédure d'Homologation",
+          desc: "Votre formation est comparée aux standards allemands (Gleichwertigkeitsprüfung).",
           icon: <ClipboardCheck size={24} />,
         },
         {
-          title: "Kenntnisprüfung (KP)",
-          desc: "Un examen oral et pratique sur les compétences de base en soins infirmiers.",
+          title: "Examen de Connaissances",
+          desc: "En cas de différences, vous passez un examen oral et pratique (Kenntnisprüfung).",
           icon: <Award size={24} />,
         },
       ],
-      details: {
-        title: "Informations Importantes",
+      benefits: {
+        title: "Vos Avantages en Allemagne",
         items: [
-          "Diplôme complet et relevé de notes requis",
-          "Possibilité de financement par l'employeur",
-          "Aide à la recherche de logement",
-          "Placement direct en hôpital ou maison de retraite",
+          {
+            text: "Salaire débutant env. 2.800€ - 3.400€ Brut",
+            icon: <Euro size={18} />,
+          },
+          { text: "30 jours de congés payés par an", icon: <Star size={18} /> },
+          {
+            text: "Contrats de travail à durée indéterminée",
+            icon: <CheckCircle size={18} />,
+          },
+          {
+            text: "Horaires de travail réglementés",
+            icon: <Clock size={18} />,
+          },
         ],
+      },
+      services: {
+        title: "Nos Services pour Infirmiers",
+        list: [
+          "Vérification de vos diplômes & relevés",
+          "Inscription aux cours d'allemand (B1/B2)",
+          "Assistance dossier d'homologation",
+          "Préparation à l'examen de connaissances",
+          "Placement chez des employeurs premium",
+        ],
+      },
+      ctaBox: {
+        title: "Prêt à franchir le pas ?",
+        desc: "Vérifions ensemble votre éligibilité.",
+        btn: "Contactez-nous",
       },
     },
     ar: {
-      title: "العمل كممرض في ألمانيا",
-      subtitle: "طريقك نحو الاعتراف الحكومي بالشهادة (Anerkennung).",
+      hero: {
+        tag: "مهنة التمريض",
+        title: "العمل كممرض في ألمانيا",
+        subtitle:
+          "طريقك نحو الاعتراف الحكومي بالشهادة (Anerkennung). نحن ندعمك في جميع خطوات المعادلة.",
+        cta: "ابدأ الإجراءات",
+      },
+      back: "عودة",
       intro:
-        "يوجد طلب كبير على الكوادر التمريضية في ألمانيا. نحن نساعدك في إجراءات الاعتراف والتحضير اللغوي.",
+        "يوجد طلب كبير على الكوادر التمريضية في ألمانيا. يوفر النظام الصحي الألماني وظائف مستقرة، رواتب عادلة، وظروف عمل ممتازة.",
+      requirements: {
+        title: "شروط التقديم",
+        list: [
+          "شهادة دبلوم أو إجازة في التمريض",
+          "شهادة لغة ألمانية مستوى B2",
+          "شهادة اللياقة الطبية",
+          "سجل عدلي خالٍ من السوابق",
+        ],
+      },
       process: [
         {
           title: "مستوى اللغة B2",
-          desc: "شهادة B2 (telc أو Goethe) مطلوبة للحصول على إذن العمل في معظم الولايات.",
+          desc: "شهادة B2 مطلوبة للحصول على إذن العمل في معظم الولايات الألمانية.",
           icon: <BookOpen size={24} />,
         },
         {
-          title: "فحص المعادلة",
-          desc: "تتم مقارنة تكوينك المهني مع المنهج الألماني لتحديد أي فروقات.",
+          title: "إجراءات المعادلة",
+          desc: "تتم مقارنة تكوينك المهني مع المعايير الألمانية لتحديد الفروقات.",
           icon: <ClipboardCheck size={24} />,
         },
         {
           title: "امتحان المعرفة (KP)",
-          desc: "امتحان شفهي وعملي يركز على الكفاءات الأساسية في التمريض.",
+          desc: "في حال وجود نقص، تجتاز امتحاناً شفهياً وعملياً للمعادلة.",
           icon: <Award size={24} />,
         },
       ],
-      details: {
-        title: "معلومات هامة",
+      benefits: {
+        title: "مميزات العمل في ألمانيا",
         items: [
-          "مطلوب دبلوم كامل وكشف النقاط",
-          "إمكانية التمويل من قبل صاحب العمل",
-          "دعم في البحث عن سكن",
-          "توظيف مباشر في المستشفيات أو دور الرعاية",
+          { text: "راتب يبدأ من 2800€ - 3400€ يورو", icon: <Euro size={18} /> },
+          { text: "30 يوم إجازة مدفوعة سنوياً", icon: <Star size={18} /> },
+          {
+            text: "عقود عمل دائمة غير محددة المدة",
+            icon: <CheckCircle size={18} />,
+          },
+          {
+            text: "ساعات عمل منظمة (نظام المناوبات)",
+            icon: <Clock size={18} />,
+          },
         ],
+      },
+      services: {
+        title: "خدماتنا للممرضين",
+        list: [
+          "تدقيق الشهادات وكشوف النقاط",
+          "التسجيل في دورات اللغة (B1/B2)",
+          "المساعدة في ملف الاعتراف (Anerkennung)",
+          "التحضير لامتحان المعرفة (KP)",
+          "التوظيف لدى أفضل المستشفيات",
+        ],
+      },
+      ctaBox: {
+        title: "هل أنت مستعد للخطوة القادمة؟",
+        desc: "دعنا نتحقق من أهليتك معاً.",
+        btn: "اتصل بنا",
       },
     },
   };
 
-  const t = content[lang] || content.de;
+  const t = content[lang] || content.fr;
 
   return (
-    <div className="bg-white min-h-screen">
-      {/* Header */}
-      <div className="bg-medical-light py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <Heart size={48} className="text-medical-cyan mx-auto mb-6" />
-          <h1 className="text-4xl font-bold text-medical-navy mb-4">
-            {t.title}
-          </h1>
-          <p className="text-slate-600 text-lg">{t.subtitle}</p>
-        </div>
-      </div>
+    <div
+      className="bg-[#e0f9fd] min-h-screen pb-0"
+      dir={lang === "ar" ? "rtl" : "ltr"}
+    >
+      {/* --- HERO SECTION --- */}
+      <section className="relative pt-12 pb-20 bg-medical-navy overflow-hidden">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00b4d8_1px,transparent_1px)] [background-size:20px_20px]"></div>
 
-      <div className="max-w-5xl mx-auto px-4 py-16">
-        <div
-          className={`p-8 bg-slate-50 rounded-3xl mb-16 ${
-            lang === "ar" ? "text-right" : "text-left"
-          }`}
-        >
-          <p className="text-slate-700 leading-relaxed text-lg">{t.intro}</p>
-        </div>
-
-        {/* Process Steps */}
-        <div className="space-y-8 mb-20">
-          {t.process.map((step, idx) => (
-            <div
-              key={idx}
-              className={`flex flex-col md:flex-row gap-6 p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow ${
-                lang === "ar" ? "md:flex-row-reverse" : ""
-              }`}
-            >
-              <div className="w-16 h-16 bg-medical-cyan/10 text-medical-cyan rounded-2xl flex items-center justify-center shrink-0">
-                {step.icon}
-              </div>
-              <div className={lang === "ar" ? "text-right" : "text-left"}>
-                <h3 className="text-xl font-bold text-medical-navy mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-slate-600">{step.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Bottom Details Grid */}
-        <div className="bg-medical-navy text-white p-10 rounded-3xl">
-          <div
-            className={`flex items-center gap-3 mb-8 ${
-              lang === "ar" ? "justify-end" : ""
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Back Button */}
+          <button
+            onClick={handleBack}
+            className={`flex items-center gap-2 text-medical-cyan font-bold mb-6 hover:text-white transition-colors text-sm ${
+              lang === "ar" ? "flex-row-reverse" : ""
             }`}
           >
-            <Info size={24} className="text-medical-cyan" />
-            <h4 className="text-2xl font-bold">{t.details.title}</h4>
+            <ArrowLeft
+              size={18}
+              className={lang === "ar" ? "rotate-180" : ""}
+            />
+            {t.back}
+          </button>
+
+          <div className="flex flex-col md:flex-row items-center gap-12">
+            {/* Text Content */}
+            <div
+              className={`md:w-1/2 ${
+                lang === "ar" ? "text-right" : "text-left"
+              }`}
+            >
+              <div className="inline-flex items-center gap-2 bg-white/10 text-medical-cyan px-4 py-1.5 rounded-full text-sm font-bold mb-6 border border-white/20">
+                <Heart size={16} />
+                {t.hero.tag}
+              </div>
+              <h1 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
+                {t.hero.title}
+              </h1>
+              <p className="text-lg text-slate-300 mb-8 leading-relaxed">
+                {t.hero.subtitle}
+              </p>
+
+              <Link
+                to="/register"
+                className="inline-flex items-center gap-2 bg-medical-cyan text-white px-8 py-3 rounded-xl font-bold hover:bg-[#0096b4] transition-all shadow-lg shadow-medical-cyan/20 group"
+              >
+                {t.hero.cta}
+                <ArrowRight
+                  size={20}
+                  className={`transition-transform group-hover:translate-x-1 ${
+                    lang === "ar" ? "rotate-180 group-hover:-translate-x-1" : ""
+                  }`}
+                />
+              </Link>
+            </div>
+
+            {/* Hero Image/Card */}
+            <div className="md:w-1/2 relative">
+              <div className="absolute inset-0 bg-medical-cyan blur-3xl opacity-20 rounded-full"></div>
+              <img
+                src="/nurse.jpg" // UPDATED IMAGE
+                onError={(e) => {
+                  e.target.src =
+                    "https://placehold.co/600x400/0a192f/white?text=Nurse+Germany";
+                }}
+                alt="Nurse in Germany"
+                className="relative rounded-2xl shadow-2xl border border-white/10 z-10 w-full object-cover transform md:rotate-2 hover:rotate-0 transition-transform duration-500"
+              />
+            </div>
           </div>
-          <div className="grid sm:grid-cols-2 gap-6">
-            {t.details.items.map((item, i) => (
+        </div>
+      </section>
+
+      {/* --- INTRO & REQUIREMENTS --- */}
+      <section className="py-12 bg-white/50">
+        <div className="max-w-6xl mx-auto px-4">
+          <p className="text-slate-600 text-lg mb-12 text-center max-w-3xl mx-auto font-medium leading-relaxed">
+            {t.intro}
+          </p>
+
+          {/* Requirements Box (New) */}
+          <div className="bg-white border border-slate-100 shadow-lg rounded-3xl p-8 flex flex-col md:flex-row gap-8 items-center -mt-6">
+            <div className="bg-medical-navy text-white p-5 rounded-2xl shadow-md">
+              <AlertCircle size={32} />
+            </div>
+            <div
+              className={`flex-1 ${lang === "ar" ? "text-right" : "text-left"}`}
+            >
+              <h4 className="text-xl font-bold text-medical-navy mb-4">
+                {t.requirements.title}
+              </h4>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {t.requirements.list.map((req, i) => (
+                  <div
+                    key={i}
+                    className={`flex items-center gap-3 text-slate-700 font-medium ${
+                      lang === "ar" ? "flex-row-reverse" : ""
+                    }`}
+                  >
+                    <div className="w-2 h-2 bg-medical-cyan rounded-full shrink-0" />
+                    {req}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- PROCESS STEPS --- */}
+      <section className="py-16">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="grid gap-6">
+            {t.process.map((step, idx) => (
               <div
-                key={i}
-                className={`flex items-start gap-3 ${
-                  lang === "ar" ? "flex-row-reverse text-right" : ""
+                key={idx}
+                className={`flex flex-col md:flex-row gap-6 p-8 rounded-3xl bg-white border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 ${
+                  lang === "ar" ? "md:flex-row-reverse text-right" : "text-left"
                 }`}
               >
-                <CheckCircle
-                  size={20}
-                  className="text-medical-cyan shrink-0 mt-1"
-                />
-                <span className="text-medical-light/90 font-medium">
-                  {item}
-                </span>
+                <div className="w-16 h-16 bg-medical-cyan/10 text-medical-cyan rounded-2xl flex items-center justify-center shrink-0">
+                  {step.icon}
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-medical-navy mb-2">
+                    {step.title}
+                  </h3>
+                  <p className="text-slate-600 leading-relaxed">{step.desc}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* --- BENEFITS GRID (New) --- */}
+      <section className="py-12 bg-slate-50/50">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-2xl font-black text-medical-navy text-center mb-10">
+            {t.benefits.title}
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {t.benefits.items.map((item, index) => (
+              <div
+                key={index}
+                className={`flex items-center gap-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-100 ${
+                  lang === "ar" ? "flex-row-reverse text-right" : ""
+                }`}
+              >
+                <div className="w-10 h-10 bg-medical-light rounded-full flex items-center justify-center text-medical-navy shrink-0">
+                  {item.icon}
+                </div>
+                <span className="font-bold text-slate-700">{item.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- COMPACT SERVICES SECTION (Flush to footer) --- */}
+      <section className="py-8 bg-medical-navy relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-medical-cyan/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-medical-cyan/10 rounded-full blur-3xl"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="bg-white/5 backdrop-blur-lg rounded-3xl p-6 md:p-8 border border-white/10">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              {/* Left Column: Services List */}
+              <div className={lang === "ar" ? "text-right" : "text-left"}>
+                <div className="inline-flex items-center gap-2 text-medical-cyan font-bold mb-3 text-sm">
+                  <Landmark size={18} /> GMED SUPPORT
+                </div>
+                <h2 className="text-2xl md:text-3xl font-black text-white mb-4">
+                  {t.services.title}
+                </h2>
+                <ul className="space-y-3">
+                  {t.services.list.map((service, i) => (
+                    <li
+                      key={i}
+                      className="flex items-start gap-3 text-slate-300 text-sm"
+                    >
+                      <CheckCircle
+                        size={18}
+                        className="text-medical-cyan shrink-0 mt-0.5"
+                      />
+                      <span>{service}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Right Column: CTA Box */}
+              <div className="bg-white rounded-2xl p-6 text-center shadow-2xl">
+                <h3 className="text-xl font-black text-medical-navy mb-2">
+                  {t.ctaBox.title}
+                </h3>
+                <p className="text-slate-500 mb-6 text-sm">{t.ctaBox.desc}</p>
+
+                <Link
+                  to="/#contact"
+                  className="w-full block bg-medical-navy text-white py-3 rounded-xl font-bold hover:bg-medical-cyan transition-colors shadow-lg text-sm"
+                >
+                  {t.ctaBox.btn}
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
