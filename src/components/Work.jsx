@@ -25,7 +25,7 @@ const Work = ({ lang }) => {
             "Facharztanerkennung",
             "Blue Card EU",
           ],
-          link: "/work-as-doctor",
+          link: "/work/doctor", // Make sure this matches your App.jsx route
           btn: "Infos für Ärzte",
         },
         {
@@ -39,7 +39,7 @@ const Work = ({ lang }) => {
             "Unbefristete Verträge",
             "Familiennachzug",
           ],
-          link: "/work-as-nurse",
+          link: "/work/nurse", // Make sure this matches your App.jsx route
           btn: "Infos für Pflegekräfte",
         },
       ],
@@ -56,7 +56,7 @@ const Work = ({ lang }) => {
           salary: "à partir de 5.500€ / mois",
           icon: <Stethoscope size={32} />,
           features: ["Postes de Résident", "Spécialisation", "Carte Bleue UE"],
-          link: "/work-as-doctor",
+          link: "/work/doctor",
           btn: "Espace Médecins",
         },
         {
@@ -70,7 +70,7 @@ const Work = ({ lang }) => {
             "Contrats CDI",
             "Regroupement familial",
           ],
-          link: "/work-as-nurse",
+          link: "/work/nurse",
           btn: "Espace Infirmiers",
         },
       ],
@@ -90,7 +90,7 @@ const Work = ({ lang }) => {
             "التخصص الطبي",
             "البطاقة الزرقاء الأوروبية",
           ],
-          link: "/work-as-doctor",
+          link: "/work/doctor",
           btn: "معلومات الأطباء",
         },
         {
@@ -100,7 +100,7 @@ const Work = ({ lang }) => {
           salary: "ابتداءً من 2.800€ / شهر",
           icon: <HeartPulse size={32} />,
           features: ["إجراءات المعادلة", "عقود عمل دائمة", "لم الشمل العائلي"],
-          link: "/work-as-nurse",
+          link: "/work/nurse",
           btn: "معلومات الممرضين",
         },
       ],
@@ -110,8 +110,9 @@ const Work = ({ lang }) => {
   const t = content[lang] || content.fr;
 
   return (
-    // Reduced Top Padding: pt-12 (was py-16)
+    // 1. CRITICAL: Add the ID so the page can scroll back here
     <section
+      id="work-section"
       className="pt-12 pb-16 bg-[#e0f9fd]"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
@@ -186,6 +187,8 @@ const Work = ({ lang }) => {
 
                 <Link
                   to={card.link}
+                  // 2. CRITICAL: Pass the state so the next page knows where to return
+                  state={{ fromHomeSection: true }}
                   className={`w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold transition-all text-white shadow-lg ${
                     card.id === "doctor"
                       ? "bg-medical-navy hover:bg-[#1a2c4e] shadow-medical-navy/30"
