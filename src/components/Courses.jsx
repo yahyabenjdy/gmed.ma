@@ -23,7 +23,7 @@ const Courses = ({ lang }) => {
             "... und mehr",
           ],
           button: "Mehr Details",
-          link: "/work/nurse",
+          link: "/courses", // Updated link
         },
         {
           title: "Intensivkurs",
@@ -36,7 +36,7 @@ const Courses = ({ lang }) => {
           ],
           button: "Mehr Details",
           featured: true,
-          link: "/work-as-doctor",
+          link: "/courses", // Updated link
         },
         {
           title: "Standardkurs",
@@ -48,7 +48,7 @@ const Courses = ({ lang }) => {
             "... und mehr",
           ],
           button: "Mehr Details",
-          link: "/courses",
+          link: "/courses", // Updated link
         },
       ],
     },
@@ -69,7 +69,7 @@ const Courses = ({ lang }) => {
             "... et plus encore",
           ],
           button: "Détails",
-          link: "/work/nurse",
+          link: "/courses", // Updated link
         },
         {
           title: "Cours Intensif",
@@ -82,7 +82,7 @@ const Courses = ({ lang }) => {
           ],
           button: "Détails",
           featured: true,
-          link: "/work-as-doctor",
+          link: "/courses", // Updated link
         },
         {
           title: "Cours Standard",
@@ -94,7 +94,7 @@ const Courses = ({ lang }) => {
             "... et plus encore",
           ],
           button: "Détails",
-          link: "/courses",
+          link: "/courses", // Updated link
         },
       ],
     },
@@ -107,19 +107,19 @@ const Courses = ({ lang }) => {
         {
           title: "دورة مرنة",
           level: "المستوى A1 - C1",
-          price: "900 DH",
+          price: "900 درهم", // CHANGED: Arabic Currency
           features: [
             "حصتان في الأسبوع (3 ساعات)",
             "مدرسون ذوو خبرة طبية",
             "... والمزيد",
           ],
           button: "التفاصيل",
-          link: "/work/nurse",
+          link: "/courses", // Updated link
         },
         {
           title: "دورة مكثفة",
           level: "المستوى A1 - C1",
-          price: "1400 DH",
+          price: "1400 درهم", // CHANGED: Arabic Currency
           features: [
             "5 حصص في الأسبوع (ساعتان)",
             "مدرسون ذوو خبرة طبية",
@@ -127,19 +127,19 @@ const Courses = ({ lang }) => {
           ],
           button: "التفاصيل",
           featured: true,
-          link: "/work-as-doctor",
+          link: "/courses", // Updated link
         },
         {
           title: "دورة قياسية",
           level: "المستوى A1 - C1",
-          price: "900 DH",
+          price: "900 درهم", // CHANGED: Arabic Currency
           features: [
             "3 حصص في الأسبوع (ساعتان)",
             "مدرسون ذوو خبرة طبية",
             "... والمزيد",
           ],
           button: "التفاصيل",
-          link: "/courses",
+          link: "/courses", // Updated link
         },
       ],
     },
@@ -149,7 +149,9 @@ const Courses = ({ lang }) => {
 
   return (
     // REDUCED VERTICAL PADDING: py-20 -> py-14
+    // Added ID for navigation back
     <section
+      id="courses-section"
       className="py-14 bg-medical-navy"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
@@ -240,9 +242,10 @@ const Courses = ({ lang }) => {
                   ))}
                 </ul>
 
-                {/* Action Button: Reduced padding (py-4 -> py-3) */}
+                {/* Action Button: Updated Link Logic */}
                 <Link
                   to={card.link || "/courses"}
+                  state={{ fromHomeSection: true }} // <--- PASSING STATE HERE
                   className={`w-full block text-center py-3 rounded-xl font-bold transition-all shadow-md active:scale-95 text-sm
                     ${
                       isActive
