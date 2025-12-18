@@ -1,212 +1,288 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Check,
   Calendar,
   Clock,
   GraduationCap,
   ArrowRight,
+  ArrowLeft,
+  Signal,
 } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const CoursesPage = ({ lang }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleBack = () => {
+    if (location.state && location.state.fromHomeSection) {
+      navigate("/");
+      setTimeout(() => {
+        const section = document.getElementById("courses-section");
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    } else {
+      navigate("/");
+    }
+  };
+
   const content = {
     de: {
-      title: "Unsere Sprach- & Fachkurse",
+      title: "Unsere Sprachprogramme",
       subtitle:
-        "Gezielte Vorbereitung auf Ihre medizinische Karriere in Deutschland.",
-      cta: "Jetzt Platz sichern",
+        "Gezielte Vorbereitung auf die Anforderungen im deutschen Gesundheitssystem.",
+      cta: "Jetzt anmelden",
+      back: "Zurück",
       courses: [
+        // 1. Recommended (Intensive)
         {
-          id: "b1-intensive",
-          name: "B1 Intensivkurs",
-          duration: "3 Monate",
-          schedule: "Mo - Fr | 09:00 - 13:00",
-          desc: "Die Basis für Ihren Einstieg in Deutschland.",
+          id: "intensiv",
+          name: "Intensivkurs",
+          level: "A1 - C1",
+          price: "1400 DH",
+          schedule: "5x pro Woche (je 2 Std.)",
+          desc: "Der schnellste Weg zum Erfolg. Ideal für Vollzeit-Lernende.",
           features: [
-            "Allgemeine Sprachkenntnisse",
-            "Prüfungssimulation",
-            "Zertifikatstraining",
+            "Täglicher Unterricht",
+            "Medizinisch erfahrene Lehrer",
+            "Intensive Prüfungsvorbereitung",
+            "Schneller Fortschritt",
+          ],
+          featured: true,
+        },
+        // 2. Standard
+        {
+          id: "standard",
+          name: "Standardkurs",
+          level: "A1 - C1",
+          price: "900 DH",
+          schedule: "3x pro Woche (je 2 Std.)",
+          desc: "Perfekte Balance zwischen Lernen und Alltag.",
+          features: [
+            "Regelmäßiger Unterricht",
+            "Medizinisch erfahrene Lehrer",
+            "Solide Grundlagen",
+            "Flexibles Lernen",
           ],
         },
+        // 3. Flexible
         {
-          id: "b2-nursing",
-          name: "B2 Pflege",
-          duration: "4 Monate",
-          schedule: "Mo - Do | 14:00 - 18:00",
-          desc: "Spezialisierter Sprachkurs für Pflegefachkräfte.",
+          id: "flexibel",
+          name: "Flexibler Kurs",
+          level: "A1 - C1",
+          price: "900 DH",
+          schedule: "2x pro Woche (je 3 Std.)",
+          desc: "Für Berufstätige und Studierende mit wenig Zeit.",
           features: [
-            "Medizinische Terminologie",
-            "Patientendokumentation",
-            "Teamkommunikation",
+            "Unterricht am Abend/Wochenende",
+            "Medizinisch erfahrene Lehrer",
+            "Fokus auf Kommunikation",
+            "Individuelles Tempo",
           ],
         },
+        // 4. Hybrid
         {
-          id: "c1-medical",
-          name: "C1 Medizin / FSP",
-          duration: "3 Monate",
-          schedule: "Abendkurse verfügbar",
-          desc: "Vorbereitung auf die Fachsprachenprüfung für Ärzte.",
+          id: "hybrid",
+          name: "Kombikurs (Hybrid)",
+          level: "A1 - C1",
+          price: "900 DH",
+          schedule: "1x Präsenz (3h) + 2x Online (1.5h)",
+          desc: "Das Beste aus beiden Welten: Persönlicher Kontakt & Flexibilität.",
           features: [
-            "Arzt-Patienten-Gespräche",
-            "Arztbriefschreibung",
-            "Kollegengespräche",
+            "1x/Woche vor Ort (Agadir)",
+            "2x/Woche Online-Live-Sessions",
+            "Ideal für Pendler",
+            "Effektiver Mix",
           ],
         },
+        // 5. Online Only
         {
-          id: "kenntnis",
-          name: "Kenntnisprüfung (KP)",
-          duration: "6 Monate",
-          schedule: "Wochenend-Intensiv",
-          desc: "Vorbereitung auf die medizinische Gleichwertigkeitsprüfung.",
+          id: "online",
+          name: "Online-Kurs",
+          level: "A1 - C1",
+          price: "500 DH",
+          schedule: "3x pro Woche (je 1.5 Std.)",
+          desc: "Lernen Sie Deutsch bequem von überall aus.",
           features: [
-            "Innere Medizin & Chirurgie",
-            "Pharmakologie",
-            "Praktische Fallbeispiele",
-          ],
-        },
-        {
-          id: "telc-prep",
-          name: "telc Deutsch B2/C1 Medizin",
-          duration: "4 Wochen",
-          schedule: "Crash-Kurs",
-          desc: "Gezieltes Training für das telc Zertifikat.",
-          features: [
-            "Prüfungsstrategien",
-            "Hörverstehen Fokus",
-            "Mündlicher Ausdruck",
+            "100% Virtueller Unterricht",
+            "Interaktive digitale Tools",
+            "Keine Anfahrtswege",
+            "Kostengünstig",
           ],
         },
       ],
     },
     fr: {
-      title: "Nos Cours de Langue et Spécialisés",
-      subtitle: "Préparation ciblée pour votre carrière médicale en Allemagne.",
-      cta: "Réserver ma place",
+      title: "Nos Programmes Linguistiques",
+      subtitle:
+        "Préparation ciblée aux exigences du système de santé allemand.",
+      cta: "S'inscrire",
+      back: "Retour",
       courses: [
+        // 1. Recommended
         {
-          id: "b1-intensive",
-          name: "B1 Intensif",
-          duration: "3 Mois",
-          schedule: "Lun - Ven | 09:00 - 13:00",
-          desc: "La base de votre intégration en Allemagne.",
+          id: "intensiv",
+          name: "Cours Intensif",
+          level: "Niveau A1 - C1",
+          price: "1400 DH",
+          schedule: "5x par semaine (2h/séance)",
+          desc: "La voie la plus rapide vers la réussite. Idéal pour un apprentissage à temps plein.",
           features: [
-            "Compétences linguistiques générales",
-            "Simulations d'examen",
-            "Entraînement certificat",
+            "Cours quotidiens",
+            "Enseignants experts médicaux",
+            "Préparation intensive",
+            "Progression rapide",
+          ],
+          featured: true,
+        },
+        // 2. Standard
+        {
+          id: "standard",
+          name: "Cours Standard",
+          level: "Niveau A1 - C1",
+          price: "900 DH",
+          schedule: "3x par semaine (2h/séance)",
+          desc: "L'équilibre parfait entre apprentissage et vie quotidienne.",
+          features: [
+            "Cours réguliers",
+            "Enseignants experts médicaux",
+            "Bases solides",
+            "Apprentissage flexible",
           ],
         },
+        // 3. Flexible
         {
-          id: "b2-nursing",
-          name: "B2 Soins Infirmiers",
-          duration: "4 Mois",
-          schedule: "Lun - Jeu | 14:00 - 18:00",
-          desc: "Cours de langue spécialisé pour les infirmiers.",
+          id: "flexibel",
+          name: "Cours Flexible",
+          level: "Niveau A1 - C1",
+          price: "900 DH",
+          schedule: "2x par semaine (3h/séance)",
+          desc: "Pour les professionnels et étudiants ayant peu de temps.",
           features: [
-            "Terminologie médicale",
-            "Documentation des patients",
-            "Communication d'équipe",
+            "Cours soirs/week-ends",
+            "Enseignants experts médicaux",
+            "Focus communication",
+            "Rythme adapté",
           ],
         },
+        // 4. Hybrid
         {
-          id: "c1-medical",
-          name: "C1 Médical / FSP",
-          duration: "3 Mois",
-          schedule: "Cours du soir disponibles",
-          desc: "Préparation à l'examen de langue spécialisée (FSP) pour médecins.",
+          id: "hybrid",
+          name: "Cours Hybride",
+          level: "Niveau A1 - C1",
+          price: "900 DH",
+          schedule: "1x Présentiel (3h) + 2x En ligne (1h30)",
+          desc: "Le meilleur des deux mondes : Contact personnel & Flexibilité.",
           features: [
-            "Entretiens médecin-patient",
-            "Rédaction de rapports",
-            "Discussions collégiales",
+            "1x/semaine en centre (Agadir)",
+            "2x/semaine sessions Live",
+            "Idéal pour ceux qui habitent loin",
+            "Approche mixte efficace",
           ],
         },
+        // 5. Online Only
         {
-          id: "kenntnis",
-          name: "Kenntnisprüfung (KP)",
-          duration: "6 Mois",
-          schedule: "Weekend Intensif",
-          desc: "Préparation à l'examen d'équivalence médicale.",
+          id: "online",
+          name: "Cours En Ligne",
+          level: "Niveau A1 - C1",
+          price: "500 DH",
+          schedule: "3x par semaine (1h30/séance)",
+          desc: "Apprenez l'allemand confortablement de n'importe où.",
           features: [
-            "Médecine interne et chirurgie",
-            "Pharmacologie",
-            "Études de cas pratiques",
-          ],
-        },
-        {
-          id: "telc-prep",
-          name: "telc Allemand B2/C1 Médical",
-          duration: "4 Semaines",
-          schedule: "Cours intensif",
-          desc: "Entraînement ciblé pour le certificat telc.",
-          features: [
-            "Stratégies d'examen",
-            "Focus compréhension orale",
-            "Expression orale",
+            "100% Classe virtuelle",
+            "Outils numériques interactifs",
+            "Aucun déplacement",
+            "Prix accessible",
           ],
         },
       ],
     },
     ar: {
-      title: "دوراتنا اللغوية والمتخصصة",
-      subtitle: "تحضير مستهدف لمسيرتك الطبية في ألمانيا.",
-      cta: "احجز مكانك الآن",
+      title: "برامجنا اللغوية",
+      subtitle: "تحضير مستهدف لمتطلبات نظام الرعاية الصحية الألماني.",
+      cta: "سجل الآن",
+      back: "عودة",
       courses: [
+        // 1. Recommended
         {
-          id: "b1-intensive",
-          name: "دورة B1 المكثفة",
-          duration: "3 أشهر",
-          schedule: "الاثنين - الجمعة | 09:00 - 13:00",
-          desc: "الأساس لانطلاقتك في ألمانيا.",
+          id: "intensiv",
+          name: "دورة مكثفة",
+          level: "المستوى A1 - C1",
+          price: "1400 درهم",
+          schedule: "5 حصص في الأسبوع (ساعتان)",
+          desc: "أسرع طريق للنجاح. مثالي للمتفرغين للدراسة.",
           features: [
-            "مهارات اللغة العامة",
-            "محاكاة الامتحانات",
-            "التدريب على الشهادة",
+            "دروس يومية",
+            "مدرسون ذوو خبرة طبية",
+            "تحضير مكثف للامتحانات",
+            "تقدم سريع",
+          ],
+          featured: true,
+        },
+        // 2. Standard
+        {
+          id: "standard",
+          name: "دورة قياسية",
+          level: "المستوى A1 - C1",
+          price: "900 درهم",
+          schedule: "3 حصص في الأسبوع (ساعتان)",
+          desc: "توازن مثالي بين التعلم والحياة اليومية.",
+          features: [
+            "دروس منتظمة",
+            "مدرسون ذوو خبرة طبية",
+            "أساسيات قوية",
+            "تعلم مرن",
           ],
         },
+        // 3. Flexible
         {
-          id: "b2-nursing",
-          name: "B2 التمريض",
-          duration: "4 أشهر",
-          schedule: "الاثنين - الخميس | 14:00 - 18:00",
-          desc: "دورة لغوية متخصصة لكوادر التمريض.",
+          id: "flexibel",
+          name: "دورة مرنة",
+          level: "المستوى A1 - C1",
+          price: "900 درهم",
+          schedule: "حصتان في الأسبوع (3 ساعات)",
+          desc: "للمهنيين والطلاب ذوي الوقت المحدود.",
           features: [
-            "المصطلحات الطبية",
-            "توثيق بيانات المرضى",
-            "التواصل مع الفريق",
+            "دروس مسائية/نهاية الأسبوع",
+            "مدرسون ذوو خبرة طبية",
+            "التركيز على التواصل",
+            "وتيرة فردية",
           ],
         },
+        // 4. Hybrid
         {
-          id: "c1-medical",
-          name: "C1 الطبي / FSP",
-          duration: "3 أشهر",
-          schedule: "تتوفر دورات مسائية",
-          desc: "التحضير لامتحان اللغة الطبية المتخصص للأطباء.",
+          id: "hybrid",
+          name: "دورة مدمجة (هجين)",
+          level: "المستوى A1 - C1",
+          price: "900 درهم",
+          schedule: "1x حضوري (3 ساعات) + 2x عن بعد (1.5 ساعة)",
+          desc: "الأفضل من العالمين: تواصل شخصي ومرونة.",
           features: [
-            "محادثات الطبيب والمريض",
-            "كتابة التقارير الطبية",
-            "المناقشات الزميلة",
+            "1 حصة/أسبوع في المركز (أكادير)",
+            "2 حصص/أسبوع عن بعد (Live)",
+            "مثالي لمن يسكن بعيداً",
+            "مزيج تعليمي فعال",
           ],
         },
+        // 5. Online Only
         {
-          id: "kenntnis",
-          name: "امتحان المعرفة (KP)",
-          duration: "6 أشهر",
-          schedule: "مكثف نهاية الأسبوع",
-          desc: "التحضير لامتحان معادلة الشهادة الطبية.",
+          id: "online",
+          name: "دورة عن بعد",
+          level: "المستوى A1 - C1",
+          price: "500 درهم",
+          schedule: "3 حصص في الأسبوع (1.5 ساعة)",
+          desc: "تعلم الألمانية براحة من أي مكان.",
           features: [
-            "الطب الباطني والجراحة",
-            "علم الأدوية",
-            "دراسة حالات عملية",
-          ],
-        },
-        {
-          id: "telc-prep",
-          name: "telc الألمانية B2/C1 الطبية",
-          duration: "4 أسابيع",
-          schedule: "دورة سريعة",
-          desc: "تدريب مكثف للحصول على شهادة telc.",
-          features: [
-            "استراتيجيات الامتحان",
-            "التركيز على الفهم السمعي",
-            "التعبير الشفهي",
+            "100% دروس افتراضية",
+            "أدوات رقمية تفاعلية",
+            "بدون تنقل",
+            "سعر اقتصادي",
           ],
         },
       ],
@@ -216,69 +292,116 @@ const CoursesPage = ({ lang }) => {
   const t = content[lang] || content.de;
 
   return (
-    <div className="bg-slate-50 min-h-screen pb-20">
+    // CHANGED: bg-[#e0f9fd] (15% Cyan/Blue intensity)
+    <div
+      className="bg-[#e0f9fd] min-h-screen pb-12"
+      dir={lang === "ar" ? "rtl" : "ltr"}
+    >
       {/* Header Section */}
-      <div className="bg-medical-navy text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">{t.title}</h1>
-          <p className="text-medical-light/80 text-lg">{t.subtitle}</p>
+      <div className="bg-medical-navy text-white pt-12 pb-10 px-4">
+        <div className="max-w-4xl mx-auto">
+          {/* Back Button */}
+          <button
+            onClick={handleBack}
+            className={`flex items-center gap-2 text-medical-cyan font-bold mb-4 hover:text-white transition-colors text-sm ${
+              lang === "ar" ? "flex-row-reverse" : ""
+            }`}
+          >
+            <ArrowLeft
+              size={18}
+              className={lang === "ar" ? "rotate-180" : ""}
+            />
+            {t.back}
+          </button>
+
+          <div className="text-center max-w-2xl mx-auto">
+            <h1 className="text-3xl md:text-4xl font-black mb-3">{t.title}</h1>
+            <p className="text-medical-light/80 text-base">{t.subtitle}</p>
+          </div>
         </div>
       </div>
 
       {/* Courses List */}
-      <div className="max-w-5xl mx-auto px-4 -mt-10">
-        <div className="space-y-8">
+      <div className="max-w-4xl mx-auto px-4 -mt-6">
+        <div className="space-y-5">
           {t.courses.map((course) => (
             <div
               key={course.id}
-              className="bg-white rounded-3xl shadow-md overflow-hidden border border-slate-100 flex flex-col md:flex-row hover:shadow-xl transition-shadow"
+              className={`bg-white rounded-[1.5rem] shadow-md overflow-hidden border border-slate-100 flex flex-col md:flex-row hover:shadow-xl transition-all duration-300 group ${
+                course.featured ? "ring-2 ring-medical-cyan/30" : ""
+              }`}
             >
-              <div className="bg-medical-cyan p-8 md:w-1/3 flex flex-col justify-center items-center text-white text-center">
-                <GraduationCap size={48} className="mb-4" />
-                <h3 className="text-xl font-bold">{course.name}</h3>
+              {/* Left Side: Icon & Title */}
+              <div className="bg-gradient-to-br from-medical-navy to-[#0a2e4f] p-6 md:w-1/3 flex flex-col justify-center items-center text-white text-center relative overflow-hidden">
+                {/* Background Pattern */}
+                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+                {course.featured && (
+                  <div className="absolute top-3 right-3 bg-medical-cyan text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full">
+                    Recommended
+                  </div>
+                )}
+
+                <GraduationCap size={36} className="mb-3 text-medical-cyan" />
+                <h3 className="text-xl font-black">{course.name}</h3>
+                <div className="mt-2 inline-flex items-center gap-1.5 bg-white/10 px-2.5 py-0.5 rounded-full text-xs font-bold text-medical-light">
+                  <Signal size={12} /> {course.level}
+                </div>
               </div>
 
+              {/* Right Side: Content */}
               <div
-                className={`p-8 md:w-2/3 flex flex-col justify-between ${
+                className={`p-6 md:w-2/3 flex flex-col justify-between ${
                   lang === "ar" ? "text-right" : "text-left"
                 }`}
               >
                 <div>
+                  {/* Schedule & Price Row */}
                   <div
-                    className={`flex flex-wrap gap-4 mb-6 ${
+                    className={`flex flex-wrap gap-x-4 gap-y-1 mb-4 text-xs font-medium text-slate-500 border-b border-slate-100 pb-3 ${
                       lang === "ar" ? "justify-end" : "justify-start"
                     }`}
                   >
-                    <div className="flex items-center gap-2 text-slate-500 text-sm">
-                      <Clock size={16} className="text-medical-cyan" />{" "}
-                      {course.duration}
-                    </div>
-                    <div className="flex items-center gap-2 text-slate-500 text-sm">
-                      <Calendar size={16} className="text-medical-cyan" />{" "}
+                    <div className="flex items-center gap-1.5">
+                      <Clock size={14} className="text-medical-cyan" />
                       {course.schedule}
+                    </div>
+                    <div className="flex items-center gap-1.5 text-medical-navy font-bold text-base">
+                      {course.price}
                     </div>
                   </div>
 
-                  <p className="text-slate-600 mb-6 italic">{course.desc}</p>
+                  <p className="text-slate-600 mb-4 text-sm leading-relaxed">
+                    {course.desc}
+                  </p>
 
-                  <div className="grid sm:grid-cols-2 gap-3 mb-8">
+                  <div className="grid sm:grid-cols-2 gap-2 mb-6">
                     {course.features.map((feature, i) => (
                       <div
                         key={i}
-                        className={`flex items-center gap-2 text-sm text-slate-700 ${
+                        className={`flex items-center gap-2 text-xs text-slate-700 font-medium ${
                           lang === "ar" ? "flex-row-reverse" : ""
                         }`}
                       >
-                        <Check size={16} className="text-medical-cyan" />
+                        <div className="w-4 h-4 rounded-full bg-medical-cyan/10 flex items-center justify-center shrink-0">
+                          <Check size={10} className="text-medical-cyan" />
+                        </div>
                         <span>{feature}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <button className="btn-primary w-full sm:w-auto self-start flex items-center justify-center gap-2">
-                  {t.cta} <ArrowRight size={18} />
-                </button>
+                <Link
+                  to="/register"
+                  className="btn-primary w-full sm:w-auto self-start flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-bold bg-medical-cyan text-white hover:bg-medical-navy transition-colors shadow-lg shadow-medical-cyan/20 text-sm"
+                >
+                  {t.cta}
+                  <ArrowRight
+                    size={16}
+                    className={lang === "ar" ? "rotate-180" : ""}
+                  />
+                </Link>
               </div>
             </div>
           ))}
