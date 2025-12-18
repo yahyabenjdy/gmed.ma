@@ -23,7 +23,7 @@ const Courses = ({ lang }) => {
             "... und mehr",
           ],
           button: "Mehr Details",
-          link: "/courses", // Updated link
+          link: "/courses",
         },
         {
           title: "Intensivkurs",
@@ -36,7 +36,7 @@ const Courses = ({ lang }) => {
           ],
           button: "Mehr Details",
           featured: true,
-          link: "/courses", // Updated link
+          link: "/courses",
         },
         {
           title: "Standardkurs",
@@ -48,7 +48,7 @@ const Courses = ({ lang }) => {
             "... und mehr",
           ],
           button: "Mehr Details",
-          link: "/courses", // Updated link
+          link: "/courses",
         },
       ],
     },
@@ -69,7 +69,7 @@ const Courses = ({ lang }) => {
             "... et plus encore",
           ],
           button: "Détails",
-          link: "/courses", // Updated link
+          link: "/courses",
         },
         {
           title: "Cours Intensif",
@@ -82,7 +82,7 @@ const Courses = ({ lang }) => {
           ],
           button: "Détails",
           featured: true,
-          link: "/courses", // Updated link
+          link: "/courses",
         },
         {
           title: "Cours Standard",
@@ -94,7 +94,7 @@ const Courses = ({ lang }) => {
             "... et plus encore",
           ],
           button: "Détails",
-          link: "/courses", // Updated link
+          link: "/courses",
         },
       ],
     },
@@ -107,19 +107,19 @@ const Courses = ({ lang }) => {
         {
           title: "دورة مرنة",
           level: "المستوى A1 - C1",
-          price: "900 درهم", // CHANGED: Arabic Currency
+          price: "900 درهم",
           features: [
             "حصتان في الأسبوع (3 ساعات)",
             "مدرسون ذوو خبرة طبية",
             "... والمزيد",
           ],
           button: "التفاصيل",
-          link: "/courses", // Updated link
+          link: "/courses",
         },
         {
           title: "دورة مكثفة",
           level: "المستوى A1 - C1",
-          price: "1400 درهم", // CHANGED: Arabic Currency
+          price: "1400 درهم",
           features: [
             "5 حصص في الأسبوع (ساعتان)",
             "مدرسون ذوو خبرة طبية",
@@ -127,19 +127,19 @@ const Courses = ({ lang }) => {
           ],
           button: "التفاصيل",
           featured: true,
-          link: "/courses", // Updated link
+          link: "/courses",
         },
         {
           title: "دورة قياسية",
           level: "المستوى A1 - C1",
-          price: "900 درهم", // CHANGED: Arabic Currency
+          price: "900 درهم",
           features: [
             "3 حصص في الأسبوع (ساعتان)",
             "مدرسون ذوو خبرة طبية",
             "... والمزيد",
           ],
           button: "التفاصيل",
-          link: "/courses", // Updated link
+          link: "/courses",
         },
       ],
     },
@@ -169,6 +169,7 @@ const Courses = ({ lang }) => {
 
           <Link
             to="/courses"
+            state={{ fromHomeSection: true }} // <--- PASSING STATE FOR BACK BUTTON
             className={`hidden md:flex items-center gap-2 text-medical-cyan font-bold hover:text-white transition-colors ${
               lang === "ar" ? "flex-row-reverse" : ""
             }`}
@@ -245,7 +246,7 @@ const Courses = ({ lang }) => {
                 {/* Action Button: Updated Link Logic */}
                 <Link
                   to={card.link || "/courses"}
-                  state={{ fromHomeSection: true }} // <--- PASSING STATE HERE
+                  state={{ fromHomeSection: true }} // <--- PASSING STATE FOR BACK BUTTON
                   className={`w-full block text-center py-3 rounded-xl font-bold transition-all shadow-md active:scale-95 text-sm
                     ${
                       isActive
@@ -264,6 +265,7 @@ const Courses = ({ lang }) => {
         <div className="mt-8 text-center md:hidden">
           <Link
             to="/courses"
+            state={{ fromHomeSection: true }} // <--- PASSING STATE FOR BACK BUTTON
             className="inline-flex items-center gap-2 text-medical-cyan font-bold"
           >
             {t.cta}{" "}
