@@ -4,7 +4,7 @@ import {
   Route,
   useLocation,
   useNavigationType,
-} from "react-router-dom"; // <--- 1. ADD THIS
+} from "react-router-dom";
 
 // Layout Components
 import TopBar from "./components/TopBar";
@@ -31,11 +31,10 @@ import Register from "./pages/Register";
 function App() {
   const [lang, setLang] = useState("fr");
   const { pathname, hash } = useLocation();
-  const navType = useNavigationType(); // <--- 2. GET NAVIGATION TYPE
+  const navType = useNavigationType();
 
   // Handle scrolling logic
   useEffect(() => {
-    // Case 1: If there is a hash link (e.g., #infohub), scroll to it
     if (hash) {
       const id = hash.replace("#", "");
       const element = document.getElementById(id);
@@ -44,14 +43,10 @@ function App() {
           element.scrollIntoView({ behavior: "smooth" });
         }, 100);
       }
-    }
-    // Case 2: If it's a normal page change AND not a "Back" button click
-    else if (navType !== "POP") {
+    } else if (navType !== "POP") {
       window.scrollTo(0, 0);
     }
-    // If navType === "POP" (Back button), we do nothing
-    // and let the browser restore the previous scroll position.
-  }, [pathname, hash, navType]); // <--- 3. ADD navType TO DEPENDENCIES
+  }, [pathname, hash, navType]);
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -63,12 +58,17 @@ function App() {
           <Route path="/" element={<Home lang={lang} />} />
           <Route path="/news" element={<News lang={lang} />} />
           <Route path="/news/:id" element={<NewsDetail lang={lang} />} />
+
           {/* Career & Study Routes */}
           <Route path="/courses" element={<CoursesPage lang={lang} />} />
           <Route path="/ausbildung" element={<AusbildungPage lang={lang} />} />
           <Route path="/study" element={<StudyPage lang={lang} />} />
-          <Route path="/work-as-doctor" element={<WorkDoctor lang={lang} />} />
-          <Route path="/work-as-nurse" element={<WorkNurse lang={lang} />} />
+
+          {/* --- FIXED ROUTES TO MATCH WORK.JSX --- */}
+          <Route path="/work/doctor" element={<WorkDoctor lang={lang} />} />
+          <Route path="/work/nurse" element={<WorkNurse lang={lang} />} />
+          {/* -------------------------------------- */}
+
           {/* Guides Routes */}
           <Route path="/choose-land" element={<ChooseLand lang={lang} />} />
           <Route path="/financial-aid" element={<FinancialAid lang={lang} />} />
@@ -77,8 +77,10 @@ function App() {
             element={<IntegrationGuide lang={lang} />}
           />
           <Route path="/visa-guide" element={<VisaGuide lang={lang} />} />
+
           {/* Registration Route */}
           <Route path="/register" element={<Register lang={lang} />} />
+
           {/* Fallback */}
           <Route path="*" element={<Home lang={lang} />} />
         </Routes>
