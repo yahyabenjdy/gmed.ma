@@ -4,16 +4,39 @@ import {
   BookOpen,
   Globe,
   ArrowRight,
+  ArrowLeft,
   CheckCircle,
   Landmark,
   Coins,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const StudyPage = ({ lang }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // FIXED: Robust Back Button Logic
+  const handleBack = () => {
+    if (location.state && location.state.fromHomeSection) {
+      navigate("/");
+      setTimeout(() => {
+        // Ensure your Homepage Study Section has id="study-section"
+        const section = document.getElementById("study-section");
+        if (section) {
+          const yOffset = -80; // Adjust for sticky header
+          const y =
+            section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+      }, 150);
+    } else {
+      navigate("/");
+    }
+  };
 
   const content = {
     de: {
@@ -24,6 +47,7 @@ const StudyPage = ({ lang }) => {
           "Verwirklichen Sie Ihren Traum von einem Medizinstudium an einer deutschen Universität. Weltklasse-Ausbildung, keine Studiengebühren.",
         cta: "Beratung starten",
       },
+      back: "Zurück",
       benefits: [
         {
           title: "Kostenloses Studium",
@@ -58,6 +82,7 @@ const StudyPage = ({ lang }) => {
             step: "03",
             title: "Bewerbung",
             desc: "Einreichen der Unterlagen via Uni-Assist.",
+            // REMOVED highlight: true
           },
           {
             step: "04",
@@ -90,6 +115,7 @@ const StudyPage = ({ lang }) => {
           "Réalisez votre rêve dans une université allemande. Formation de classe mondiale, sans frais de scolarité.",
         cta: "Commencer la procédure",
       },
+      back: "Retour",
       benefits: [
         {
           title: "Études Gratuites",
@@ -124,7 +150,7 @@ const StudyPage = ({ lang }) => {
             step: "03",
             title: "Candidature",
             desc: "Dossier complet via Uni-Assist.",
-            highlight: true,
+            // REMOVED highlight: true
           },
           {
             step: "04",
@@ -157,6 +183,7 @@ const StudyPage = ({ lang }) => {
           "حقق حلمك في الجامعات الألمانية. تعليم بمستوى عالمي، ومجانية التعليم.",
         cta: "ابدأ الإجراءات",
       },
+      back: "عودة",
       benefits: [
         {
           title: "دراسة مجانية",
@@ -186,12 +213,12 @@ const StudyPage = ({ lang }) => {
             step: "02",
             title: "السنة التحضيرية",
             desc: "Studienkolleg (إذا كانت شهادة البكالوريا تتطلب معادلة).",
-            highlight: true,
           },
           {
             step: "03",
             title: "التقديم",
             desc: "تقديم الملفات عبر Uni-Assist.",
+            // REMOVED highlight: true
           },
           {
             step: "04",
@@ -221,19 +248,32 @@ const StudyPage = ({ lang }) => {
   const t = content[lang] || content.fr;
 
   return (
+    // MAIN CONTAINER: 15% Cyan BG + No bottom padding (flush footer)
     <div
-      className="min-h-screen bg-slate-50"
+      className="min-h-screen bg-[#e0f9fd] pb-0"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
       {/* --- HERO SECTION --- */}
-      {/* CHANGED: pt-32 to pt-24 to reduce space above */}
-      <section className="relative pt-24 pb-20 bg-medical-navy overflow-hidden">
-        {/* Background Pattern */}
+      {/* Reduced Top Padding: pt-12 */}
+      <section className="relative pt-12 pb-20 bg-medical-navy overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00b4d8_1px,transparent_1px)] [background-size:20px_20px]"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Back Button */}
+          <button
+            onClick={handleBack}
+            className={`flex items-center gap-2 text-medical-cyan font-bold mb-6 hover:text-white transition-colors text-sm ${
+              lang === "ar" ? "flex-row-reverse" : ""
+            }`}
+          >
+            <ArrowLeft
+              size={18}
+              className={lang === "ar" ? "rotate-180" : ""}
+            />
+            {t.back}
+          </button>
+
           <div className="flex flex-col md:flex-row items-center gap-12">
-            {/* Text Content */}
             <div
               className={`md:w-1/2 ${
                 lang === "ar" ? "text-right" : "text-left"
@@ -243,17 +283,16 @@ const StudyPage = ({ lang }) => {
                 <GraduationCap size={16} />
                 {t.hero.tag}
               </div>
-              <h1 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight">
+              <h1 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
                 {t.hero.title}
               </h1>
-              <p className="text-xl text-slate-300 mb-8 leading-relaxed">
+              <p className="text-lg text-slate-300 mb-8 leading-relaxed">
                 {t.hero.subtitle}
               </p>
 
-              {/* BUTTON 1: Go to Register Page */}
               <Link
                 to="/register"
-                className="inline-flex items-center gap-2 bg-medical-cyan text-white px-8 py-4 rounded-xl font-bold hover:bg-[#0096b4] transition-all shadow-lg shadow-medical-cyan/20 group"
+                className="inline-flex items-center gap-2 bg-medical-cyan text-white px-8 py-3 rounded-xl font-bold hover:bg-[#0096b4] transition-all shadow-lg shadow-medical-cyan/20 group"
               >
                 {t.hero.cta}
                 <ArrowRight
@@ -265,10 +304,8 @@ const StudyPage = ({ lang }) => {
               </Link>
             </div>
 
-            {/* Hero Image/Card */}
             <div className="md:w-1/2 relative">
               <div className="absolute inset-0 bg-medical-cyan blur-3xl opacity-20 rounded-full"></div>
-              {/* IMAGE UPDATE: Changed to /uni.png */}
               <img
                 src="/uni.png"
                 onError={(e) => {
@@ -284,21 +321,23 @@ const StudyPage = ({ lang }) => {
       </section>
 
       {/* --- BENEFITS GRID --- */}
-      <section className="py-16 bg-white">
+      <section className="py-12 bg-white/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-8 -mt-24 relative z-20">
+          <div className="grid md:grid-cols-3 gap-6 -mt-20 relative z-20">
             {t.benefits.map((benefit, index) => (
               <div
                 key={index}
-                className="bg-white p-8 rounded-2xl shadow-xl border-b-4 border-medical-cyan hover:-translate-y-2 transition-transform duration-300"
+                className="bg-white p-6 rounded-2xl shadow-xl border-b-4 border-medical-cyan hover:-translate-y-2 transition-transform duration-300"
               >
-                <div className="w-12 h-12 bg-medical-light rounded-xl flex items-center justify-center text-medical-navy mb-6">
+                <div className="w-10 h-10 bg-medical-light rounded-xl flex items-center justify-center text-medical-navy mb-4">
                   {benefit.icon}
                 </div>
-                <h3 className="text-xl font-bold text-medical-navy mb-2">
+                <h3 className="text-lg font-bold text-medical-navy mb-2">
                   {benefit.title}
                 </h3>
-                <p className="text-slate-500">{benefit.desc}</p>
+                <p className="text-slate-500 text-sm leading-relaxed">
+                  {benefit.desc}
+                </p>
               </div>
             ))}
           </div>
@@ -306,43 +345,38 @@ const StudyPage = ({ lang }) => {
       </section>
 
       {/* --- STEPS TIMELINE --- */}
-      <section className="py-20 bg-slate-50">
+      <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-black text-medical-navy mb-4">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl font-black text-medical-navy mb-4">
               {t.steps.title}
             </h2>
-            <div className="w-20 h-1.5 bg-medical-cyan mx-auto rounded-full"></div>
+            <div className="w-16 h-1 bg-medical-cyan mx-auto rounded-full"></div>
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-6">
             {t.steps.items.map((item, index) => (
               <div key={index} className="flex group">
-                {/* Number Column */}
-                <div className="flex flex-col items-center mr-6 ml-6">
+                <div className="flex flex-col items-center mr-4 ml-4">
+                  {/* Step Circle: Removed Fixed Highlight logic */}
                   <div
-                    className={`w-12 h-12 rounded-full flex items-center justify-center font-black text-white z-10 shadow-lg ${
-                      item.highlight
-                        ? "bg-medical-cyan"
-                        : "bg-medical-navy group-hover:bg-medical-cyan"
-                    } transition-colors`}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-black text-white z-10 shadow-lg bg-medical-navy group-hover:bg-medical-cyan transition-colors`}
                   >
                     {item.step}
                   </div>
                   {index !== t.steps.items.length - 1 && (
-                    <div className="w-0.5 h-full bg-slate-200 my-2 group-hover:bg-medical-cyan/30 transition-colors"></div>
+                    <div className="w-0.5 h-full bg-slate-300 my-2 group-hover:bg-medical-cyan/30 transition-colors"></div>
                   )}
                 </div>
-                {/* Content Column */}
                 <div
-                  className={`flex-1 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 group-hover:shadow-md transition-shadow ${
+                  className={`flex-1 bg-white p-5 rounded-2xl shadow-sm border border-slate-100 group-hover:shadow-md transition-shadow ${
                     lang === "ar" ? "text-right" : "text-left"
                   }`}
                 >
-                  <h3 className="text-xl font-bold text-medical-navy mb-2">
+                  <h3 className="text-lg font-bold text-medical-navy mb-1">
                     {item.title}
                   </h3>
-                  <p className="text-slate-600">{item.desc}</p>
+                  <p className="text-slate-600 text-sm">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -350,32 +384,33 @@ const StudyPage = ({ lang }) => {
         </div>
       </section>
 
-      {/* --- SERVICES LIST --- */}
-      {/* CHANGED: py-20 to py-12 to reduce vertical space */}
-      <section className="py-12 bg-medical-navy relative overflow-hidden">
-        {/* Decorative Circles */}
+      {/* --- COMPACT SERVICES SECTION (Matching Ausbildung Page) --- */}
+      {/* Reduced padding: py-8 */}
+      <section className="py-8 bg-medical-navy relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-medical-cyan/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-medical-cyan/10 rounded-full blur-3xl"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="bg-white/5 backdrop-blur-lg rounded-3xl p-8 md:p-12 border border-white/10">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
+          {/* Card Style: Same padding as AusbildungPage (p-6 md:p-8) */}
+          <div className="bg-white/5 backdrop-blur-lg rounded-3xl p-6 md:p-8 border border-white/10">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              {/* Left Column: Services List */}
               <div className={lang === "ar" ? "text-right" : "text-left"}>
-                <div className="inline-flex items-center gap-2 text-medical-cyan font-bold mb-4">
-                  <Landmark size={20} /> GMED SUPPORT
+                <div className="inline-flex items-center gap-2 text-medical-cyan font-bold mb-3 text-sm">
+                  <Landmark size={18} /> GMED SUPPORT
                 </div>
-                <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
+                <h2 className="text-2xl md:text-3xl font-black text-white mb-4">
                   {t.services.title}
                 </h2>
-                <ul className="space-y-4">
+                <ul className="space-y-3">
                   {t.services.list.map((service, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-3 text-slate-300"
+                      className="flex items-start gap-3 text-slate-300 text-sm"
                     >
                       <CheckCircle
-                        size={20}
-                        className="text-medical-cyan shrink-0 mt-1"
+                        size={18}
+                        className="text-medical-cyan shrink-0 mt-0.5"
                       />
                       <span>{service}</span>
                     </li>
@@ -383,17 +418,16 @@ const StudyPage = ({ lang }) => {
                 </ul>
               </div>
 
-              {/* CTA Box */}
-              <div className="bg-white rounded-2xl p-8 text-center shadow-2xl">
-                <h3 className="text-2xl font-black text-medical-navy mb-3">
+              {/* Right Column: CTA Box */}
+              <div className="bg-white rounded-2xl p-6 text-center shadow-2xl">
+                <h3 className="text-xl font-black text-medical-navy mb-2">
                   {t.ctaBox.title}
                 </h3>
-                <p className="text-slate-500 mb-8">{t.ctaBox.desc}</p>
+                <p className="text-slate-500 mb-6 text-sm">{t.ctaBox.desc}</p>
 
-                {/* BUTTON 2: Go to Homepage Contact Section */}
                 <Link
                   to="/#contact"
-                  className="w-full block bg-medical-navy text-white py-4 rounded-xl font-bold hover:bg-medical-cyan transition-colors shadow-lg"
+                  className="w-full block bg-medical-navy text-white py-3 rounded-xl font-bold hover:bg-medical-cyan transition-colors shadow-lg text-sm"
                 >
                   {t.ctaBox.btn}
                 </Link>
