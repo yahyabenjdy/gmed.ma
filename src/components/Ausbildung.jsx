@@ -108,8 +108,12 @@ const Ausbildung = ({ lang }) => {
   const t = content[lang] || content.de;
 
   return (
-    // Updated background to #e0f9fd (15% intensity)
-    <section className="py-16 bg-[#e0f9fd]" dir={lang === "ar" ? "rtl" : "ltr"}>
+    // 1. ADDED ID: ausbildung-section
+    <section
+      id="ausbildung-section"
+      className="py-16 bg-[#e0f9fd]"
+      dir={lang === "ar" ? "rtl" : "ltr"}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
@@ -158,6 +162,8 @@ const Ausbildung = ({ lang }) => {
         <div className="text-center">
           <Link
             to="/ausbildung"
+            // 2. ADDED STATE: fromHomeSection: true
+            state={{ fromHomeSection: true }}
             className="inline-flex items-center gap-2 bg-medical-navy text-white px-8 py-4 rounded-xl font-bold text-base shadow-xl shadow-medical-navy/20 hover:bg-medical-cyan hover:shadow-medical-cyan/30 transition-all hover:-translate-y-1 group"
           >
             {t.cta}
