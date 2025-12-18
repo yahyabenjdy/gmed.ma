@@ -226,7 +226,8 @@ const StudyPage = ({ lang }) => {
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
       {/* --- HERO SECTION --- */}
-      <section className="relative pt-32 pb-20 bg-medical-navy overflow-hidden">
+      {/* CHANGED: pt-32 to pt-24 to reduce space above */}
+      <section className="relative pt-24 pb-20 bg-medical-navy overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00b4d8_1px,transparent_1px)] [background-size:20px_20px]"></div>
 
@@ -248,8 +249,10 @@ const StudyPage = ({ lang }) => {
               <p className="text-xl text-slate-300 mb-8 leading-relaxed">
                 {t.hero.subtitle}
               </p>
+
+              {/* BUTTON 1: Go to Register Page */}
               <Link
-                to="/contact"
+                to="/register"
                 className="inline-flex items-center gap-2 bg-medical-cyan text-white px-8 py-4 rounded-xl font-bold hover:bg-[#0096b4] transition-all shadow-lg shadow-medical-cyan/20 group"
               >
                 {t.hero.cta}
@@ -265,8 +268,9 @@ const StudyPage = ({ lang }) => {
             {/* Hero Image/Card */}
             <div className="md:w-1/2 relative">
               <div className="absolute inset-0 bg-medical-cyan blur-3xl opacity-20 rounded-full"></div>
+              {/* IMAGE UPDATE: Changed to /uni.png */}
               <img
-                src="/study-hero.png" // Ensure you have an image or placeholder here
+                src="/uni.png"
                 onError={(e) => {
                   e.target.src =
                     "https://placehold.co/600x400/0a192f/white?text=University+Germany";
@@ -347,7 +351,8 @@ const StudyPage = ({ lang }) => {
       </section>
 
       {/* --- SERVICES LIST --- */}
-      <section className="py-20 bg-medical-navy relative overflow-hidden">
+      {/* CHANGED: py-20 to py-12 to reduce vertical space */}
+      <section className="py-12 bg-medical-navy relative overflow-hidden">
         {/* Decorative Circles */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-medical-cyan/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-medical-cyan/10 rounded-full blur-3xl"></div>
@@ -384,8 +389,10 @@ const StudyPage = ({ lang }) => {
                   {t.ctaBox.title}
                 </h3>
                 <p className="text-slate-500 mb-8">{t.ctaBox.desc}</p>
+
+                {/* BUTTON 2: Go to Homepage Contact Section */}
                 <Link
-                  to="/contact"
+                  to="/#contact"
                   className="w-full block bg-medical-navy text-white py-4 rounded-xl font-bold hover:bg-medical-cyan transition-colors shadow-lg"
                 >
                   {t.ctaBox.btn}
