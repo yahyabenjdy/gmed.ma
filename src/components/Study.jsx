@@ -20,7 +20,7 @@ const Study = ({ lang }) => {
         {
           title: "Kostenloses Studium",
           desc: "Keine Studiengebühren an staatlichen Universitäten.",
-          icon: <Coins size={24} />, // Restored size
+          icon: <Coins size={24} />,
         },
         {
           title: "Weltweite Anerkennung",
@@ -87,8 +87,9 @@ const Study = ({ lang }) => {
   const t = content[lang] || content.de;
 
   return (
-    // Reduced padding (py-14) but kept content sizes normal
+    // 1. ADDED ID: study-section
     <section
+      id="study-section"
       className="py-14 bg-medical-navy relative overflow-hidden"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
@@ -113,6 +114,8 @@ const Study = ({ lang }) => {
 
             <Link
               to="/study"
+              // 2. ADDED STATE: fromHomeSection
+              state={{ fromHomeSection: true }}
               className="inline-flex items-center gap-2 bg-white text-medical-navy px-8 py-4 rounded-xl font-bold text-base hover:bg-medical-cyan hover:text-white transition-all shadow-lg hover:shadow-medical-cyan/30 group"
             >
               {t.cta}
@@ -131,10 +134,8 @@ const Study = ({ lang }) => {
               {t.features.map((feature, index) => (
                 <div
                   key={index}
-                  // Restored padding to p-6 so it doesn't look cramped
                   className="bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl flex items-center gap-5 hover:bg-white/10 transition-colors duration-300 group"
                 >
-                  {/* Restored Icon Container Size */}
                   <div className="w-12 h-12 rounded-xl bg-medical-cyan/20 flex items-center justify-center text-medical-cyan shrink-0 group-hover:bg-medical-cyan group-hover:text-white transition-colors">
                     {feature.icon}
                   </div>
