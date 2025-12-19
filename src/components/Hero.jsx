@@ -111,9 +111,9 @@ const Hero = ({ lang }) => {
         </div>
 
         {/* Compact Statistics Card */}
-        {/* 3. Added divide-x-reverse for Arabic to flip the borders correctly */}
+        {/* CHANGED: w-[90%] for mobile, sm:w-full for tablet/desktop */}
         <div
-          className={`w-full max-w-2xl grid grid-cols-1 sm:grid-cols-3 bg-medical-navy/50 backdrop-blur-lg rounded-xl border border-white/20 shadow-2xl divide-y sm:divide-y-0 sm:divide-x divide-white/10 ${
+          className={`w-[90%] sm:w-full max-w-2xl grid grid-cols-1 sm:grid-cols-3 bg-medical-navy/50 backdrop-blur-lg rounded-xl border border-white/20 shadow-2xl divide-y sm:divide-y-0 sm:divide-x divide-white/10 ${
             lang === "ar" ? "sm:divide-x-reverse" : ""
           }`}
         >
