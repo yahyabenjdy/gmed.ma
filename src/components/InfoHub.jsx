@@ -1,9 +1,9 @@
 import React from "react";
 import { ArrowRight, Calendar } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom"; // <--- 1. Import useNavigate
+import { Link, useNavigate } from "react-router-dom";
 
 const InfoHub = ({ lang }) => {
-  const navigate = useNavigate(); // <--- 2. Initialize hook
+  const navigate = useNavigate();
 
   const content = {
     de: {
@@ -76,32 +76,28 @@ const InfoHub = ({ lang }) => {
 
   const t = content[lang] || content.fr;
 
-  // <--- 3. ADD THIS FUNCTION
   const handleReadMore = (id) => {
-    // A. Go to the main News page first (adds it to browser history)
     navigate("/news");
-
-    // B. Immediately jump to the specific article
-    // The tiny timeout ensures the browser registers the first move
     setTimeout(() => {
       navigate(`/news/${id}`);
     }, 10);
   };
 
   return (
-    // Changed background to #e0f9fd (approx 15% intensity)
     <section
       id="infohub"
-      className="py-20 bg-[#e0f9fd] scroll-mt-24"
+      className="py-20 bg-[#e0f9fd] scroll-mt-24 relative overflow-hidden"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div
           className={`flex flex-col md:flex-row justify-between items-end mb-12 gap-6`}
         >
           <div className={lang === "ar" ? "text-right" : "text-left"}>
-            <h2 className="text-3xl md:text-4xl font-black text-medical-navy mb-3">
+            {/* 1. GERMAN ACCENT: Added a Gold Underline to the title */}
+            <h2 className="text-3xl md:text-4xl font-black text-medical-navy mb-3 relative inline-block">
               {t.title}
+              <div className="absolute -bottom-2 left-0 w-1/3 h-1.5 bg-yellow-500 rounded-full" />
             </h2>
             <p className="text-slate-600 font-medium max-w-xl">{t.subtitle}</p>
           </div>
@@ -129,12 +125,14 @@ const InfoHub = ({ lang }) => {
                 lang === "ar" ? "md:flex-row-reverse" : ""
               }`}
             >
-              <div className="md:w-2/5 h-64 md:h-auto overflow-hidden">
+              <div className="md:w-2/5 h-64 md:h-auto overflow-hidden relative">
                 <img
                   src={article.img}
                   alt={article.title}
                   className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
+                {/* Optional: Subtle Overlay on Hover */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
               </div>
               <div
                 className={`p-8 md:w-3/5 flex flex-col justify-between ${
@@ -147,7 +145,8 @@ const InfoHub = ({ lang }) => {
                       lang === "ar" ? "flex-row-reverse" : ""
                     }`}
                   >
-                    <Calendar size={14} className="text-medical-cyan" />
+                    {/* 2. GERMAN ACCENT: Changed Calendar Icon to Red */}
+                    <Calendar size={14} className="text-red-500" />
                     <span>{article.date}</span>
                   </div>
                   <h3 className="text-xl font-bold text-medical-navy mb-3 group-hover:text-medical-cyan transition-colors">
@@ -158,17 +157,18 @@ const InfoHub = ({ lang }) => {
                   </p>
                 </div>
 
-                {/* <--- 4. CHANGED FROM <LINK> TO <BUTTON> */}
                 <button
                   onClick={() => handleReadMore(article.id)}
-                  className={`inline-flex items-center gap-2 text-medical-cyan font-black text-sm group/btn ${
+                  // 3. GERMAN ACCENT: Gradient Text on Hover + Gold Arrow
+                  className={`inline-flex items-center gap-2 text-medical-cyan font-black text-sm group/btn transition-all duration-300 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-black hover:to-red-600 ${
                     lang === "ar" ? "flex-row-reverse" : ""
                   }`}
                 >
                   {t.readMore}
                   <ArrowRight
                     size={16}
-                    className={`transition-transform group-hover/btn:translate-x-1 ${
+                    // Arrow turns Gold on hover
+                    className={`transition-transform group-hover/btn:translate-x-1 group-hover/btn:text-yellow-500 ${
                       lang === "ar"
                         ? "rotate-180 group-hover/btn:-translate-x-1"
                         : ""
