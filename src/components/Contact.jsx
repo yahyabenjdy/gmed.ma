@@ -85,26 +85,25 @@ const Contact = ({ lang }) => {
       <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-medical-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header - Left Aligned */}
+        {/* Header */}
         <div className="text-left mb-8">
           <h2 className="text-3xl font-black mb-2">{t.title}</h2>
           <p className="text-slate-400 text-base">{t.subtitle}</p>
         </div>
 
-        {/* items-stretch forces both columns to be equal height */}
         <div className="grid lg:grid-cols-2 gap-10 items-stretch">
-          {/* LEFT: Form Card */}
+          {/* LEFT: Form */}
           <div className="bg-white/5 backdrop-blur-md border border-white/10 p-6 rounded-2xl shadow-xl h-full flex flex-col justify-center">
             <form className="space-y-4">
-              {/* Row 1: Name & Phone */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Row 1: Name & Phone - CHANGED to grid-cols-2 to be side-by-side on mobile */}
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-300 mb-1.5">
                     {t.form.name}
                   </label>
                   <input
                     type="text"
-                    className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-medical-cyan focus:outline-none transition-colors"
+                    className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-medical-cyan focus:outline-none"
                   />
                 </div>
                 <div>
@@ -113,30 +112,28 @@ const Contact = ({ lang }) => {
                   </label>
                   <input
                     type="tel"
-                    className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-medical-cyan focus:outline-none transition-colors"
+                    className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-medical-cyan focus:outline-none"
                   />
                 </div>
               </div>
 
-              {/* Row 2: Email */}
               <div>
                 <label className="block text-xs font-bold text-slate-300 mb-1.5">
                   {t.form.email}
                 </label>
                 <input
                   type="email"
-                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-medical-cyan focus:outline-none transition-colors"
+                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-medical-cyan focus:outline-none"
                 />
               </div>
 
-              {/* Row 3: Message */}
               <div>
                 <label className="block text-xs font-bold text-slate-300 mb-1.5">
                   {t.form.msg}
                 </label>
                 <textarea
                   rows="3"
-                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-medical-cyan focus:outline-none transition-colors resize-none"
+                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white resize-none focus:border-medical-cyan focus:outline-none"
                 ></textarea>
               </div>
 
@@ -150,13 +147,13 @@ const Contact = ({ lang }) => {
             </form>
           </div>
 
-          {/* RIGHT: Info Wrapper */}
+          {/* RIGHT: Info + Map */}
           <div className="flex flex-col h-full pt-1">
-            {/* Top Content (Info Rows) */}
+            {/* Info Rows */}
             <div className="flex flex-col gap-4 mb-4">
-              {/* Socials Row */}
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <span className="text-slate-400 font-bold text-sm shrink-0">
+              {/* Social */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-white/10 pb-3">
+                <span className="text-slate-400 font-bold text-sm">
                   {t.labels.social}
                 </span>
                 <div className="flex gap-3">
@@ -187,48 +184,46 @@ const Contact = ({ lang }) => {
                 </div>
               </div>
 
-              {/* Phone Row */}
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <span className="text-slate-400 font-bold text-sm shrink-0">
+              {/* Phone */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-white/10 pb-3">
+                <span className="text-slate-400 font-bold text-sm">
                   {t.labels.phone}
                 </span>
-                {/* Non-bold info with | separator */}
-                <p className="text-white text-sm text-right">
+                <p className="text-white text-sm break-words">
                   07 02 45 55 55 | 07 75 43 02 87
                 </p>
               </div>
 
-              {/* Email Row */}
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <span className="text-slate-400 font-bold text-sm shrink-0">
+              {/* Email */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-white/10 pb-3">
+                <span className="text-slate-400 font-bold text-sm">
                   {t.labels.email}
                 </span>
-                {/* Non-bold info */}
-                <p className="text-white text-sm">contact@gmed.ma</p>
+                <p className="text-white text-sm break-all">contact@gmed.ma</p>
               </div>
 
-              {/* Address Row */}
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <span className="text-slate-400 font-bold text-sm shrink-0 mr-4">
+              {/* Address */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-white/10 pb-3">
+                <span className="text-slate-400 font-bold text-sm">
                   {t.labels.address}
                 </span>
-                {/* Non-bold info */}
-                <p className="text-white text-sm text-right leading-snug truncate">
+                <p className="text-white text-sm leading-snug break-words">
                   {t.address}
                 </p>
               </div>
             </div>
 
-            {/* Map (flex-1 makes it fill ALL remaining space to align bottom) */}
-            <div className="w-full flex-1 rounded-xl overflow-hidden border border-white/20 shadow-lg">
+            {/* Map (UNCHANGED iframe, responsive container) */}
+            <div className="w-full flex-1 rounded-xl overflow-hidden border border-white/20 shadow-lg h-[260px] sm:h-auto">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d512.5234494561815!2d-6.850055353194053!3d33.99986985883619!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda76d9d613b8661%3A0xf55dac11fdc7b425!2sGMED%20-%20German%20Medical%20institute!5e1!3m2!1sen!2sma!4v1766003972585!5m2!1sen!2sma"
-                width="100%"
-                height="100%"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d22089.281804864466!2d-6.852858897436527!3d33.986800999760355!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda76d9d613b8661%3A0xf55dac11fdc7b425!2sGMED%20-%20German%20Medical%20institute!5e1!3m2!1sen!2sma!4v1766143555680!5m2!1sen!2sma"
+                width="600"
+                height="450"
                 style={{ border: 0 }}
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-full"
                 title="Google Maps"
               ></iframe>
             </div>
