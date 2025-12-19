@@ -148,19 +148,17 @@ const Courses = ({ lang }) => {
   const t = content[lang] || content.de;
 
   return (
-    // REDUCED VERTICAL PADDING: py-20 -> py-14
-    // Added ID for navigation back
     <section
       id="courses-section"
       className="py-14 bg-medical-navy"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header: Reduced margin-bottom (mb-12 -> mb-10) */}
         <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
           <div className={lang === "ar" ? "text-right" : "text-left"}>
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-2">
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-2 relative inline-block">
               {t.title}
+              <div className="absolute -bottom-1 left-0 w-1/4 h-1 bg-yellow-500 rounded-full" />
             </h2>
             <p className="text-medical-light/80 text-lg max-w-2xl font-medium">
               {t.subtitle}
@@ -169,7 +167,7 @@ const Courses = ({ lang }) => {
 
           <Link
             to="/courses"
-            state={{ fromHomeSection: true }} // <--- PASSING STATE FOR BACK BUTTON
+            state={{ fromHomeSection: true }}
             className={`hidden md:flex items-center gap-2 text-medical-cyan font-bold hover:text-white transition-colors ${
               lang === "ar" ? "flex-row-reverse" : ""
             }`}
@@ -194,68 +192,88 @@ const Courses = ({ lang }) => {
                 key={index}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                // REDUCED PADDING: p-8 -> p-6
-                className={`relative bg-white p-6 rounded-[1.5rem] transition-all duration-300 group
+                // 1. CONTAINER: Handles positioning and shadow
+                className={`relative rounded-[1.5rem] transition-all duration-300 group
                   ${
                     isActive
-                      ? "shadow-2xl border-2 border-medical-cyan ring-4 ring-medical-cyan/40 -translate-y-2"
-                      : "shadow-xl border border-white/10 hover:-translate-y-2"
+                      ? "shadow-2xl -translate-y-2"
+                      : "shadow-xl hover:-translate-y-2"
                   }`}
               >
-                {card.featured && (
-                  <span
-                    className={`absolute -top-3 left-1/2 -translate-x-1/2 bg-medical-cyan text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg transition-opacity duration-300 ${
-                      isActive ? "opacity-100" : "opacity-50 grayscale"
-                    }`}
-                  >
-                    {t.popularBadge}
-                  </span>
-                )}
+                {/* 2. GERMAN ACCENT: Full Gradient Border (Background Layer) */}
+                {/* This div sits behind the white card to create the border effect */}
+                <div
+                  className={`absolute -inset-[3px] rounded-[1.6rem] bg-gradient-to-r from-black via-red-600 to-yellow-500 transition-opacity duration-300 -z-10 ${
+                    isActive ? "opacity-100" : "opacity-0"
+                  }`}
+                />
 
-                {/* Title & Price: Reduced margins (mb-6 -> mb-4, pb-6 -> pb-4) */}
-                <div className="mb-4 border-b border-slate-100 pb-4">
-                  <h3 className="text-xl font-black text-medical-navy mb-1">
-                    {card.title}
-                  </h3>
-                  <div className="flex items-center gap-2 text-slate-500 text-sm mb-3">
-                    <Signal size={16} className="text-medical-cyan" />
-                    <span className="font-bold text-medical-cyan">
-                      {card.level}
-                    </span>
-                  </div>
-                  <div className="text-3xl font-black text-medical-navy">
-                    {card.price}
-                  </div>
-                </div>
-
-                {/* Features: Reduced spacing (space-y-4 -> space-y-3, mb-8 -> mb-6) */}
-                <ul className="space-y-3 mb-6">
-                  {card.features.map((feat, i) => (
-                    <li
-                      key={i}
-                      className="flex items-center gap-3 text-slate-600 font-medium text-sm"
+                {/* 3. WHITE CARD CONTENT */}
+                <div
+                  className={`bg-white p-6 rounded-[1.5rem] h-full border transition-colors duration-300 ${
+                    isActive ? "border-transparent" : "border-white/10"
+                  }`}
+                >
+                  {card.featured && (
+                    <span
+                      className={`absolute top-0 left-1/2 -translate-x-1/2 bg-yellow-500 text-black px-3 py-1 rounded-b-lg text-[10px] font-black uppercase tracking-widest shadow-lg transition-all duration-300 ${
+                        isActive
+                          ? "opacity-100 pt-3"
+                          : "opacity-50 grayscale pt-1"
+                      }`}
                     >
-                      <div className="w-5 h-5 rounded-full bg-medical-cyan/10 flex items-center justify-center shrink-0">
-                        <Check size={12} className="text-medical-cyan" />
-                      </div>
-                      <span>{feat}</span>
-                    </li>
-                  ))}
-                </ul>
+                      {t.popularBadge}
+                    </span>
+                  )}
 
-                {/* Action Button: Updated Link Logic */}
-                <Link
-                  to={card.link || "/courses"}
-                  state={{ fromHomeSection: true }} // <--- PASSING STATE FOR BACK BUTTON
-                  className={`w-full block text-center py-3 rounded-xl font-bold transition-all shadow-md active:scale-95 text-sm
+                  <div className="mb-4 border-b border-slate-100 pb-4 mt-2">
+                    <h3 className="text-xl font-black text-medical-navy mb-1">
+                      {card.title}
+                    </h3>
+                    <div className="flex items-center gap-2 text-slate-500 text-sm mb-3">
+                      {/* 4. ICON: Removed hover color change (Kept Cyan) */}
+                      <Signal size={16} className="text-medical-cyan" />
+                      <span className="font-bold text-medical-cyan">
+                        {card.level}
+                      </span>
+                    </div>
+                    {/* Price turns Red on hover */}
+                    <div
+                      className={`text-3xl font-black transition-colors ${
+                        isActive ? "text-red-600" : "text-medical-navy"
+                      }`}
+                    >
+                      {card.price}
+                    </div>
+                  </div>
+
+                  <ul className="space-y-3 mb-6">
+                    {card.features.map((feat, i) => (
+                      <li
+                        key={i}
+                        className="flex items-center gap-3 text-slate-600 font-medium text-sm"
+                      >
+                        <div className="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+                          <Check size={12} className="text-black" />
+                        </div>
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Link
+                    to={card.link || "/courses"}
+                    state={{ fromHomeSection: true }}
+                    className={`w-full block text-center py-3 rounded-xl font-bold transition-all shadow-md active:scale-95 text-sm
                     ${
                       isActive
                         ? "bg-medical-cyan text-white shadow-medical-cyan/30"
                         : "bg-slate-100 text-medical-navy hover:bg-slate-200"
                     }`}
-                >
-                  {card.button}
-                </Link>
+                  >
+                    {card.button}
+                  </Link>
+                </div>
               </div>
             );
           })}
@@ -265,7 +283,7 @@ const Courses = ({ lang }) => {
         <div className="mt-8 text-center md:hidden">
           <Link
             to="/courses"
-            state={{ fromHomeSection: true }} // <--- PASSING STATE FOR BACK BUTTON
+            state={{ fromHomeSection: true }}
             className="inline-flex items-center gap-2 text-medical-cyan font-bold"
           >
             {t.cta}{" "}
