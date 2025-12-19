@@ -47,6 +47,14 @@ const Hero = ({ lang }) => {
 
   const t = content[lang] || content.fr;
 
+  // Helper function to assign flag colors to stats icons
+  const getStatColor = (index) => {
+    if (index === 0) return "text-black"; // CHANGED: First icon is now Black
+    if (index === 1) return "text-red-500"; // Red for 2nd
+    if (index === 2) return "text-yellow-400"; // Gold for 3rd
+    return "text-medical-cyan";
+  };
+
   return (
     <section
       // 1. Added dir attribute for automatic text alignment
@@ -73,9 +81,10 @@ const Hero = ({ lang }) => {
         {/* Headline */}
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-8 max-w-4xl drop-shadow-lg">
           {t.title}
-          <span className="text-medical-cyan relative inline-block">
+          {/* UPDATED HIGHLIGHT: Text Gradient starts with Black */}
+          <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-black via-red-500 to-yellow-500">
             {t.highlight}
-            <div className="absolute -bottom-2 left-0 w-full h-1.5 bg-medical-cyan/50 rounded-full" />
+            <div className="absolute -bottom-2 left-0 w-full h-1.5 bg-gradient-to-r from-black via-red-600 to-yellow-500 rounded-full" />
           </span>
         </h1>
 
@@ -122,7 +131,12 @@ const Hero = ({ lang }) => {
               key={idx}
               className="px-6 py-4 flex flex-col items-center justify-center text-center group transition-colors hover:bg-white/5"
             >
-              <div className="text-medical-cyan mb-2 transition-transform group-hover:scale-110">
+              {/* UPDATED ICON COLOR: Cycles through Black -> Red -> Gold */}
+              <div
+                className={`${getStatColor(
+                  idx
+                )} mb-2 transition-transform group-hover:scale-110`}
+              >
                 {stat.icon}
               </div>
               <div className="text-2xl font-black text-white">{stat.value}</div>
