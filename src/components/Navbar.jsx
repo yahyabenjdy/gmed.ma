@@ -19,6 +19,9 @@ const Navbar = ({ lang, setLang }) => {
   const [doctorOpen, setDoctorOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
 
+  // New state for mobile sub-menu toggle
+  const [mobileDoctorOpen, setMobileDoctorOpen] = useState(false);
+
   const location = useLocation();
 
   const navTranslations = {
@@ -336,7 +339,6 @@ const Navbar = ({ lang, setLang }) => {
                       setLang(l.code);
                       setLangOpen(false);
                     }}
-                    // ADDED HOVER EFFECT HERE
                     className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors cursor-pointer hover:bg-slate-50 hover:text-medical-cyan ${
                       lang === l.code
                         ? "text-medical-cyan font-bold bg-medical-light/10"
@@ -383,9 +385,18 @@ const Navbar = ({ lang, setLang }) => {
         </div>
       </div>
 
-      {/* Mobile Sidebar */}
-      {isOpen && (
-        <div className="md:hidden bg-white border-t border-slate-100 px-4 py-6 space-y-4 shadow-xl">
+      {/* Mobile Sidebar (UPDATED with Smooth Transitions) */}
+      <div
+        className={`md:hidden absolute top-20 left-0 w-full bg-white border-t border-slate-100 shadow-xl overflow-hidden transition-all duration-300 ease-in-out ${
+          isOpen
+            ? "max-h-screen opacity-100 visible"
+            : "max-h-0 opacity-0 invisible"
+        }`}
+      >
+        <div
+          className={`px-4 py-6 space-y-4 overflow-y-auto max-h-[calc(100vh-80px)]`}
+        >
+          {/* Main Links */}
           <div className={lang === "ar" ? "text-right" : "text-left"}>
             {t.map((link) => (
               <Link
@@ -413,14 +424,72 @@ const Navbar = ({ lang, setLang }) => {
               {labels.ausbildung}
             </Link>
 
-            {/* Mobile Links for Work items */}
-            <Link
-              to="/work/doctor"
-              className="block font-bold py-2 text-lg text-medical-navy hover:text-medical-cyan"
-              onClick={() => setIsOpen(false)}
-            >
-              {labels.doctor}
-            </Link>
+            {/* Mobile Doctor Dropdown with Smooth Expand */}
+            <div>
+              <button
+                onClick={() => setMobileDoctorOpen(!mobileDoctorOpen)}
+                className={`w-full flex items-center justify-between font-bold py-2 text-lg transition-colors ${
+                  isActive("/work/doctor") || mobileDoctorOpen
+                    ? "text-medical-cyan"
+                    : "text-medical-navy"
+                }`}
+              >
+                <span>{labels.doctor}</span>
+                <ChevronDown
+                  size={20}
+                  className={`transition-transform duration-300 ${
+                    mobileDoctorOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {/* Doctor Sub-items Container */}
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  mobileDoctorOpen
+                    ? "max-h-96 opacity-100"
+                    : "max-h-0 opacity-0"
+                }`}
+              >
+                <div
+                  className={`flex flex-col space-y-2 mt-1 mb-2 ${
+                    lang === "ar" ? "pr-4 border-r-2" : "pl-4 border-l-2"
+                  } border-slate-100`}
+                >
+                  {/* Parent Doctor Link */}
+                  <Link
+                    to="/work/doctor"
+                    onClick={() => setIsOpen(false)}
+                    className="block py-2 text-base text-medical-navy font-semibold hover:text-medical-cyan"
+                  >
+                    {labels.doctor} (Main)
+                  </Link>
+
+                  {/* Sub Pages */}
+                  {[
+                    { to: "/choose-land", l: labels.land },
+                    { to: "/visa-guide", l: labels.visa },
+                    { to: "/financial-aid", l: labels.finance },
+                    { to: "/integration-guide", l: labels.integration },
+                  ].map((sub) => (
+                    <Link
+                      key={sub.to}
+                      to={sub.to}
+                      onClick={() => setIsOpen(false)}
+                      className={`block py-2 text-base transition-colors ${
+                        isActive(sub.to)
+                          ? "text-medical-cyan font-bold"
+                          : "text-slate-600 hover:text-medical-cyan"
+                      }`}
+                    >
+                      {sub.l}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Nurse Link */}
             <Link
               to="/work/nurse"
               className="block font-bold py-2 text-lg text-medical-navy hover:text-medical-cyan"
@@ -430,6 +499,37 @@ const Navbar = ({ lang, setLang }) => {
             </Link>
           </div>
 
+          {/* Mobile Language Selector */}
+          <div className="border-t border-slate-100 pt-4 mt-4">
+            <p className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">
+              {lang === "ar" ? "اللغة" : "Language / Sprache"}
+            </p>
+            <div className="grid grid-cols-3 gap-3">
+              {languages.map((l) => (
+                <button
+                  key={l.code}
+                  onClick={() => {
+                    setLang(l.code);
+                    setIsOpen(false);
+                  }}
+                  className={`flex flex-col items-center justify-center gap-2 p-2 rounded-lg border transition-colors ${
+                    lang === l.code
+                      ? "border-medical-cyan bg-medical-light/10 text-medical-cyan font-bold"
+                      : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                  }`}
+                >
+                  <img
+                    src={l.flag}
+                    alt={l.label}
+                    className="w-6 h-auto rounded-sm shadow-sm"
+                  />
+                  <span className="text-xs">{l.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Mobile Register Button */}
           <Link
             to="/register"
             className="btn-primary w-full py-4 rounded-xl font-bold text-center mt-4 flex justify-center items-center gap-2"
@@ -439,7 +539,7 @@ const Navbar = ({ lang, setLang }) => {
             {lang === "ar" ? "سجل الآن" : "S'inscrire"}
           </Link>
         </div>
-      )}
+      </div>
     </nav>
   );
 };
