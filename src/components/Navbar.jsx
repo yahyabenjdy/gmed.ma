@@ -96,13 +96,17 @@ const Navbar = ({ lang, setLang }) => {
       "/visa-guide",
     ].includes(location.pathname);
 
+  // CHANGED: Use the Darker Blue #004C73
+  const activeColorClass = "text-[#004C73]";
+  const hoverColorClass = "hover:text-[#004C73]";
+
   return (
     <nav
       dir={lang === "ar" ? "rtl" : "ltr"}
       className="bg-white sticky top-0 z-50 shadow-sm border-b border-slate-100 font-sans relative"
     >
-      {/* 1. GERMAN TOP BORDER */}
-      <div className="absolute top-0 left-0 w-full h-[4px] bg-gradient-to-r from-black via-red-600 to-yellow-500 z-50"></div>
+      {/* 1. TOP BORDER: Solid Rouge Bordeaux (#800020) */}
+      <div className="absolute top-0 left-0 w-full h-[4px] bg-[#800020] z-50"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
@@ -124,12 +128,11 @@ const Navbar = ({ lang, setLang }) => {
                 to={t[0].path}
                 className={`font-semibold transition-colors relative group ${
                   isActive(t[0].path)
-                    ? "text-medical-cyan"
-                    : "text-medical-navy hover:text-medical-cyan"
+                    ? activeColorClass
+                    : `text-medical-navy ${hoverColorClass}`
                 }`}
               >
                 {t[0].name}
-                {/* 2. Active Link Indicator (Gold Dot) */}
                 {isActive(t[0].path) && (
                   <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-yellow-500 rounded-full"></span>
                 )}
@@ -139,8 +142,8 @@ const Navbar = ({ lang, setLang }) => {
                 to={t[1].path}
                 className={`font-semibold transition-colors relative group ${
                   isActive(t[1].path)
-                    ? "text-medical-cyan"
-                    : "text-medical-navy hover:text-medical-cyan"
+                    ? activeColorClass
+                    : `text-medical-navy ${hoverColorClass}`
                 }`}
               >
                 {t[1].name}
@@ -153,8 +156,8 @@ const Navbar = ({ lang, setLang }) => {
                 to="/ausbildung"
                 className={`font-semibold transition-colors relative group ${
                   isActive("/ausbildung")
-                    ? "text-medical-cyan"
-                    : "text-medical-navy hover:text-medical-cyan"
+                    ? activeColorClass
+                    : `text-medical-navy ${hoverColorClass}`
                 }`}
               >
                 {labels.ausbildung}
@@ -167,8 +170,8 @@ const Navbar = ({ lang, setLang }) => {
                 to={t[2].path}
                 className={`font-semibold transition-colors relative group ${
                   isActive(t[2].path)
-                    ? "text-medical-cyan"
-                    : "text-medical-navy hover:text-medical-cyan"
+                    ? activeColorClass
+                    : `text-medical-navy ${hoverColorClass}`
                 }`}
               >
                 {t[2].name}
@@ -189,8 +192,8 @@ const Navbar = ({ lang, setLang }) => {
                 <button
                   className={`flex items-center gap-1 font-semibold transition-colors cursor-pointer py-4 relative ${
                     isWorkActive || workOpen
-                      ? "text-medical-cyan"
-                      : "text-medical-navy hover:text-medical-cyan"
+                      ? activeColorClass
+                      : `text-medical-navy ${hoverColorClass}`
                   }`}
                 >
                   {labels.work}{" "}
@@ -221,8 +224,8 @@ const Navbar = ({ lang, setLang }) => {
                         to="/work/doctor"
                         className={`flex items-center justify-between px-4 py-2.5 text-sm font-bold cursor-pointer transition-colors ${
                           isActive("/work/doctor") || doctorOpen
-                            ? "text-medical-cyan bg-slate-50"
-                            : "text-medical-navy hover:bg-slate-50 hover:text-medical-cyan"
+                            ? `${activeColorClass} bg-slate-50`
+                            : `text-medical-navy hover:bg-slate-50 ${hoverColorClass}`
                         }`}
                       >
                         <div
@@ -230,10 +233,7 @@ const Navbar = ({ lang, setLang }) => {
                             lang === "ar" ? "flex-row-reverse" : ""
                           }`}
                         >
-                          <Stethoscope
-                            size={16}
-                            className="text-medical-cyan"
-                          />{" "}
+                          <Stethoscope size={16} className="text-[#004C73]" />{" "}
                           {labels.doctor}
                         </div>
                         <ChevronDown
@@ -284,11 +284,11 @@ const Navbar = ({ lang, setLang }) => {
                               to={sub.to}
                               className={`flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
                                 isActive(sub.to)
-                                  ? "text-medical-cyan font-bold bg-medical-light/5"
-                                  : "text-slate-600 font-medium hover:text-medical-cyan hover:bg-slate-50"
+                                  ? `${activeColorClass} font-bold bg-medical-light/5`
+                                  : `text-slate-600 font-medium hover:bg-slate-50 ${hoverColorClass}`
                               } ${lang === "ar" ? "flex-row-reverse" : ""}`}
                             >
-                              <span className="text-medical-cyan/80">
+                              <span className="text-[#004C73]/80">
                                 {sub.icon}
                               </span>
                               {sub.l}
@@ -303,11 +303,11 @@ const Navbar = ({ lang, setLang }) => {
                       to="/work/nurse"
                       className={`flex items-center gap-2 px-4 py-2.5 font-bold transition-colors border-t border-slate-50 ${
                         isActive("/work/nurse")
-                          ? "text-medical-cyan bg-slate-50"
-                          : "text-medical-navy hover:bg-slate-50 hover:text-medical-cyan"
+                          ? `${activeColorClass} bg-slate-50`
+                          : `text-medical-navy hover:bg-slate-50 ${hoverColorClass}`
                       } ${lang === "ar" ? "flex-row-reverse justify-end" : ""}`}
                     >
-                      <Syringe size={16} className="text-medical-cyan" />{" "}
+                      <Syringe size={16} className="text-[#004C73]" />{" "}
                       {labels.nurse}
                     </Link>
                   </div>
@@ -324,8 +324,8 @@ const Navbar = ({ lang, setLang }) => {
               <button
                 className={`flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-lg font-bold text-sm border transition-all duration-200 cursor-pointer ${
                   langOpen
-                    ? "border-medical-cyan text-medical-cyan bg-slate-100"
-                    : "border-slate-200 text-medical-navy hover:border-medical-cyan/50"
+                    ? "border-[#004C73] text-[#004C73] bg-slate-100"
+                    : "border-slate-200 text-medical-navy hover:border-[#004C73]/50"
                 }`}
               >
                 <img
@@ -338,7 +338,7 @@ const Navbar = ({ lang, setLang }) => {
                   size={14}
                   className={`transition-transform duration-200 ${
                     langOpen ? "rotate-180" : ""
-                  } ${langOpen ? "text-medical-cyan" : "text-slate-400"}`}
+                  } ${langOpen ? "text-[#004C73]" : "text-slate-400"}`}
                 />
               </button>
 
@@ -358,9 +358,9 @@ const Navbar = ({ lang, setLang }) => {
                       setLang(l.code);
                       setLangOpen(false);
                     }}
-                    className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors cursor-pointer hover:bg-slate-50 hover:text-medical-cyan ${
+                    className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors cursor-pointer hover:bg-slate-50 ${hoverColorClass} ${
                       lang === l.code
-                        ? "text-medical-cyan font-bold bg-medical-light/10"
+                        ? `${activeColorClass} font-bold bg-medical-light/10`
                         : "text-medical-navy"
                     } ${lang === "ar" ? "flex-row-reverse" : ""}`}
                   >
@@ -375,12 +375,12 @@ const Navbar = ({ lang, setLang }) => {
               </div>
             </div>
 
-            {/* 3. SIGNUP BUTTON - Color Swap */}
+            {/* 3. SIGNUP BUTTON - Uses New Darker Blue Color */}
             <Link
               to="/register"
-              className={`py-3 px-6 text-sm flex items-center gap-2 whitespace-nowrap shadow-md hover:scale-105 transition-all duration-300 rounded-lg font-bold bg-[#0096b4] text-white hover:bg-medical-cyan ${
+              className={`py-3 px-6 text-sm flex items-center gap-2 whitespace-nowrap shadow-md hover:scale-105 transition-all duration-300 rounded-lg font-bold bg-[#004C73] text-white hover:bg-[#003a57] ${
                 isActive("/register")
-                  ? "ring-2 ring-offset-2 ring-medical-cyan"
+                  ? "ring-2 ring-offset-2 ring-[#004C73]"
                   : ""
               }`}
             >
@@ -397,7 +397,7 @@ const Navbar = ({ lang, setLang }) => {
           <div className="md:hidden flex items-center h-full">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-medical-navy p-2 cursor-pointer hover:text-medical-cyan transition-colors"
+              className={`text-medical-navy p-2 cursor-pointer ${hoverColorClass} transition-colors`}
             >
               {isOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -423,9 +423,7 @@ const Navbar = ({ lang, setLang }) => {
                 key={link.path}
                 to={link.path}
                 className={`block font-bold py-2 text-lg ${
-                  isActive(link.path)
-                    ? "text-medical-cyan"
-                    : "text-medical-navy"
+                  isActive(link.path) ? activeColorClass : "text-medical-navy"
                 }`}
                 onClick={() => setIsOpen(false)}
               >
@@ -435,9 +433,7 @@ const Navbar = ({ lang, setLang }) => {
             <Link
               to="/ausbildung"
               className={`block font-bold py-2 text-lg ${
-                isActive("/ausbildung")
-                  ? "text-medical-cyan"
-                  : "text-medical-navy"
+                isActive("/ausbildung") ? activeColorClass : "text-medical-navy"
               }`}
               onClick={() => setIsOpen(false)}
             >
@@ -450,7 +446,7 @@ const Navbar = ({ lang, setLang }) => {
                 onClick={() => setMobileDoctorOpen(!mobileDoctorOpen)}
                 className={`w-full flex items-center justify-between font-bold py-2 text-lg transition-colors ${
                   isActive("/work/doctor") || mobileDoctorOpen
-                    ? "text-medical-cyan"
+                    ? activeColorClass
                     : "text-medical-navy"
                 }`}
               >
@@ -479,7 +475,7 @@ const Navbar = ({ lang, setLang }) => {
                   <Link
                     to="/work/doctor"
                     onClick={() => setIsOpen(false)}
-                    className="block py-2 text-base text-medical-navy font-semibold hover:text-medical-cyan"
+                    className={`block py-2 text-base font-semibold ${hoverColorClass} text-medical-navy`}
                   >
                     {labels.doctor} (Main)
                   </Link>
@@ -497,8 +493,8 @@ const Navbar = ({ lang, setLang }) => {
                       onClick={() => setIsOpen(false)}
                       className={`block py-2 text-base transition-colors ${
                         isActive(sub.to)
-                          ? "text-medical-cyan font-bold"
-                          : "text-slate-600 hover:text-medical-cyan"
+                          ? `${activeColorClass} font-bold`
+                          : `text-slate-600 ${hoverColorClass}`
                       }`}
                     >
                       {sub.l}
@@ -511,7 +507,7 @@ const Navbar = ({ lang, setLang }) => {
             {/* Mobile Nurse Link */}
             <Link
               to="/work/nurse"
-              className="block font-bold py-2 text-lg text-medical-navy hover:text-medical-cyan"
+              className={`block font-bold py-2 text-lg text-medical-navy ${hoverColorClass}`}
               onClick={() => setIsOpen(false)}
             >
               {labels.nurse}
@@ -533,7 +529,7 @@ const Navbar = ({ lang, setLang }) => {
                   }}
                   className={`flex flex-col items-center justify-center gap-2 p-2 rounded-lg border transition-colors ${
                     lang === l.code
-                      ? "border-medical-cyan bg-medical-light/10 text-medical-cyan font-bold"
+                      ? `border-[#004C73] bg-medical-light/10 ${activeColorClass} font-bold`
                       : "border-slate-200 text-slate-600 hover:bg-slate-50"
                   }`}
                 >
@@ -548,10 +544,10 @@ const Navbar = ({ lang, setLang }) => {
             </div>
           </div>
 
-          {/* Mobile Register Button - Color Swap */}
+          {/* Mobile Register Button */}
           <Link
             to="/register"
-            className="w-full py-4 rounded-xl font-bold text-center mt-4 flex justify-center items-center gap-2 bg-[#0096b4] text-white hover:bg-medical-cyan transition-colors"
+            className="w-full py-4 rounded-xl font-bold text-center mt-4 flex justify-center items-center gap-2 bg-[#004C73] text-white hover:bg-[#003a57] transition-colors"
             onClick={() => setIsOpen(false)}
           >
             <UserPlus size={20} />
