@@ -20,7 +20,8 @@ const TopBar = ({ lang }) => {
   const t = content[lang] || content.fr;
 
   return (
-    <div className="bg-medical-navy text-white py-2.5 text-[10px] xl:text-xs hidden lg:block border-b border-white/10">
+    // CHANGED: Removed 'border-b-2 border-[#800020]' completely.
+    <div className="bg-medical-navy text-white py-2.5 text-[10px] xl:text-xs hidden lg:block">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Container with equal spacing between all 4 elements */}
         <div
