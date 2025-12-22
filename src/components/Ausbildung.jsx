@@ -108,7 +108,6 @@ const Ausbildung = ({ lang }) => {
   const t = content[lang] || content.de;
 
   return (
-    // 1. ADDED ID: ausbildung-section
     <section
       id="ausbildung-section"
       className="py-16 bg-[#e0f9fd]"
@@ -117,15 +116,17 @@ const Ausbildung = ({ lang }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className="text-3xl md:text-4xl font-black text-medical-navy mb-3">
+          {/* 1. KEPT THE GOLD UNDERLINE HERE */}
+          <h2 className="text-3xl md:text-4xl font-black text-medical-navy mb-3 relative inline-block">
             {t.title}
+            <div className="absolute -bottom-1 left-1/4 w-1/2 h-1 bg-yellow-500 rounded-full" />
           </h2>
           <p className="text-lg text-slate-600 font-medium">{t.subtitle}</p>
         </div>
 
         {/* 4-Step Process Grid */}
         <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {/* Connecting Line (Desktop) */}
+          {/* Reverted Connecting Line to original Grey/Blue */}
           <div className="hidden lg:block absolute top-10 left-0 w-full h-0.5 bg-medical-navy/10 -z-10 px-12">
             <div className="w-full h-full bg-medical-navy/10"></div>
           </div>
@@ -135,19 +136,19 @@ const Ausbildung = ({ lang }) => {
               key={index}
               className="relative bg-white p-6 rounded-2xl border border-white/50 shadow-md hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 ease-out group text-center"
             >
-              {/* MAIN ICON CIRCLE */}
+              {/* MAIN ICON CIRCLE - Reverted to Cyan/Medical Theme */}
               <div className="relative w-20 h-20 mx-auto mb-6">
                 <div className="w-full h-full bg-slate-50 border-4 border-white rounded-full flex items-center justify-center text-medical-cyan shadow-inner group-hover:bg-medical-cyan group-hover:text-white transition-all duration-300">
                   {step.icon}
                 </div>
 
-                {/* SMALL NUMBER BADGE */}
+                {/* SMALL NUMBER BADGE - Reverted to Navy */}
                 <div className="absolute -top-1 -right-1 w-7 h-7 bg-medical-navy text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white shadow-md z-10">
                   {step.num}
                 </div>
               </div>
 
-              {/* Text Content */}
+              {/* Text Content - Reverted Hover to Cyan */}
               <h3 className="text-lg font-bold text-medical-navy mb-2 group-hover:text-medical-cyan transition-colors">
                 {step.title}
               </h3>
@@ -162,7 +163,6 @@ const Ausbildung = ({ lang }) => {
         <div className="text-center">
           <Link
             to="/ausbildung"
-            // 2. ADDED STATE: fromHomeSection: true
             state={{ fromHomeSection: true }}
             className="inline-flex items-center gap-2 bg-medical-navy text-white px-8 py-4 rounded-xl font-bold text-base shadow-xl shadow-medical-navy/20 hover:bg-medical-cyan hover:shadow-medical-cyan/30 transition-all hover:-translate-y-1 group"
           >
