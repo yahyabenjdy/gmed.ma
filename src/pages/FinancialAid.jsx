@@ -14,9 +14,11 @@ import {
   PlayCircle,
   AlertTriangle,
   Landmark,
-  CheckCircle, // <--- ADDED THIS IMPORT
+  CheckCircle,
 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+// 1. IMPORT HELMET
+import { Helmet } from "react-helmet-async";
 
 const FinancialAid = ({ lang }) => {
   const navigate = useNavigate();
@@ -320,21 +322,65 @@ const FinancialAid = ({ lang }) => {
 
   const t = content[lang] || content.fr;
 
+  // Helper for flag colors
+  const getFlagColors = (index) => {
+    if (index % 3 === 0)
+      return {
+        text: "text-black",
+        bg: "bg-black/10",
+        border: "border-black",
+      };
+    if (index % 3 === 1)
+      return {
+        text: "text-red-600",
+        bg: "bg-red-600/10",
+        border: "border-red-600",
+      };
+    return {
+      text: "text-yellow-500",
+      bg: "bg-yellow-500/10",
+      border: "border-yellow-500",
+    };
+  };
+
+  // 2. SEO Content
+  const seo = {
+    fr: {
+      title: "Aides Financières & Financement - Médecins en Allemagne",
+      desc: "Comment financer vos cours FSP/KP en Allemagne ? Guide sur le BAMF, l'Agentur für Arbeit et le Bildungsgutschein.",
+    },
+    de: {
+      title: "Finanzierung & Bildungsgutschein - Für ausländische Ärzte",
+      desc: "Kostenübernahme für FSP- und KP-Vorbereitungskurse. So erhalten Sie Fördermittel vom BAMF und der Arbeitsagentur.",
+    },
+    ar: {
+      title: "المساعدات المالية والتمويل - للأطباء في ألمانيا",
+      desc: "كيف تمول دورات اللغة والامتحانات في ألمانيا؟ دليل شامل حول BAMF، مكتب العمل، وقسائم التعليم (Bildungsgutschein).",
+    },
+  };
+
+  const tSeo = seo[lang] || seo.fr;
+
   return (
     <div
       className="bg-[#e0f9fd] min-h-screen pb-0"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
-      {/* --- HERO SECTION (Compact & Fixed Image) --- */}
+      {/* 3. SEO BLOCK */}
+      <Helmet>
+        <title>{tSeo.title}</title>
+        <meta name="description" content={tSeo.desc} />
+        <link rel="canonical" href="https://gmed.ma/financial-aid" />
+      </Helmet>
+
+      {/* --- HERO SECTION --- */}
       <section className="relative pt-10 pb-12 bg-medical-navy overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00b4d8_1px,transparent_1px)] [background-size:20px_20px]"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Top Actions */}
           <div className="flex justify-between items-center mb-6">
             <button
               onClick={handleBack}
-              // MATCHED SIZE: text-sm & size={18}
-              className={`flex items-center gap-2 text-medical-cyan font-bold hover:text-white transition-colors text-sm ${
+              className={`flex items-center gap-2 text-medical-cyan font-bold hover:text-white transition-colors text-sm group ${
                 lang === "ar" ? "flex-row-reverse" : ""
               }`}
             >
@@ -342,12 +388,15 @@ const FinancialAid = ({ lang }) => {
                 size={18}
                 className={lang === "ar" ? "rotate-180" : ""}
               />
-              {lang === "ar" ? "عودة" : lang === "de" ? "Zurück" : "Retour"}
+              <span className="relative">
+                {lang === "ar" ? "عودة" : lang === "de" ? "Zurück" : "Retour"}
+                {/* 1. GERMAN ACCENT: Gold Underline */}
+                <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full"></span>
+              </span>
             </button>
 
             <button
               onClick={handleShare}
-              // MATCHED SIZE: text-sm & size={18}
               className={`flex items-center gap-2 text-white/80 hover:text-medical-cyan transition-colors text-sm font-medium ${
                 lang === "ar" ? "flex-row-reverse" : ""
               }`}
@@ -357,29 +406,31 @@ const FinancialAid = ({ lang }) => {
             </button>
           </div>
 
-          {/* Hero Content */}
           <div className="flex flex-col md:flex-row items-center gap-10">
             <div
               className={`md:w-1/2 ${
                 lang === "ar" ? "text-right" : "text-left"
               }`}
             >
-              <div className="inline-flex items-center gap-2 bg-white/10 text-medical-cyan px-3 py-1 rounded-full text-xs font-bold mb-4 border border-white/20">
+              {/* 2. GERMAN ACCENT: Gold Tag */}
+              <div className="inline-flex items-center gap-2 bg-yellow-500/10 text-yellow-500 px-3 py-1 rounded-full text-xs font-bold mb-4 border border-yellow-500/20">
                 <Euro size={14} />
                 {t.hero.tag}
               </div>
-              <h1 className="text-2xl md:text-4xl font-black text-white mb-4 leading-tight">
+
+              {/* 3. GERMAN ACCENT: Gold Underline Title */}
+              <h1 className="text-2xl md:text-4xl font-black text-white mb-4 leading-tight relative inline-block">
                 {t.hero.title}
+                <div className="absolute -bottom-2 left-0 w-1/4 h-1 bg-yellow-500 rounded-full" />
               </h1>
+
               <p className="text-base text-slate-300 leading-relaxed">
                 {t.hero.subtitle}
               </p>
             </div>
 
-            {/* Small Image Logic */}
             <div className="md:w-1/2 relative flex justify-center items-center">
               <div className="absolute inset-0 bg-medical-cyan blur-3xl opacity-20 rounded-full"></div>
-              {/* Image name: finance.png | Size: h-40 md:h-52 */}
               <img
                 src="/finance.png"
                 onError={(e) => {
@@ -422,7 +473,9 @@ const FinancialAid = ({ lang }) => {
                     key={i}
                     className="flex items-center gap-2 text-sm font-bold text-slate-700"
                   >
-                    <CheckCircle size={16} className="text-indigo-500" /> {item}
+                    {/* 4. GERMAN ACCENT: Checkmark cycles colors */}
+                    <CheckCircle size={16} className={getFlagColors(i).text} />
+                    {item}
                   </li>
                 ))}
               </ul>
@@ -448,7 +501,9 @@ const FinancialAid = ({ lang }) => {
                     key={i}
                     className="flex items-center gap-2 text-sm font-bold text-slate-700"
                   >
-                    <CheckCircle size={16} className="text-red-500" /> {item}
+                    {/* 4. GERMAN ACCENT: Checkmark cycles colors */}
+                    <CheckCircle size={16} className={getFlagColors(i).text} />
+                    {item}
                   </li>
                 ))}
               </ul>
@@ -479,7 +534,16 @@ const FinancialAid = ({ lang }) => {
                     key={i}
                     className="flex items-start gap-3 text-emerald-800 text-sm font-medium"
                   >
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
+                    {/* 5. GERMAN ACCENT: Bullet point cycles colors */}
+                    <div
+                      className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${
+                        i % 3 === 0
+                          ? "bg-black"
+                          : i % 3 === 1
+                          ? "bg-red-600"
+                          : "bg-yellow-500"
+                      }`}
+                    />
                     {tip}
                   </li>
                 ))}
@@ -500,7 +564,11 @@ const FinancialAid = ({ lang }) => {
                     key={i}
                     className="flex items-center gap-3 text-slate-700 text-sm font-bold"
                   >
-                    <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 text-xs shrink-0">
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center text-xs shrink-0 ${
+                        getFlagColors(i).bg
+                      } ${getFlagColors(i).text}`}
+                    >
                       {i + 1}
                     </div>
                     {doc}
@@ -512,7 +580,7 @@ const FinancialAid = ({ lang }) => {
         </div>
       </section>
 
-      {/* --- SECTION 3: STEP-BY-STEP (Vertical Chain) --- */}
+      {/* --- SECTION 3: STEP-BY-STEP --- */}
       <section className="py-16 bg-medical-navy text-white relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px]"></div>
 
@@ -530,9 +598,9 @@ const FinancialAid = ({ lang }) => {
           </div>
 
           <div className="relative pl-2 md:pl-8">
-            {/* Vertical Chain Line */}
+            {/* 6. GERMAN ACCENT: Gradient Chain Line */}
             <div
-              className={`absolute top-4 bottom-4 w-0.5 bg-medical-cyan/30 ${
+              className={`absolute top-4 bottom-4 w-0.5 bg-gradient-to-b from-black via-red-600 to-yellow-500 ${
                 lang === "ar" ? "right-5 md:right-10" : "left-5 md:left-10"
               }`}
             ></div>
@@ -545,16 +613,17 @@ const FinancialAid = ({ lang }) => {
                     lang === "ar" ? "flex-row-reverse" : "flex-row"
                   }`}
                 >
-                  {/* Icon Circle */}
+                  {/* 7. GERMAN ACCENT: Border/Icon Colors Cycle */}
                   <div
-                    className={`absolute top-0 w-10 h-10 bg-medical-navy border-2 border-medical-cyan rounded-full flex items-center justify-center z-10 shadow-[0_0_20px_rgba(34,211,238,0.3)] ${
+                    className={`absolute top-0 w-10 h-10 bg-medical-navy border-2 rounded-full flex items-center justify-center z-10 ${
+                      getFlagColors(i).border
+                    } ${
                       lang === "ar" ? "right-0 md:right-5" : "left-0 md:left-5"
                     }`}
                   >
-                    <div className="text-medical-cyan">{step.icon}</div>
+                    <div className={getFlagColors(i).text}>{step.icon}</div>
                   </div>
 
-                  {/* Content Box */}
                   <div
                     className={`w-full ${
                       lang === "ar" ? "mr-14 md:mr-20" : "ml-14 md:ml-20"
@@ -574,7 +643,6 @@ const FinancialAid = ({ lang }) => {
             </div>
           </div>
 
-          {/* Warning Box */}
           <div className="mt-16 bg-amber-500/10 border border-amber-500/30 p-6 rounded-2xl max-w-2xl mx-auto text-center backdrop-blur-sm">
             <h4 className="text-amber-400 font-bold mb-2 flex items-center justify-center gap-2">
               <AlertTriangle size={18} /> {t.sections.steps.warning.title}
@@ -584,11 +652,11 @@ const FinancialAid = ({ lang }) => {
             </p>
           </div>
 
-          {/* CTA Bottom */}
           <div className="mt-12 text-center">
             <Link
               to="/#contact"
-              className="inline-flex items-center gap-3 bg-medical-cyan text-medical-navy px-10 py-4 rounded-2xl font-bold hover:bg-white transition-colors shadow-lg shadow-medical-cyan/20"
+              // 8. GERMAN ACCENT: Button Black -> Red Hover
+              className="inline-flex items-center gap-3 bg-black text-white px-10 py-4 rounded-2xl font-bold hover:bg-red-600 transition-colors shadow-lg shadow-black/20"
             >
               {t.cta}
             </Link>
