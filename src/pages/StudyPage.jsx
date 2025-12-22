@@ -10,6 +10,8 @@ import {
   Coins,
 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+// 1. IMPORT HELMET
+import { Helmet } from "react-helmet-async";
 
 const StudyPage = ({ lang }) => {
   const navigate = useNavigate();
@@ -82,7 +84,6 @@ const StudyPage = ({ lang }) => {
             step: "03",
             title: "Bewerbung",
             desc: "Einreichen der Unterlagen via Uni-Assist.",
-            // REMOVED highlight: true
           },
           {
             step: "04",
@@ -150,7 +151,6 @@ const StudyPage = ({ lang }) => {
             step: "03",
             title: "Candidature",
             desc: "Dossier complet via Uni-Assist.",
-            // REMOVED highlight: true
           },
           {
             step: "04",
@@ -218,7 +218,6 @@ const StudyPage = ({ lang }) => {
             step: "03",
             title: "التقديم",
             desc: "تقديم الملفات عبر Uni-Assist.",
-            // REMOVED highlight: true
           },
           {
             step: "04",
@@ -245,16 +244,62 @@ const StudyPage = ({ lang }) => {
     },
   };
 
+  // 2. SEO Content
+  const seo = {
+    fr: {
+      title: "Étudier en Allemagne - Médecine & Ingénierie",
+      desc: "Guide complet pour étudier en Allemagne : Studienkolleg, Visa Étudiant, Compte bloqué et inscription universitaire (Uni-Assist).",
+    },
+    de: {
+      title: "Studieren in Deutschland - Für Internationale Studenten",
+      desc: "Ihr Weg an die deutsche Universität: Studienkolleg, Visum und Bewerbung über Uni-Assist. Wir unterstützen Sie dabei.",
+    },
+    ar: {
+      title: "الدراسة في ألمانيا - الطب والهندسة",
+      desc: "دليلك للدراسة في الجامعات الألمانية: السنة التحضيرية (Studienkolleg)، التأشيرة الدراسية، الحساب المغلق والقبول الجامعي.",
+    },
+  };
+
   const t = content[lang] || content.fr;
+  const tSeo = seo[lang] || seo.fr;
+
+  // Helper to assign flag colors (Black -> Red -> Gold)
+  const getFlagColors = (index) => {
+    if (index % 3 === 0)
+      return {
+        text: "text-medical-navy",
+        bg: "bg-black/5",
+        border: "border-black",
+        stepBg: "bg-black",
+      };
+    if (index % 3 === 1)
+      return {
+        text: "text-red-600",
+        bg: "bg-red-600/5",
+        border: "border-red-600",
+        stepBg: "bg-red-600",
+      };
+    return {
+      text: "text-yellow-600",
+      bg: "bg-yellow-500/10",
+      border: "border-yellow-500",
+      stepBg: "bg-yellow-500",
+    };
+  };
 
   return (
-    // MAIN CONTAINER: 15% Cyan BG + No bottom padding (flush footer)
     <div
       className="min-h-screen bg-[#e0f9fd] pb-0"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
+      {/* 3. SEO BLOCK */}
+      <Helmet>
+        <title>{tSeo.title}</title>
+        <meta name="description" content={tSeo.desc} />
+        <link rel="canonical" href="https://gmed.ma/study" />
+      </Helmet>
+
       {/* --- HERO SECTION --- */}
-      {/* Reduced Top Padding: pt-12 */}
       <section className="relative pt-12 pb-20 bg-medical-navy overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00b4d8_1px,transparent_1px)] [background-size:20px_20px]"></div>
 
@@ -262,7 +307,7 @@ const StudyPage = ({ lang }) => {
           {/* Back Button */}
           <button
             onClick={handleBack}
-            className={`flex items-center gap-2 text-medical-cyan font-bold mb-6 hover:text-white transition-colors text-sm ${
+            className={`flex items-center gap-2 text-medical-cyan font-bold mb-6 hover:text-white transition-colors text-sm group ${
               lang === "ar" ? "flex-row-reverse" : ""
             }`}
           >
@@ -270,7 +315,11 @@ const StudyPage = ({ lang }) => {
               size={18}
               className={lang === "ar" ? "rotate-180" : ""}
             />
-            {t.back}
+            <span className="relative">
+              {t.back}
+              {/* GERMAN ACCENT: Gold Underline */}
+              <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full"></span>
+            </span>
           </button>
 
           <div className="flex flex-col md:flex-row items-center gap-12">
@@ -279,20 +328,26 @@ const StudyPage = ({ lang }) => {
                 lang === "ar" ? "text-right" : "text-left"
               }`}
             >
-              <div className="inline-flex items-center gap-2 bg-white/10 text-medical-cyan px-4 py-1.5 rounded-full text-sm font-bold mb-6 border border-white/20">
+              {/* GERMAN ACCENT: Tag is Gold */}
+              <div className="inline-flex items-center gap-2 bg-yellow-500/10 text-yellow-500 px-4 py-1.5 rounded-full text-sm font-bold mb-6 border border-yellow-500/20">
                 <GraduationCap size={16} />
                 {t.hero.tag}
               </div>
-              <h1 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
+
+              {/* GERMAN ACCENT: Gold Underline for Title */}
+              <h1 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight relative inline-block">
                 {t.hero.title}
+                <div className="absolute -bottom-2 left-0 w-1/4 h-1.5 bg-yellow-500 rounded-full" />
               </h1>
+
               <p className="text-lg text-slate-300 mb-8 leading-relaxed">
                 {t.hero.subtitle}
               </p>
 
               <Link
                 to="/register"
-                className="inline-flex items-center gap-2 bg-medical-cyan text-white px-8 py-3 rounded-xl font-bold hover:bg-[#0096b4] transition-all shadow-lg shadow-medical-cyan/20 group"
+                // GERMAN ACCENT: Button is Black -> Red hover
+                className="inline-flex items-center gap-2 bg-black text-white px-8 py-3 rounded-xl font-bold hover:bg-red-600 transition-all shadow-lg shadow-black/20 group"
               >
                 {t.hero.cta}
                 <ArrowRight
@@ -324,22 +379,29 @@ const StudyPage = ({ lang }) => {
       <section className="py-12 bg-white/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-6 -mt-20 relative z-20">
-            {t.benefits.map((benefit, index) => (
-              <div
-                key={index}
-                className="bg-white p-6 rounded-2xl shadow-xl border-b-4 border-medical-cyan hover:-translate-y-2 transition-transform duration-300"
-              >
-                <div className="w-10 h-10 bg-medical-light rounded-xl flex items-center justify-center text-medical-navy mb-4">
-                  {benefit.icon}
+            {t.benefits.map((benefit, index) => {
+              const colors = getFlagColors(index);
+              return (
+                <div
+                  key={index}
+                  // GERMAN ACCENT: Bottom border cycles colors
+                  className={`bg-white p-6 rounded-2xl shadow-xl border-b-4 ${colors.border} hover:-translate-y-2 transition-transform duration-300`}
+                >
+                  {/* GERMAN ACCENT: Icon Container cycles colors */}
+                  <div
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${colors.bg} ${colors.text}`}
+                  >
+                    {benefit.icon}
+                  </div>
+                  <h3 className="text-lg font-bold text-medical-navy mb-2">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">
+                    {benefit.desc}
+                  </p>
                 </div>
-                <h3 className="text-lg font-bold text-medical-navy mb-2">
-                  {benefit.title}
-                </h3>
-                <p className="text-slate-500 text-sm leading-relaxed">
-                  {benefit.desc}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -351,50 +413,51 @@ const StudyPage = ({ lang }) => {
             <h2 className="text-2xl font-black text-medical-navy mb-4">
               {t.steps.title}
             </h2>
-            <div className="w-16 h-1 bg-medical-cyan mx-auto rounded-full"></div>
+            {/* GERMAN ACCENT: Gradient Line */}
+            <div className="w-16 h-1 bg-gradient-to-r from-black via-red-600 to-yellow-500 mx-auto rounded-full"></div>
           </div>
 
           <div className="space-y-6">
-            {t.steps.items.map((item, index) => (
-              <div key={index} className="flex group">
-                <div className="flex flex-col items-center mr-4 ml-4">
-                  {/* Step Circle: Removed Fixed Highlight logic */}
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-black text-white z-10 shadow-lg bg-medical-navy group-hover:bg-medical-cyan transition-colors`}
-                  >
-                    {item.step}
+            {t.steps.items.map((item, index) => {
+              const colors = getFlagColors(index);
+              return (
+                <div key={index} className="flex group">
+                  <div className="flex flex-col items-center mr-4 ml-4">
+                    {/* GERMAN ACCENT: Step Number Circle cycles colors */}
+                    <div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center font-black text-white z-10 shadow-lg transition-colors ${colors.stepBg}`}
+                    >
+                      {item.step}
+                    </div>
+                    {index !== t.steps.items.length - 1 && (
+                      <div className="w-0.5 h-full bg-slate-300 my-2 group-hover:bg-black/30 transition-colors"></div>
+                    )}
                   </div>
-                  {index !== t.steps.items.length - 1 && (
-                    <div className="w-0.5 h-full bg-slate-300 my-2 group-hover:bg-medical-cyan/30 transition-colors"></div>
-                  )}
+                  <div
+                    className={`flex-1 bg-white p-5 rounded-2xl shadow-sm border border-slate-100 group-hover:shadow-md transition-shadow ${
+                      lang === "ar" ? "text-right" : "text-left"
+                    }`}
+                  >
+                    <h3 className="text-lg font-bold text-medical-navy mb-1">
+                      {item.title}
+                    </h3>
+                    <p className="text-slate-600 text-sm">{item.desc}</p>
+                  </div>
                 </div>
-                <div
-                  className={`flex-1 bg-white p-5 rounded-2xl shadow-sm border border-slate-100 group-hover:shadow-md transition-shadow ${
-                    lang === "ar" ? "text-right" : "text-left"
-                  }`}
-                >
-                  <h3 className="text-lg font-bold text-medical-navy mb-1">
-                    {item.title}
-                  </h3>
-                  <p className="text-slate-600 text-sm">{item.desc}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* --- COMPACT SERVICES SECTION (Matching Ausbildung Page) --- */}
-      {/* Reduced padding: py-8 */}
+      {/* --- COMPACT SERVICES SECTION --- */}
       <section className="py-8 bg-medical-navy relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-medical-cyan/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-medical-cyan/10 rounded-full blur-3xl"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Card Style: Same padding as AusbildungPage (p-6 md:p-8) */}
           <div className="bg-white/5 backdrop-blur-lg rounded-3xl p-6 md:p-8 border border-white/10">
             <div className="grid md:grid-cols-2 gap-8 items-center">
-              {/* Left Column: Services List */}
               <div className={lang === "ar" ? "text-right" : "text-left"}>
                 <div className="inline-flex items-center gap-2 text-medical-cyan font-bold mb-3 text-sm">
                   <Landmark size={18} /> GMED SUPPORT
@@ -408,9 +471,10 @@ const StudyPage = ({ lang }) => {
                       key={i}
                       className="flex items-start gap-3 text-slate-300 text-sm"
                     >
+                      {/* GERMAN ACCENT: Checkmark is Gold */}
                       <CheckCircle
                         size={18}
-                        className="text-medical-cyan shrink-0 mt-0.5"
+                        className="text-yellow-500 shrink-0 mt-0.5"
                       />
                       <span>{service}</span>
                     </li>
@@ -418,7 +482,6 @@ const StudyPage = ({ lang }) => {
                 </ul>
               </div>
 
-              {/* Right Column: CTA Box */}
               <div className="bg-white rounded-2xl p-6 text-center shadow-2xl">
                 <h3 className="text-xl font-black text-medical-navy mb-2">
                   {t.ctaBox.title}
@@ -427,7 +490,8 @@ const StudyPage = ({ lang }) => {
 
                 <Link
                   to="/#contact"
-                  className="w-full block bg-medical-navy text-white py-3 rounded-xl font-bold hover:bg-medical-cyan transition-colors shadow-lg text-sm"
+                  // GERMAN ACCENT: Button is Black -> Red hover
+                  className="w-full block bg-black text-white py-3 rounded-xl font-bold hover:bg-red-600 transition-colors shadow-lg text-sm"
                 >
                   {t.ctaBox.btn}
                 </Link>
