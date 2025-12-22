@@ -14,6 +14,8 @@ import {
   Euro,
 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+// 1. IMPORT HELMET
+import { Helmet } from "react-helmet-async";
 
 const WorkNurse = ({ lang }) => {
   const navigate = useNavigate();
@@ -227,7 +229,10 @@ const WorkNurse = ({ lang }) => {
       benefits: {
         title: "مميزات العمل في ألمانيا",
         items: [
-          { text: "راتب يبدأ من 2800€ - 3400€ يورو", icon: <Euro size={18} /> },
+          {
+            text: "راتب يبدأ من 2800€ - 3400€ يورو",
+            icon: <Euro size={18} />,
+          },
           { text: "30 يوم إجازة مدفوعة سنوياً", icon: <Star size={18} /> },
           {
             text: "عقود عمل دائمة غير محددة المدة",
@@ -257,13 +262,58 @@ const WorkNurse = ({ lang }) => {
     },
   };
 
+  // 2. SEO Data
+  const seo = {
+    fr: {
+      title: "Travailler comme Infirmier en Allemagne - Homologation & Emploi",
+      desc: "Devenez infirmier en Allemagne : Guide complet sur la reconnaissance de diplôme, l'examen de connaissances (Kenntnisprüfung) et le recrutement.",
+    },
+    de: {
+      title: "Als Pflegekraft in Deutschland arbeiten - Anerkennung & Jobs",
+      desc: "Ihr Weg zur Anerkennung als Pflegefachkraft: B2 Deutsch, Kenntnisprüfung und Vermittlung an deutsche Arbeitgeber.",
+    },
+    ar: {
+      title: "العمل كممرض في ألمانيا - المعادلة والتوظيف",
+      desc: "دليلك الشامل للممرضين: الاعتراف بالدبلوم، امتحان المعادلة (KP)، وفرص العمل في المستشفيات الألمانية.",
+    },
+  };
+
   const t = content[lang] || content.fr;
+  const tSeo = seo[lang] || seo.fr;
+
+  // Helper for flag colors (Black -> Red -> Gold)
+  const getFlagColors = (index) => {
+    if (index % 3 === 0)
+      return {
+        borderHover: "hover:border-black/50",
+        number: "text-slate-100 group-hover:text-black/10",
+        check: "text-black",
+      };
+    if (index % 3 === 1)
+      return {
+        borderHover: "hover:border-red-600/50",
+        number: "text-slate-100 group-hover:text-red-600/10",
+        check: "text-red-600",
+      };
+    return {
+      borderHover: "hover:border-yellow-500/50",
+      number: "text-slate-100 group-hover:text-yellow-500/10",
+      check: "text-yellow-500",
+    };
+  };
 
   return (
     <div
       className="bg-[#e0f9fd] min-h-screen pb-0"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
+      {/* 3. SEO BLOCK */}
+      <Helmet>
+        <title>{tSeo.title}</title>
+        <meta name="description" content={tSeo.desc} />
+        <link rel="canonical" href="https://gmed.ma/work/nurse" />
+      </Helmet>
+
       {/* --- HERO SECTION --- */}
       <section className="relative pt-12 pb-20 bg-medical-navy overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00b4d8_1px,transparent_1px)] [background-size:20px_20px]"></div>
@@ -272,7 +322,7 @@ const WorkNurse = ({ lang }) => {
           {/* Back Button */}
           <button
             onClick={handleBack}
-            className={`flex items-center gap-2 text-medical-cyan font-bold mb-6 hover:text-white transition-colors text-sm ${
+            className={`flex items-center gap-2 text-medical-cyan font-bold mb-6 hover:text-white transition-colors text-sm group ${
               lang === "ar" ? "flex-row-reverse" : ""
             }`}
           >
@@ -280,7 +330,11 @@ const WorkNurse = ({ lang }) => {
               size={18}
               className={lang === "ar" ? "rotate-180" : ""}
             />
-            {t.back}
+            <span className="relative">
+              {t.back}
+              {/* GERMAN ACCENT: Gold Underline */}
+              <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full"></span>
+            </span>
           </button>
 
           <div className="flex flex-col md:flex-row items-center gap-12">
@@ -290,7 +344,8 @@ const WorkNurse = ({ lang }) => {
                 lang === "ar" ? "text-right" : "text-left"
               }`}
             >
-              <div className="inline-flex items-center gap-2 bg-white/10 text-medical-cyan px-4 py-1.5 rounded-full text-sm font-bold mb-6 border border-white/20">
+              {/* GERMAN ACCENT: Tag is Gold */}
+              <div className="inline-flex items-center gap-2 bg-yellow-500/10 text-yellow-500 px-4 py-1.5 rounded-full text-sm font-bold mb-6 border border-yellow-500/20">
                 <Heart size={16} />
                 {t.hero.tag}
               </div>
@@ -303,7 +358,8 @@ const WorkNurse = ({ lang }) => {
 
               <Link
                 to="/register"
-                className="inline-flex items-center gap-2 bg-medical-cyan text-white px-8 py-3 rounded-xl font-bold hover:bg-[#0096b4] transition-all shadow-lg shadow-medical-cyan/20 group"
+                // GERMAN ACCENT: Button is Black -> Red hover
+                className="inline-flex items-center gap-2 bg-black text-white px-8 py-3 rounded-xl font-bold hover:bg-red-600 transition-all shadow-lg shadow-black/20 group"
               >
                 {t.hero.cta}
                 <ArrowRight
@@ -319,7 +375,7 @@ const WorkNurse = ({ lang }) => {
             <div className="md:w-1/2 relative">
               <div className="absolute inset-0 bg-medical-cyan blur-3xl opacity-20 rounded-full"></div>
               <img
-                src="/nurse.jpg" // UPDATED IMAGE
+                src="/nurse.jpg"
                 onError={(e) => {
                   e.target.src =
                     "https://placehold.co/600x400/0a192f/white?text=Nurse+Germany";
@@ -339,9 +395,10 @@ const WorkNurse = ({ lang }) => {
             {t.intro}
           </p>
 
-          {/* Requirements Box (New) */}
+          {/* Requirements Box */}
           <div className="bg-white border border-slate-100 shadow-lg rounded-3xl p-8 flex flex-col md:flex-row gap-8 items-center -mt-6">
-            <div className="bg-medical-navy text-white p-5 rounded-2xl shadow-md">
+            {/* GERMAN ACCENT: Alert Icon bg is Red */}
+            <div className="bg-red-600 text-white p-5 rounded-2xl shadow-md">
               <AlertCircle size={32} />
             </div>
             <div
@@ -358,7 +415,8 @@ const WorkNurse = ({ lang }) => {
                       lang === "ar" ? "flex-row-reverse" : ""
                     }`}
                   >
-                    <div className="w-2 h-2 bg-medical-cyan rounded-full shrink-0" />
+                    {/* GERMAN ACCENT: Bullet point is Gold */}
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full shrink-0" />
                     {req}
                   </div>
                 ))}
@@ -372,48 +430,60 @@ const WorkNurse = ({ lang }) => {
       <section className="py-16">
         <div className="max-w-5xl mx-auto px-4">
           <div className="grid gap-6">
-            {t.process.map((step, idx) => (
-              <div
-                key={idx}
-                className={`flex flex-col md:flex-row gap-6 p-8 rounded-3xl bg-white border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 ${
-                  lang === "ar" ? "md:flex-row-reverse text-right" : "text-left"
-                }`}
-              >
-                <div className="w-16 h-16 bg-medical-cyan/10 text-medical-cyan rounded-2xl flex items-center justify-center shrink-0">
-                  {step.icon}
+            {t.process.map((step, idx) => {
+              const colors = getFlagColors(idx);
+              return (
+                <div
+                  key={idx}
+                  // GERMAN ACCENT: Border hover cycles colors
+                  className={`flex flex-col md:flex-row gap-6 p-8 rounded-3xl bg-white border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 ${
+                    lang === "ar"
+                      ? "md:flex-row-reverse text-right"
+                      : "text-left"
+                  } ${colors.borderHover}`}
+                >
+                  <div className="w-16 h-16 bg-medical-cyan/10 text-medical-cyan rounded-2xl flex items-center justify-center shrink-0">
+                    {step.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-medical-navy mb-2">
+                      {step.title}
+                    </h3>
+                    <p className="text-slate-600 leading-relaxed">
+                      {step.desc}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-medical-navy mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed">{step.desc}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* --- BENEFITS GRID (New) --- */}
+      {/* --- BENEFITS GRID --- */}
       <section className="py-12 bg-slate-50/50">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-2xl font-black text-medical-navy text-center mb-10">
             {t.benefits.title}
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
-            {t.benefits.items.map((item, index) => (
-              <div
-                key={index}
-                className={`flex items-center gap-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-100 ${
-                  lang === "ar" ? "flex-row-reverse text-right" : ""
-                }`}
-              >
-                <div className="w-10 h-10 bg-medical-light rounded-full flex items-center justify-center text-medical-navy shrink-0">
-                  {item.icon}
+            {t.benefits.items.map((item, index) => {
+              const colors = getFlagColors(index);
+              return (
+                <div
+                  key={index}
+                  // GERMAN ACCENT: Border hover cycles colors
+                  className={`flex items-center gap-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-100 transition-colors ${
+                    lang === "ar" ? "flex-row-reverse text-right" : ""
+                  } ${colors.borderHover}`}
+                >
+                  <div className="w-10 h-10 bg-medical-light rounded-full flex items-center justify-center text-medical-navy shrink-0">
+                    {item.icon}
+                  </div>
+                  <span className="font-bold text-slate-700">{item.text}</span>
                 </div>
-                <span className="font-bold text-slate-700">{item.text}</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -440,9 +510,10 @@ const WorkNurse = ({ lang }) => {
                       key={i}
                       className="flex items-start gap-3 text-slate-300 text-sm"
                     >
+                      {/* GERMAN ACCENT: Checkmark is Gold */}
                       <CheckCircle
                         size={18}
-                        className="text-medical-cyan shrink-0 mt-0.5"
+                        className="text-yellow-500 shrink-0 mt-0.5"
                       />
                       <span>{service}</span>
                     </li>
@@ -459,7 +530,8 @@ const WorkNurse = ({ lang }) => {
 
                 <Link
                   to="/#contact"
-                  className="w-full block bg-medical-navy text-white py-3 rounded-xl font-bold hover:bg-medical-cyan transition-colors shadow-lg text-sm"
+                  // GERMAN ACCENT: Button is Black -> Red hover
+                  className="w-full block bg-black text-white py-3 rounded-xl font-bold hover:bg-red-600 transition-colors shadow-lg text-sm"
                 >
                   {t.ctaBox.btn}
                 </Link>
