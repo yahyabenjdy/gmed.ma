@@ -12,6 +12,8 @@ import {
   Share2,
 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+// 1. IMPORT HELMET
+import { Helmet } from "react-helmet-async";
 
 const ChooseLand = ({ lang }) => {
   const navigate = useNavigate();
@@ -576,13 +578,44 @@ const ChooseLand = ({ lang }) => {
     },
   };
 
+  // 2. SEO Content
+  const seo = {
+    fr: {
+      title: "Choisir son Land en Allemagne - Comparatif Médecins",
+      desc: "Quel État choisir pour son Approbation ? Comparatif des 16 Länder : délais, coût de la vie et opportunités pour médecins.",
+    },
+    de: {
+      title: "Bundesland Wahl für Ärzte - Approbation & Leben",
+      desc: "In welchem Bundesland geht die Approbation am schnellsten? Vergleich der 16 Länder für internationale Ärzte.",
+    },
+    ar: {
+      title: "اختيار الولاية للأطباء في ألمانيا - دليل المقارنة",
+      desc: "أي ولاية تختار لمعادلة شهادتك؟ مقارنة شاملة لـ 16 ولاية ألمانية: المدة، التكلفة وفرص العمل.",
+    },
+  };
+
   const t = content[lang] || content.fr;
+  const tSeo = seo[lang] || seo.fr;
+
+  // Helper for tricolors
+  const getFlagColor = (index) => {
+    if (index % 3 === 0) return "text-black";
+    if (index % 3 === 1) return "text-red-600";
+    return "text-yellow-500";
+  };
 
   return (
     <div
       className="bg-[#e0f9fd] min-h-screen pb-0"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
+      {/* 3. SEO BLOCK */}
+      <Helmet>
+        <title>{tSeo.title}</title>
+        <meta name="description" content={tSeo.desc} />
+        <link rel="canonical" href="https://gmed.ma/choose-land" />
+      </Helmet>
+
       {/* --- HERO HEADER (Reduced Size: pt-8 pb-10) --- */}
       <section className="relative pt-8 pb-10 bg-medical-navy overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00b4d8_1px,transparent_1px)] [background-size:20px_20px]"></div>
@@ -591,7 +624,7 @@ const ChooseLand = ({ lang }) => {
           <div className="flex justify-between items-center mb-6">
             <button
               onClick={handleBack}
-              className={`flex items-center gap-2 text-medical-cyan font-bold hover:text-white transition-colors text-sm ${
+              className={`flex items-center gap-2 text-medical-cyan font-bold hover:text-white transition-colors text-sm group ${
                 lang === "ar" ? "flex-row-reverse" : ""
               }`}
             >
@@ -599,7 +632,11 @@ const ChooseLand = ({ lang }) => {
                 size={18}
                 className={lang === "ar" ? "rotate-180" : ""}
               />
-              {lang === "ar" ? "عودة" : lang === "de" ? "Zurück" : "Retour"}
+              <span className="relative">
+                {lang === "ar" ? "عودة" : lang === "de" ? "Zurück" : "Retour"}
+                {/* 1. GERMAN ACCENT: Gold Underline */}
+                <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full"></span>
+              </span>
             </button>
 
             <button
@@ -619,7 +656,8 @@ const ChooseLand = ({ lang }) => {
                 lang === "ar" ? "text-right" : "text-left"
               }`}
             >
-              <div className="inline-flex items-center gap-2 bg-white/10 text-medical-cyan px-4 py-1.5 rounded-full text-sm font-bold mb-4 border border-white/20">
+              {/* 2. GERMAN ACCENT: Gold Tag */}
+              <div className="inline-flex items-center gap-2 bg-yellow-500/10 text-yellow-500 px-4 py-1.5 rounded-full text-sm font-bold mb-4 border border-yellow-500/20">
                 <Map size={16} />
                 {t.hero.tag}
               </div>
@@ -632,7 +670,10 @@ const ChooseLand = ({ lang }) => {
             </div>
             <div className="md:w-1/2 relative flex justify-center items-center">
               <div className="absolute inset-0 bg-medical-cyan blur-3xl opacity-20 rounded-full"></div>
-              {/* Ensure you have /map.png or change this source */}
+              {/* 
+
+[Image of Germany Map]
+ */}
               <img
                 src="/map.png"
                 onError={(e) => {
@@ -640,7 +681,6 @@ const ChooseLand = ({ lang }) => {
                     "https://placehold.co/600x400/0a192f/white?text=Germany+Map";
                 }}
                 alt="Germany Map"
-                // CHANGED: Reduced height, added object-contain and mx-auto for centering
                 className="relative rounded-2xl shadow-2xl border border-white/10 z-10 w-auto h-48 md:h-64 object-contain mx-auto"
               />
             </div>
@@ -663,7 +703,16 @@ const ChooseLand = ({ lang }) => {
                 key={i}
                 className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center gap-2 hover:-translate-y-1 transition-transform"
               >
-                <div className="text-medical-cyan bg-medical-cyan/10 p-2 rounded-full">
+                {/* 3. GERMAN ACCENT: Icons Cycle Colors */}
+                <div
+                  className={`p-2 rounded-full ${
+                    i % 3 === 0
+                      ? "text-black bg-black/10"
+                      : i % 3 === 1
+                      ? "text-red-600 bg-red-600/10"
+                      : "text-yellow-500 bg-yellow-500/10"
+                  }`}
+                >
                   {c.icon}
                 </div>
                 <span className="text-sm font-bold text-medical-navy">
@@ -764,9 +813,12 @@ const ChooseLand = ({ lang }) => {
           {/* Summary Cards */}
           <div className="grid md:grid-cols-3 gap-6 mb-10">
             <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10 hover:bg-white/20 transition-colors">
-              <div className="flex items-center gap-3 mb-3 text-emerald-300">
+              {/* 4. GERMAN ACCENT: Icons Cycle Colors */}
+              <div className="flex items-center gap-3 mb-3 text-black">
                 <TrendingUp size={24} />
-                <h3 className="font-black text-xl">{t.summary.fast.title}</h3>
+                <h3 className="font-black text-xl text-white">
+                  {t.summary.fast.title}
+                </h3>
               </div>
               <p className="text-slate-300 text-sm leading-relaxed">
                 {t.summary.fast.text}
@@ -774,9 +826,11 @@ const ChooseLand = ({ lang }) => {
             </div>
 
             <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10 hover:bg-white/20 transition-colors">
-              <div className="flex items-center gap-3 mb-3 text-amber-300">
+              <div className="flex items-center gap-3 mb-3 text-red-600">
                 <Map size={24} />
-                <h3 className="font-black text-xl">{t.summary.cosmo.title}</h3>
+                <h3 className="font-black text-xl text-white">
+                  {t.summary.cosmo.title}
+                </h3>
               </div>
               <p className="text-slate-300 text-sm leading-relaxed">
                 {t.summary.cosmo.text}
@@ -784,9 +838,11 @@ const ChooseLand = ({ lang }) => {
             </div>
 
             <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10 hover:bg-white/20 transition-colors">
-              <div className="flex items-center gap-3 mb-3 text-blue-300">
+              <div className="flex items-center gap-3 mb-3 text-yellow-500">
                 <Building2 size={24} />
-                <h3 className="font-black text-xl">{t.summary.stable.title}</h3>
+                <h3 className="font-black text-xl text-white">
+                  {t.summary.stable.title}
+                </h3>
               </div>
               <p className="text-slate-300 text-sm leading-relaxed">
                 {t.summary.stable.text}
@@ -805,7 +861,16 @@ const ChooseLand = ({ lang }) => {
                   key={i}
                   className="flex items-start gap-3 p-3 bg-slate-50 rounded-xl"
                 >
-                  <div className="w-2 h-2 bg-medical-cyan rounded-full mt-2 shrink-0" />
+                  {/* 5. GERMAN ACCENT: Bullet Point Cycles Colors */}
+                  <div
+                    className={`w-2 h-2 rounded-full mt-2 shrink-0 ${
+                      i % 3 === 0
+                        ? "bg-black"
+                        : i % 3 === 1
+                        ? "bg-red-600"
+                        : "bg-yellow-500"
+                    }`}
+                  />
                   <span className="font-medium text-slate-700">{tip}</span>
                 </div>
               ))}
