@@ -9,6 +9,8 @@ import {
   Signal,
 } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+// 1. IMPORT HELMET
+import { Helmet } from "react-helmet-async";
 
 const CoursesPage = ({ lang }) => {
   const location = useLocation();
@@ -40,7 +42,6 @@ const CoursesPage = ({ lang }) => {
       cta: "Jetzt anmelden",
       back: "Zurück",
       courses: [
-        // 1. Recommended (Intensive)
         {
           id: "intensiv",
           name: "Intensivkurs",
@@ -56,7 +57,6 @@ const CoursesPage = ({ lang }) => {
           ],
           featured: true,
         },
-        // 2. Standard
         {
           id: "standard",
           name: "Standardkurs",
@@ -71,7 +71,6 @@ const CoursesPage = ({ lang }) => {
             "Flexibles Lernen",
           ],
         },
-        // 3. Flexible
         {
           id: "flexibel",
           name: "Flexibler Kurs",
@@ -86,7 +85,6 @@ const CoursesPage = ({ lang }) => {
             "Individuelles Tempo",
           ],
         },
-        // 4. Hybrid
         {
           id: "hybrid",
           name: "Kombikurs (Hybrid)",
@@ -101,7 +99,6 @@ const CoursesPage = ({ lang }) => {
             "Effektiver Mix",
           ],
         },
-        // 5. Online Only
         {
           id: "online",
           name: "Online-Kurs",
@@ -125,7 +122,6 @@ const CoursesPage = ({ lang }) => {
       cta: "S'inscrire",
       back: "Retour",
       courses: [
-        // 1. Recommended
         {
           id: "intensiv",
           name: "Cours Intensif",
@@ -141,7 +137,6 @@ const CoursesPage = ({ lang }) => {
           ],
           featured: true,
         },
-        // 2. Standard
         {
           id: "standard",
           name: "Cours Standard",
@@ -156,7 +151,6 @@ const CoursesPage = ({ lang }) => {
             "Apprentissage flexible",
           ],
         },
-        // 3. Flexible
         {
           id: "flexibel",
           name: "Cours Flexible",
@@ -171,7 +165,6 @@ const CoursesPage = ({ lang }) => {
             "Rythme adapté",
           ],
         },
-        // 4. Hybrid
         {
           id: "hybrid",
           name: "Cours Hybride",
@@ -186,7 +179,6 @@ const CoursesPage = ({ lang }) => {
             "Approche mixte efficace",
           ],
         },
-        // 5. Online Only
         {
           id: "online",
           name: "Cours En Ligne",
@@ -209,7 +201,6 @@ const CoursesPage = ({ lang }) => {
       cta: "سجل الآن",
       back: "عودة",
       courses: [
-        // 1. Recommended
         {
           id: "intensiv",
           name: "دورة مكثفة",
@@ -225,7 +216,6 @@ const CoursesPage = ({ lang }) => {
           ],
           featured: true,
         },
-        // 2. Standard
         {
           id: "standard",
           name: "دورة قياسية",
@@ -240,7 +230,6 @@ const CoursesPage = ({ lang }) => {
             "تعلم مرن",
           ],
         },
-        // 3. Flexible
         {
           id: "flexibel",
           name: "دورة مرنة",
@@ -255,7 +244,6 @@ const CoursesPage = ({ lang }) => {
             "وتيرة فردية",
           ],
         },
-        // 4. Hybrid
         {
           id: "hybrid",
           name: "دورة مدمجة (هجين)",
@@ -270,7 +258,6 @@ const CoursesPage = ({ lang }) => {
             "مزيج تعليمي فعال",
           ],
         },
-        // 5. Online Only
         {
           id: "online",
           name: "دورة عن بعد",
@@ -291,19 +278,43 @@ const CoursesPage = ({ lang }) => {
 
   const t = content[lang] || content.de;
 
+  // 2. SEO Content
+  const seo = {
+    fr: {
+      title: "Cours d'Allemand Médical & Intensif - Préparation FSP/KP",
+      desc: "Apprenez l'allemand du niveau A1 au C1. Cours spécialisés pour médecins et infirmiers, préparation aux examens de langue.",
+    },
+    de: {
+      title: "Deutschkurse für Mediziner - A1 bis C1 & FSP Training",
+      desc: "Lernen Sie Deutsch für den medizinischen Alltag. Intensive Vorbereitung auf Fachsprachenprüfung und Approbation.",
+    },
+    ar: {
+      title: "دورات اللغة الألمانية للأطباء والممرضين - من A1 إلى C1",
+      desc: "تعلم الألمانية الطبية مع GMED. دورات مكثفة، تحضير لامتحانات اللغة FSP و KP، ودورات عن بعد.",
+    },
+  };
+
+  const tSeo = seo[lang] || seo.fr;
+
   return (
-    // CHANGED: bg-[#e0f9fd] (15% Cyan/Blue intensity)
     <div
       className="bg-[#e0f9fd] min-h-screen pb-12"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
+      {/* 3. SEO BLOCK */}
+      <Helmet>
+        <title>{tSeo.title}</title>
+        <meta name="description" content={tSeo.desc} />
+        <link rel="canonical" href="https://gmed.ma/courses" />
+      </Helmet>
+
       {/* Header Section */}
       <div className="bg-medical-navy text-white pt-12 pb-10 px-4">
         <div className="max-w-4xl mx-auto">
           {/* Back Button */}
           <button
             onClick={handleBack}
-            className={`flex items-center gap-2 text-medical-cyan font-bold mb-4 hover:text-white transition-colors text-sm ${
+            className={`flex items-center gap-2 text-medical-cyan font-bold mb-4 hover:text-white transition-colors text-sm group ${
               lang === "ar" ? "flex-row-reverse" : ""
             }`}
           >
@@ -311,7 +322,11 @@ const CoursesPage = ({ lang }) => {
               size={18}
               className={lang === "ar" ? "rotate-180" : ""}
             />
-            {t.back}
+            <span className="relative">
+              {t.back}
+              {/* GERMAN ACCENT: Gold Underline on hover */}
+              <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full"></span>
+            </span>
           </button>
 
           <div className="text-center max-w-2xl mx-auto">
@@ -328,22 +343,29 @@ const CoursesPage = ({ lang }) => {
             <div
               key={course.id}
               className={`bg-white rounded-[1.5rem] shadow-md overflow-hidden border border-slate-100 flex flex-col md:flex-row hover:shadow-xl transition-all duration-300 group ${
-                course.featured ? "ring-2 ring-medical-cyan/30" : ""
+                // GERMAN ACCENT: Ring color for featured
+                course.featured ? "ring-2 ring-yellow-500/50" : ""
               }`}
             >
-              {/* Left Side: Icon & Title */}
+              {/* Left Side: Icon & Title - NAVY BLUE GRADIENT */}
               <div className="bg-gradient-to-br from-medical-navy to-[#0a2e4f] p-6 md:w-1/3 flex flex-col justify-center items-center text-white text-center relative overflow-hidden">
                 {/* Background Pattern */}
                 <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
 
                 {course.featured && (
-                  <div className="absolute top-3 right-3 bg-medical-cyan text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full">
+                  // GERMAN ACCENT: Gold Badge
+                  <div className="absolute top-3 right-3 bg-yellow-500 text-black text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-sm">
                     Recommended
                   </div>
                 )}
 
-                <GraduationCap size={36} className="mb-3 text-medical-cyan" />
+                <GraduationCap
+                  size={36}
+                  // CHANGED: Icon is Yellow/Gold
+                  className="mb-3 text-yellow-500"
+                />
                 <h3 className="text-xl font-black">{course.name}</h3>
+                {/* Text in Medical Light */}
                 <div className="mt-2 inline-flex items-center gap-1.5 bg-white/10 px-2.5 py-0.5 rounded-full text-xs font-bold text-medical-light">
                   <Signal size={12} /> {course.level}
                 </div>
@@ -363,10 +385,11 @@ const CoursesPage = ({ lang }) => {
                     }`}
                   >
                     <div className="flex items-center gap-1.5">
-                      <Clock size={14} className="text-medical-cyan" />
+                      <Clock size={14} className="text-black" />
                       {course.schedule}
                     </div>
-                    <div className="flex items-center gap-1.5 text-medical-navy font-bold text-base">
+                    {/* GERMAN ACCENT: Price is Red */}
+                    <div className="flex items-center gap-1.5 text-red-600 font-bold text-base">
                       {course.price}
                     </div>
                   </div>
@@ -383,8 +406,9 @@ const CoursesPage = ({ lang }) => {
                           lang === "ar" ? "flex-row-reverse" : ""
                         }`}
                       >
-                        <div className="w-4 h-4 rounded-full bg-medical-cyan/10 flex items-center justify-center shrink-0">
-                          <Check size={10} className="text-medical-cyan" />
+                        {/* GERMAN ACCENT: Checkmark is Black */}
+                        <div className="w-4 h-4 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+                          <Check size={10} className="text-black" />
                         </div>
                         <span>{feature}</span>
                       </div>
@@ -394,7 +418,8 @@ const CoursesPage = ({ lang }) => {
 
                 <Link
                   to="/register"
-                  className="btn-primary w-full sm:w-auto self-start flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-bold bg-medical-cyan text-white hover:bg-medical-navy transition-colors shadow-lg shadow-medical-cyan/20 text-sm"
+                  // GERMAN ACCENT: CTA is Black -> Red on hover
+                  className="btn-primary w-full sm:w-auto self-start flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-bold bg-black text-white hover:bg-red-600 transition-colors shadow-lg text-sm"
                 >
                   {t.cta}
                   <ArrowRight
