@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Calendar, User, Clock } from "lucide-react";
+// 1. Import Helmet for SEO
+import { Helmet } from "react-helmet-async";
 
 const NewsDetail = ({ lang }) => {
   const { id } = useParams();
@@ -95,19 +97,19 @@ const NewsDetail = ({ lang }) => {
   // Translation helpers for UI
   const uiText = {
     fr: {
-      back: "Retour aux articles", // <--- CHANGED HERE
+      back: "Retour aux articles",
       author: "Expertise GMED",
       readTime: "5 min de lecture",
       notFound: "Article introuvable.",
     },
     de: {
-      back: "Zurück zu den Artikeln", // <--- CHANGED HERE
+      back: "Zurück zu den Artikeln",
       author: "GMED Expertise",
       readTime: "5 Min. Lesezeit",
       notFound: "Artikel nicht gefunden.",
     },
     ar: {
-      back: "العودة للمقالات", // <--- CHANGED HERE
+      back: "العودة للمقالات",
       author: "خبرة GMED",
       readTime: "5 دقائق قراءة",
       notFound: "المقال غير موجود.",
@@ -121,74 +123,90 @@ const NewsDetail = ({ lang }) => {
     );
 
   return (
-    // BACKGROUND: Exact #caf0f8 (30% Blue)
-    <div className="pt-28 pb-24 min-h-screen bg-[#caf0f8]">
-      <div className="max-w-4xl mx-auto px-4">
-        {/* Back Link */}
-        <Link
-          to="/news"
-          className={`inline-flex items-center gap-2 text-[#0077b6] font-bold mb-8 hover:-translate-x-2 transition-transform ${
-            lang === "ar" ? "flex-row-reverse" : ""
-          }`}
-        >
-          <ArrowLeft size={20} className={lang === "ar" ? "rotate-180" : ""} />
-          <span className="text-slate-600 hover:text-medical-cyan transition-colors">
-            {t.back}
-          </span>
-        </Link>
+    // 2. SEO Helmet Block
+    <>
+      <Helmet>
+        <title>{article.title}</title>
+        {/* Uses the first 160 characters of content as description */}
+        <meta
+          name="description"
+          content={article.content.substring(0, 160) + "..."}
+        />
+        <link rel="canonical" href={`https://gmed.ma/news/${id}`} />
+      </Helmet>
 
-        {/* Article Card */}
-        <article className="bg-white rounded-[2rem] overflow-hidden shadow-xl border border-white/60">
-          <div className="relative h-[350px] md:h-[500px]">
-            <img
-              src={article.img}
-              alt={article.title}
-              className="w-full h-full object-cover"
-            />
-            {/* Subtle gradient to make text over image readable if we had any */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-          </div>
-
-          <div
-            className={`p-8 md:p-12 ${
-              lang === "ar" ? "text-right" : "text-left"
+      {/* BACKGROUND: Exact #caf0f8 (30% Blue) */}
+      <div className="pt-28 pb-24 min-h-screen bg-[#caf0f8]">
+        <div className="max-w-4xl mx-auto px-4">
+          {/* Back Link */}
+          <Link
+            to="/news"
+            className={`inline-flex items-center gap-2 text-[#0077b6] font-bold mb-8 hover:-translate-x-2 transition-transform ${
+              lang === "ar" ? "flex-row-reverse" : ""
             }`}
           >
+            <ArrowLeft
+              size={20}
+              className={lang === "ar" ? "rotate-180" : ""}
+            />
+            <span className="text-slate-600 hover:text-medical-cyan transition-colors">
+              {t.back}
+            </span>
+          </Link>
+
+          {/* Article Card */}
+          <article className="bg-white rounded-[2rem] overflow-hidden shadow-xl border border-white/60">
+            <div className="relative h-[350px] md:h-[500px]">
+              <img
+                src={article.img}
+                alt={article.title}
+                className="w-full h-full object-cover"
+              />
+              {/* Subtle gradient to make text over image readable if we had any */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            </div>
+
             <div
-              className={`flex flex-wrap gap-6 text-slate-500 text-sm mb-8 pb-6 border-b border-slate-100 ${
-                lang === "ar" ? "flex-row-reverse" : ""
+              className={`p-8 md:p-12 ${
+                lang === "ar" ? "text-right" : "text-left"
               }`}
             >
-              <div className="flex items-center gap-2">
-                <Calendar size={16} className="text-medical-cyan" />{" "}
-                {article.date}
+              <div
+                className={`flex flex-wrap gap-6 text-slate-500 text-sm mb-8 pb-6 border-b border-slate-100 ${
+                  lang === "ar" ? "flex-row-reverse" : ""
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <Calendar size={16} className="text-medical-cyan" />{" "}
+                  {article.date}
+                </div>
+                <div className="flex items-center gap-2">
+                  <User size={16} className="text-medical-cyan" /> {t.author}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock size={16} className="text-medical-cyan" /> {t.readTime}
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <User size={16} className="text-medical-cyan" /> {t.author}
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock size={16} className="text-medical-cyan" /> {t.readTime}
+
+              <h1 className="text-3xl md:text-5xl font-black text-medical-navy mb-8 leading-tight">
+                {article.title}
+              </h1>
+
+              <div className="prose prose-lg max-w-none text-slate-600 leading-relaxed">
+                {article.content.split("\n\n").map((para, i) => (
+                  <p
+                    key={i}
+                    className="mb-6 first-letter:text-3xl first-letter:font-bold first-letter:text-medical-cyan"
+                  >
+                    {para}
+                  </p>
+                ))}
               </div>
             </div>
-
-            <h1 className="text-3xl md:text-5xl font-black text-medical-navy mb-8 leading-tight">
-              {article.title}
-            </h1>
-
-            <div className="prose prose-lg max-w-none text-slate-600 leading-relaxed">
-              {article.content.split("\n\n").map((para, i) => (
-                <p
-                  key={i}
-                  className="mb-6 first-letter:text-3xl first-letter:font-bold first-letter:text-medical-cyan"
-                >
-                  {para}
-                </p>
-              ))}
-            </div>
-          </div>
-        </article>
+          </article>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
