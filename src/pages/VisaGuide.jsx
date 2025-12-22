@@ -19,6 +19,8 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+// 1. IMPORT HELMET
+import { Helmet } from "react-helmet-async";
 
 const VisaGuide = ({ lang }) => {
   const navigate = useNavigate();
@@ -331,11 +333,50 @@ const VisaGuide = ({ lang }) => {
 
   const t = content[lang] || content.fr;
 
+  // 2. SEO Content
+  const seo = {
+    fr: {
+      title: "Visa 16d & Compte Bloqué - Guide Complet pour l'Allemagne",
+      desc: "Tout savoir sur le Visa 16d (Reconnaissance), le Compte Bloqué (Sperrkonto) et la liste des documents pour médecins et infirmiers.",
+    },
+    de: {
+      title: "Visum 16d & Sperrkonto - Der Guide für medizinische Fachkräfte",
+      desc: "Schritt-für-Schritt-Anleitung für das Visum 16d, Sperrkonto-Eröffnung (Fintiba/Expatrio) und Dokumentenliste.",
+    },
+    ar: {
+      title: "دليل تأشيرة 16d والحساب البنكي المغلق في ألمانيا",
+      desc: "الدليل الشامل للأطباء والممرضين: الوثائق المطلوبة، فيزا 16d، وخطوات فتح الحساب المغلق (Sperrkonto).",
+    },
+  };
+
+  const tSeo = seo[lang] || seo.fr;
+
+  // Helper for tricolors
+  const getFlagColors = (index) => {
+    if (index % 3 === 0) return "text-black";
+    if (index % 3 === 1) return "text-red-600";
+    return "text-yellow-500";
+  };
+
+  // Helper for border colors
+  const getBorderColors = (index) => {
+    if (index % 3 === 0) return "border-black";
+    if (index % 3 === 1) return "border-red-600";
+    return "border-yellow-500";
+  };
+
   return (
     <div
       className="bg-[#e0f9fd] min-h-screen pb-0"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
+      {/* 3. SEO BLOCK */}
+      <Helmet>
+        <title>{tSeo.title}</title>
+        <meta name="description" content={tSeo.desc} />
+        <link rel="canonical" href="https://gmed.ma/visa-guide" />
+      </Helmet>
+
       {/* --- HERO SECTION --- */}
       <section className="relative pt-10 pb-12 bg-medical-navy overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00b4d8_1px,transparent_1px)] [background-size:20px_20px]"></div>
@@ -344,27 +385,27 @@ const VisaGuide = ({ lang }) => {
           <div className="flex justify-between items-center mb-6">
             <button
               onClick={handleBack}
-              // UPDATED: text-sm (was text-xs) to match other pages
-              className={`flex items-center gap-2 text-medical-cyan font-bold hover:text-white transition-colors text-sm ${
+              className={`flex items-center gap-2 text-medical-cyan font-bold hover:text-white transition-colors text-sm group ${
                 lang === "ar" ? "flex-row-reverse" : ""
               }`}
             >
-              {/* UPDATED: size={18} (was size={16}) to match other pages */}
               <ArrowLeft
                 size={18}
                 className={lang === "ar" ? "rotate-180" : ""}
               />
-              {lang === "ar" ? "عودة" : lang === "de" ? "Zurück" : "Retour"}
+              <span className="relative">
+                {lang === "ar" ? "عودة" : lang === "de" ? "Zurück" : "Retour"}
+                {/* 1. GERMAN ACCENT: Gold Underline */}
+                <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full"></span>
+              </span>
             </button>
 
             <button
               onClick={handleShare}
-              // UPDATED: text-sm (was text-xs) to match other pages
               className={`flex items-center gap-2 text-white/80 hover:text-medical-cyan transition-colors text-sm font-medium ${
                 lang === "ar" ? "flex-row-reverse" : ""
               }`}
             >
-              {/* UPDATED: size={18} (was size={16}) to match other pages */}
               <Share2 size={18} />
               {t.share}
             </button>
@@ -377,7 +418,8 @@ const VisaGuide = ({ lang }) => {
                 lang === "ar" ? "text-right" : "text-left"
               }`}
             >
-              <div className="inline-flex items-center gap-2 bg-white/10 text-medical-cyan px-3 py-1 rounded-full text-xs font-bold mb-4 border border-white/20">
+              {/* 2. GERMAN ACCENT: Gold Tag */}
+              <div className="inline-flex items-center gap-2 bg-yellow-500/10 text-yellow-500 px-3 py-1 rounded-full text-xs font-bold mb-4 border border-yellow-500/20">
                 <FileText size={14} />
                 {t.hero.tag}
               </div>
@@ -389,7 +431,7 @@ const VisaGuide = ({ lang }) => {
               </p>
             </div>
 
-            {/* Smaller Image (Fixed Height) */}
+            {/* Smaller Image */}
             <div className="md:w-1/2 relative flex justify-center items-center">
               <div className="absolute inset-0 bg-medical-cyan blur-3xl opacity-20 rounded-full"></div>
               <img
@@ -399,7 +441,6 @@ const VisaGuide = ({ lang }) => {
                     "https://placehold.co/800x530/0a192f/white?text=Visa+Docs";
                 }}
                 alt="Visa Documents"
-                // Fixed height to prevent it from being huge
                 className="relative rounded-2xl shadow-2xl border border-white/10 z-10 w-auto h-40 md:h-52 object-contain mx-auto"
               />
             </div>
@@ -420,8 +461,10 @@ const VisaGuide = ({ lang }) => {
                 <ShieldCheck size={32} />
               </div>
               <div className={lang === "ar" ? "text-right" : "text-left"}>
-                <h2 className="text-2xl font-black text-medical-navy mb-2">
+                {/* 3. GERMAN ACCENT: Gold Underline on Title */}
+                <h2 className="text-2xl font-black text-medical-navy mb-2 relative inline-block">
                   {t.sections.docs.title}
+                  <div className="absolute -bottom-1 left-0 w-1/4 h-1 bg-yellow-500 rounded-full" />
                 </h2>
                 <p className="text-base text-slate-600 mb-3">
                   {t.sections.docs.desc}
@@ -441,9 +484,10 @@ const VisaGuide = ({ lang }) => {
                     lang === "ar" ? "flex-row-reverse text-right" : ""
                   }`}
                 >
+                  {/* 4. GERMAN ACCENT: Checkmark cycles Black/Red/Gold */}
                   <CheckCircle
                     size={18}
-                    className="text-medical-cyan shrink-0 mt-0.5"
+                    className={`${getFlagColors(i)} shrink-0 mt-0.5`}
                   />
                   <span className="text-sm font-bold text-slate-700 leading-snug">
                     {item}
@@ -472,7 +516,8 @@ const VisaGuide = ({ lang }) => {
               </p>
 
               <div className="flex items-center gap-3 bg-white/10 p-4 rounded-xl border border-white/10 w-fit">
-                <Clock className="text-medical-cyan" size={20} />
+                {/* 5. GERMAN ACCENT: Clock is Gold */}
+                <Clock className="text-yellow-500" size={20} />
                 <span className="font-bold text-base">
                   {t.sections.visa.timeline}
                 </span>
@@ -492,8 +537,11 @@ const VisaGuide = ({ lang }) => {
                       lang === "ar" ? "flex-row-reverse text-right" : ""
                     }`}
                   >
-                    <div className="w-6 h-6 rounded-full bg-medical-cyan/10 flex items-center justify-center shrink-0">
-                      <span className="text-xs font-black text-medical-cyan">
+                    <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+                      {/* 6. GERMAN ACCENT: Numbers cycle colors */}
+                      <span
+                        className={`text-xs font-black ${getFlagColors(i)}`}
+                      >
                         {i + 1}
                       </span>
                     </div>
@@ -508,7 +556,7 @@ const VisaGuide = ({ lang }) => {
         </div>
       </section>
 
-      {/* --- SECTION 3: SPERRKONTO (Compacted further) --- */}
+      {/* --- SECTION 3: SPERRKONTO --- */}
       <section className="py-12 bg-medical-navy text-white relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px]"></div>
 
@@ -526,9 +574,9 @@ const VisaGuide = ({ lang }) => {
           </div>
 
           <div className="relative pl-2 md:pl-8">
-            {/* Vertical Chain Line */}
+            {/* 7. GERMAN ACCENT: Gradient Chain Line */}
             <div
-              className={`absolute top-4 bottom-4 w-0.5 bg-medical-cyan/30 ${
+              className={`absolute top-4 bottom-4 w-0.5 bg-gradient-to-b from-black via-red-600 to-yellow-500 ${
                 lang === "ar" ? "right-5 md:right-10" : "left-5 md:left-10"
               }`}
             ></div>
@@ -541,9 +589,11 @@ const VisaGuide = ({ lang }) => {
                     lang === "ar" ? "flex-row-reverse" : "flex-row"
                   }`}
                 >
-                  {/* Icon Circle (Chain Link) */}
+                  {/* 8. GERMAN ACCENT: Border Color Cycles */}
                   <div
-                    className={`absolute top-0 w-10 h-10 bg-medical-navy border-2 border-medical-cyan rounded-full flex items-center justify-center z-10 shadow-[0_0_20px_rgba(34,211,238,0.3)] ${
+                    className={`absolute top-0 w-10 h-10 bg-medical-navy border-2 rounded-full flex items-center justify-center z-10 ${getBorderColors(
+                      i
+                    )} ${
                       lang === "ar" ? "right-0 md:right-5" : "left-0 md:left-5"
                     }`}
                   >
@@ -576,7 +626,8 @@ const VisaGuide = ({ lang }) => {
           <div className="mt-16 text-center">
             <Link
               to="/#contact"
-              className="inline-flex items-center gap-2 bg-medical-cyan text-medical-navy px-8 py-4 rounded-xl font-bold hover:bg-white transition-colors shadow-lg shadow-medical-cyan/20 text-base"
+              // 9. GERMAN ACCENT: Button Black -> Red hover
+              className="inline-flex items-center gap-2 bg-black text-white px-8 py-4 rounded-xl font-bold hover:bg-red-600 transition-colors shadow-lg shadow-black/20 text-base"
             >
               {t.cta}
             </Link>
