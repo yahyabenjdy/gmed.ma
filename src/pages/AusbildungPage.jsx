@@ -11,6 +11,8 @@ import {
   Landmark,
 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+// 1. IMPORT HELMET
+import { Helmet } from "react-helmet-async";
 
 const AusbildungPage = ({ lang }) => {
   const navigate = useNavigate();
@@ -234,13 +236,61 @@ const AusbildungPage = ({ lang }) => {
     },
   };
 
+  // 2. SEO Content
+  const seo = {
+    fr: {
+      title: "Ausbildung en Allemagne - Formation Rémunérée & Visa",
+      desc: "Devenez infirmier via l'Ausbildung en Allemagne. Formation 100% financée, salaire mensuel dès le début et emploi garanti.",
+    },
+    de: {
+      title: "Ausbildung in Deutschland - Berufsausbildung für Internationale",
+      desc: "Starten Sie Ihre Karriere in Deutschland mit einer dualen Ausbildung. Bezahlte Lehre, Visum-Unterstützung und Jobgarantie.",
+    },
+    ar: {
+      title: "الأوسبيلدونغ في ألمانيا - تكوين مهني مدفوع الأجر",
+      desc: "احصل على عقد أوسبيلدونغ في التمريض. راتب شهري، سكن، وتأشيرة مضمونة مع GMED.",
+    },
+  };
+
   const t = content[lang] || content.fr;
+  const tSeo = seo[lang] || seo.fr;
+
+  // Helper to assign flag colors (Black -> Red -> Gold)
+  const getFlagColors = (index) => {
+    if (index % 3 === 0)
+      return {
+        icon: "text-black",
+        bg: "bg-black/10",
+        hoverBg: "group-hover:bg-black",
+        borderHover: "hover:border-black/50",
+      };
+    if (index % 3 === 1)
+      return {
+        icon: "text-red-600",
+        bg: "bg-red-600/10",
+        hoverBg: "group-hover:bg-red-600",
+        borderHover: "hover:border-red-600/50",
+      };
+    return {
+      icon: "text-yellow-500",
+      bg: "bg-yellow-500/10",
+      hoverBg: "group-hover:bg-yellow-500",
+      borderHover: "hover:border-yellow-500/50",
+    };
+  };
 
   return (
     <div
       className="bg-[#e0f9fd] min-h-screen pb-0"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
+      {/* 3. SEO BLOCK */}
+      <Helmet>
+        <title>{tSeo.title}</title>
+        <meta name="description" content={tSeo.desc} />
+        <link rel="canonical" href="https://gmed.ma/ausbildung" />
+      </Helmet>
+
       {/* 1. Header Section */}
       <div className="bg-medical-navy text-white pt-12 pb-24 px-4 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00b4d8_1px,transparent_1px)] [background-size:20px_20px]"></div>
@@ -248,7 +298,7 @@ const AusbildungPage = ({ lang }) => {
         <div className="max-w-5xl mx-auto relative z-10">
           <button
             onClick={handleBack}
-            className={`flex items-center gap-2 text-medical-cyan font-bold mb-6 hover:text-white transition-colors text-sm ${
+            className={`flex items-center gap-2 text-medical-cyan font-bold mb-6 hover:text-white transition-colors text-sm group ${
               lang === "ar" ? "flex-row-reverse" : ""
             }`}
           >
@@ -256,24 +306,33 @@ const AusbildungPage = ({ lang }) => {
               size={18}
               className={lang === "ar" ? "rotate-180" : ""}
             />
-            {t.back}
+            <span className="relative">
+              {t.back}
+              {/* GERMAN ACCENT: Gold Underline */}
+              <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full"></span>
+            </span>
           </button>
 
           <div className="flex flex-col md:flex-row items-center gap-10">
             <div className="md:w-1/2">
-              <span className="inline-block px-3 py-1 rounded-full bg-medical-cyan/20 text-medical-cyan text-[10px] font-bold uppercase tracking-widest mb-4 border border-medical-cyan/30">
+              {/* GERMAN ACCENT: Tag is Gold */}
+              <span className="inline-block px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-500 text-[10px] font-bold uppercase tracking-widest mb-4 border border-yellow-500/30">
                 {t.tag}
               </span>
               <h1 className="text-3xl md:text-5xl font-black mb-4 leading-tight">
                 {t.title}
-                <span className="text-medical-cyan">{t.highlight}</span>
+                {/* GERMAN ACCENT: Gradient Text for Germany */}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-red-500 to-yellow-500">
+                  {t.highlight}
+                </span>
               </h1>
               <p className="text-medical-light/90 text-lg mb-8 leading-relaxed">
                 {t.subtitle}
               </p>
               <Link
                 to="/register"
-                className="inline-flex items-center gap-2 bg-medical-cyan text-white px-8 py-3 rounded-xl font-bold hover:bg-[#0096b4] transition-all shadow-lg shadow-medical-cyan/20"
+                // GERMAN ACCENT: Button is Black -> Red hover
+                className="inline-flex items-center gap-2 bg-black text-white px-8 py-3 rounded-xl font-bold hover:bg-red-600 transition-all shadow-lg shadow-black/20"
               >
                 {t.cta}
                 <ArrowRight
@@ -303,22 +362,28 @@ const AusbildungPage = ({ lang }) => {
       {/* 2. Benefits Section */}
       <div className="max-w-5xl mx-auto px-4 -mt-16 relative z-20">
         <div className="grid md:grid-cols-3 gap-6 mb-16">
-          {t.benefits.map((benefit, idx) => (
-            <div
-              key={idx}
-              className="bg-white p-6 rounded-2xl shadow-lg border border-white/50 hover:-translate-y-1 transition-transform duration-300 group"
-            >
-              <div className="w-12 h-12 bg-medical-light rounded-xl flex items-center justify-center text-medical-navy mb-4 group-hover:bg-medical-cyan group-hover:text-white transition-colors">
-                <Star size={24} />
+          {t.benefits.map((benefit, idx) => {
+            const colors = getFlagColors(idx);
+            return (
+              <div
+                key={idx}
+                className="bg-white p-6 rounded-2xl shadow-lg border border-white/50 hover:-translate-y-1 transition-transform duration-300 group"
+              >
+                {/* GERMAN ACCENT: Cycling Colors for Icon Container */}
+                <div
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors ${colors.bg} ${colors.icon} ${colors.hoverBg} group-hover:text-white`}
+                >
+                  <Star size={24} />
+                </div>
+                <h3 className="text-lg font-bold text-medical-navy mb-2">
+                  {benefit.title}
+                </h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  {benefit.desc}
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-medical-navy mb-2">
-                {benefit.title}
-              </h3>
-              <p className="text-slate-600 text-sm leading-relaxed">
-                {benefit.desc}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* 3. Steps / Timeline Section */}
@@ -327,24 +392,31 @@ const AusbildungPage = ({ lang }) => {
             {t.stepsTitle}
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
-            {t.steps.map((step, index) => (
-              <div
-                key={index}
-                className="bg-white p-6 rounded-2xl shadow-md border border-white/60 hover:border-medical-cyan/50 transition-colors flex items-start gap-4"
-              >
-                <div className="w-10 h-10 rounded-full bg-medical-navy/5 flex items-center justify-center text-medical-navy shrink-0 mt-1">
-                  {step.icon}
+            {t.steps.map((step, index) => {
+              const colors = getFlagColors(index);
+              return (
+                <div
+                  key={index}
+                  // GERMAN ACCENT: Hover border color cycles
+                  className={`bg-white p-6 rounded-2xl shadow-md border border-white/60 transition-colors flex items-start gap-4 ${colors.borderHover}`}
+                >
+                  {/* GERMAN ACCENT: Icon cycles colors */}
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 mt-1 ${colors.bg} ${colors.icon}`}
+                  >
+                    {step.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-medical-navy mb-1">
+                      {step.title}
+                    </h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      {step.desc}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-lg font-bold text-medical-navy mb-1">
-                    {step.title}
-                  </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
-                    {step.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -370,9 +442,10 @@ const AusbildungPage = ({ lang }) => {
                       key={i}
                       className="flex items-start gap-3 text-slate-300 text-sm"
                     >
+                      {/* GERMAN ACCENT: Checkmark is Gold */}
                       <CheckCircle
                         size={18}
-                        className="text-medical-cyan shrink-0 mt-0.5"
+                        className="text-yellow-500 shrink-0 mt-0.5"
                       />
                       <span>{service}</span>
                     </li>
@@ -388,7 +461,8 @@ const AusbildungPage = ({ lang }) => {
 
                 <Link
                   to="/#contact"
-                  className="w-full block bg-medical-navy text-white py-3 rounded-xl font-bold hover:bg-medical-cyan transition-colors shadow-lg text-sm"
+                  // GERMAN ACCENT: Button is Black -> Red hover
+                  className="w-full block bg-black text-white py-3 rounded-xl font-bold hover:bg-red-600 transition-colors shadow-lg text-sm"
                 >
                   {t.ctaCard.btn}
                 </Link>
