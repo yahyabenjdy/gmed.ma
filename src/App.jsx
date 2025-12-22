@@ -5,6 +5,8 @@ import {
   useLocation,
   useNavigationType,
 } from "react-router-dom";
+// 1. IMPORT HELMET AND PROVIDER
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // Layout Components
 import TopBar from "./components/TopBar";
@@ -27,6 +29,7 @@ import FinancialAid from "./pages/FinancialAid";
 import IntegrationGuide from "./pages/IntegrationGuide";
 import VisaGuide from "./pages/VisaGuide";
 import Register from "./pages/Register";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const [lang, setLang] = useState("fr");
@@ -49,49 +52,68 @@ function App() {
   }, [pathname, hash, navType]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      <TopBar lang={lang} />
-      <Navbar lang={lang} setLang={setLang} />
+    <HelmetProvider>
+      <div className="min-h-screen bg-white flex flex-col">
+        {/* 2. GLOBAL SEO CONFIGURATION - FIXED */}
+        {/* titleTemplate goes HERE as a prop, not inside */}
+        <Helmet titleTemplate="%s | GMED">
+          <html lang={lang} dir={lang === "ar" ? "rtl" : "ltr"} />
+          <title>GMED - Carrière Médicale en Allemagne</title>
 
-      <main className="flex-grow">
-        <Routes>
-          <Route path="/" element={<Home lang={lang} />} />
-          <Route path="/news" element={<News lang={lang} />} />
-          <Route path="/news/:id" element={<NewsDetail lang={lang} />} />
-
-          {/* Career & Study Routes */}
-          <Route path="/courses" element={<CoursesPage lang={lang} />} />
-          <Route path="/ausbildung" element={<AusbildungPage lang={lang} />} />
-          <Route path="/study" element={<StudyPage lang={lang} />} />
-
-          {/* --- FIXED ROUTES TO MATCH WORK.JSX --- */}
-          <Route path="/work/doctor" element={<WorkDoctor lang={lang} />} />
-          <Route path="/work/nurse" element={<WorkNurse lang={lang} />} />
-          {/* -------------------------------------- */}
-
-          {/* Guides Routes */}
-          <Route path="/choose-land" element={<ChooseLand lang={lang} />} />
-          <Route path="/financial-aid" element={<FinancialAid lang={lang} />} />
-          <Route
-            path="/integration-guide"
-            element={<IntegrationGuide lang={lang} />}
+          <meta
+            name="description"
+            content="GMED accompagne les médecins, infirmiers et étudiants marocains vers une carrière en Allemagne. Ausbildung, Études, et Emploi médical."
           />
-          <Route path="/visa-guide" element={<VisaGuide lang={lang} />} />
+        </Helmet>
 
-          {/* Registration Route */}
-          <Route path="/register" element={<Register lang={lang} />} />
+        <TopBar lang={lang} />
+        <Navbar lang={lang} setLang={setLang} />
 
-          {/* Fallback */}
-          <Route path="*" element={<Home lang={lang} />} />
-        </Routes>
-      </main>
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home lang={lang} />} />
+            <Route path="/news" element={<News lang={lang} />} />
+            <Route path="/news/:id" element={<NewsDetail lang={lang} />} />
 
-      <Footer lang={lang} />
+            {/* Career & Study Routes */}
+            <Route path="/courses" element={<CoursesPage lang={lang} />} />
+            <Route
+              path="/ausbildung"
+              element={<AusbildungPage lang={lang} />}
+            />
+            <Route path="/study" element={<StudyPage lang={lang} />} />
 
-      {/* Floating Buttons */}
-      <WhatsAppButton />
-      <ScrollToTop />
-    </div>
+            {/* Work Routes */}
+            <Route path="/work/doctor" element={<WorkDoctor lang={lang} />} />
+            <Route path="/work/nurse" element={<WorkNurse lang={lang} />} />
+
+            {/* Guides Routes */}
+            <Route path="/choose-land" element={<ChooseLand lang={lang} />} />
+            <Route
+              path="/financial-aid"
+              element={<FinancialAid lang={lang} />}
+            />
+            <Route
+              path="/integration-guide"
+              element={<IntegrationGuide lang={lang} />}
+            />
+            <Route path="/visa-guide" element={<VisaGuide lang={lang} />} />
+
+            {/* Registration Route */}
+            <Route path="/register" element={<Register lang={lang} />} />
+
+            {/* Fallback */}
+            <Route path="*" element={<NotFound lang={lang} />} />
+          </Routes>
+        </main>
+
+        <Footer lang={lang} />
+
+        {/* Floating Buttons */}
+        <WhatsAppButton />
+        <ScrollToTop />
+      </div>
+    </HelmetProvider>
   );
 }
 
