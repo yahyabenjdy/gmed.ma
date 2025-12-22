@@ -13,6 +13,8 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+// 1. IMPORT HELMET
+import { Helmet } from "react-helmet-async";
 
 const IntegrationGuide = ({ lang }) => {
   const navigate = useNavigate();
@@ -297,20 +299,65 @@ const IntegrationGuide = ({ lang }) => {
 
   const t = content[lang] || content.fr;
 
+  // Helper for flag colors (Black -> Red -> Gold)
+  const getFlagColors = (index) => {
+    if (index % 3 === 0)
+      return {
+        border: "border-black",
+        text: "text-white", // White icon on navy bg for "Black" step
+        check: "text-white/70", // Checkmark inside Navy card
+      };
+    if (index % 3 === 1)
+      return {
+        border: "border-red-600",
+        text: "text-red-600",
+        check: "text-red-500",
+      };
+    return {
+      border: "border-yellow-500",
+      text: "text-yellow-500",
+      check: "text-yellow-500",
+    };
+  };
+
+  // 2. SEO Content
+  const seo = {
+    fr: {
+      title: "Vivre en Allemagne - Guide d'Intégration & Logement",
+      desc: "Guide pratique pour votre arrivée en Allemagne : Comment trouver un logement, faire l'Anmeldung, ouvrir un compte et s'assurer.",
+    },
+    de: {
+      title: "Leben in Deutschland - Integrationsguide für Fachkräfte",
+      desc: "Ihr Start in Deutschland: Wohnungssuche, Anmeldung beim Bürgeramt, Bankkonto und Versicherungen einfach erklärt.",
+    },
+    ar: {
+      title: "العيش في ألمانيا - دليل الاندماج والسكن",
+      desc: "دليلك العملي عند الوصول: البحث عن سكن، التسجيل في البلدية (Anmeldung)، فتح حساب بنكي والتأمين الصحي.",
+    },
+  };
+
+  const tSeo = seo[lang] || seo.fr;
+
   return (
     <div
       className="bg-[#e0f9fd] min-h-screen pb-0"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
+      {/* 3. SEO BLOCK */}
+      <Helmet>
+        <title>{tSeo.title}</title>
+        <meta name="description" content={tSeo.desc} />
+        <link rel="canonical" href="https://gmed.ma/integration-guide" />
+      </Helmet>
+
       {/* --- HERO SECTION --- */}
       <section className="relative pt-10 pb-12 bg-medical-navy overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00b4d8_1px,transparent_1px)] [background-size:20px_20px]"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Top Actions */}
           <div className="flex justify-between items-center mb-6">
             <button
               onClick={handleBack}
-              className={`flex items-center gap-2 text-medical-cyan font-bold hover:text-white transition-colors text-sm ${
+              className={`flex items-center gap-2 text-medical-cyan font-bold hover:text-white transition-colors text-sm group ${
                 lang === "ar" ? "flex-row-reverse" : ""
               }`}
             >
@@ -318,7 +365,11 @@ const IntegrationGuide = ({ lang }) => {
                 size={18}
                 className={lang === "ar" ? "rotate-180" : ""}
               />
-              {lang === "ar" ? "عودة" : lang === "de" ? "Zurück" : "Retour"}
+              <span className="relative">
+                {lang === "ar" ? "عودة" : lang === "de" ? "Zurück" : "Retour"}
+                {/* 1. GERMAN ACCENT: Gold Underline */}
+                <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full"></span>
+              </span>
             </button>
 
             <button
@@ -332,29 +383,29 @@ const IntegrationGuide = ({ lang }) => {
             </button>
           </div>
 
-          {/* Hero Content */}
           <div className="flex flex-col md:flex-row items-center gap-10">
             <div
-              className={`md:w-1/2 ${
-                lang === "ar" ? "text-right" : "text-left"
+              className={`md:w-1/2 flex flex-col justify-center ${
+                lang === "ar" ? "items-end text-right" : "items-start text-left"
               }`}
             >
-              <div className="inline-flex items-center gap-2 bg-white/10 text-medical-cyan px-3 py-1 rounded-full text-xs font-bold mb-4 border border-white/20">
-                <MapPin size={14} />
+              {/* 2. GERMAN ACCENT: Gold Tag */}
+              <div className="inline-flex items-center gap-2 bg-yellow-500/10 text-yellow-500 px-3 py-1 rounded-full text-xs font-bold mb-4 border border-yellow-500/20">
+                <Shield size={14} />
                 {t.hero.tag}
               </div>
-              <h1 className="text-2xl md:text-4xl font-black text-white mb-4 leading-tight">
+              {/* 3. GERMAN ACCENT: Gold Underline Title */}
+              <h1 className="text-2xl md:text-4xl font-black text-white mb-4 leading-tight relative inline-block">
                 {t.hero.title}
+                <div className="absolute -bottom-2 left-0 w-1/4 h-1 bg-yellow-500 rounded-full" />
               </h1>
               <p className="text-base text-slate-300 leading-relaxed">
                 {t.hero.subtitle}
               </p>
             </div>
 
-            {/* Image (Small Fixed Size) */}
             <div className="md:w-1/2 relative flex justify-center items-center">
               <div className="absolute inset-0 bg-medical-cyan blur-3xl opacity-20 rounded-full"></div>
-              {/* Image Name: integration.png */}
               <img
                 src="/integration.png"
                 onError={(e) => {
@@ -369,11 +420,11 @@ const IntegrationGuide = ({ lang }) => {
         </div>
       </section>
 
-      {/* --- MAIN STEPS (White Background, Blue Cards) --- */}
-      <section className="py-16 bg-white relative overflow-hidden">
+      {/* --- MAIN STEPS --- */}
+      <section className="py-16 bg-[#e0f9fd] relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 relative z-10">
           <div className="relative pl-2 md:pl-8">
-            {/* Vertical Chain Line (Slate for visibility on white) */}
+            {/* Vertical Chain Line */}
             <div
               className={`absolute top-4 bottom-4 w-0.5 bg-slate-200 ${
                 lang === "ar" ? "right-5 md:right-10" : "left-5 md:left-10"
@@ -381,60 +432,67 @@ const IntegrationGuide = ({ lang }) => {
             ></div>
 
             <div className="space-y-8">
-              {t.steps.map((step, i) => (
-                <div
-                  key={i}
-                  className={`relative flex items-start ${
-                    lang === "ar" ? "flex-row-reverse" : "flex-row"
-                  }`}
-                >
-                  {/* Icon Circle (Navy background) */}
+              {t.steps.map((step, i) => {
+                const colors = getFlagColors(i);
+                return (
                   <div
-                    className={`absolute top-0 w-10 h-10 bg-medical-navy border-2 border-medical-cyan rounded-full flex items-center justify-center z-10 shadow-lg ${
-                      lang === "ar" ? "right-0 md:right-5" : "left-0 md:left-5"
+                    key={i}
+                    className={`relative flex items-start ${
+                      lang === "ar" ? "flex-row-reverse" : "flex-row"
                     }`}
                   >
-                    <div className="text-medical-cyan">{step.icon}</div>
-                  </div>
+                    {/* 4. GERMAN ACCENT: Circle Border Cycles Colors */}
+                    <div
+                      className={`absolute top-0 w-10 h-10 bg-medical-navy border-2 rounded-full flex items-center justify-center z-10 shadow-lg ${
+                        colors.border
+                      } ${
+                        lang === "ar"
+                          ? "right-0 md:right-5"
+                          : "left-0 md:left-5"
+                      }`}
+                    >
+                      <div className={colors.text}>{step.icon}</div>
+                    </div>
 
-                  {/* Content Box (Blue Card) */}
-                  <div
-                    className={`w-full ${
-                      lang === "ar" ? "mr-14 md:mr-20" : "ml-14 md:ml-20"
-                    }`}
-                  >
-                    <div className="bg-medical-navy p-6 rounded-2xl shadow-lg border border-medical-cyan/20 hover:shadow-xl transition-shadow group text-white">
-                      <h3 className="font-bold text-xl text-medical-cyan mb-2">
-                        {step.title}
-                      </h3>
-                      <p className="text-white/90 text-sm mb-4 font-medium">
-                        {step.desc}
-                      </p>
+                    <div
+                      className={`w-full ${
+                        lang === "ar" ? "mr-14 md:mr-20" : "ml-14 md:ml-20"
+                      }`}
+                    >
+                      <div className="bg-medical-navy p-6 rounded-2xl shadow-lg border border-medical-cyan/20 hover:shadow-xl transition-shadow group text-white">
+                        <h3 className="font-bold text-xl text-medical-cyan mb-2">
+                          {step.title}
+                        </h3>
+                        <p className="text-white/90 text-sm mb-4 font-medium">
+                          {step.desc}
+                        </p>
 
-                      <ul className="space-y-2 border-t border-white/10 pt-3">
-                        {step.details.map((det, idx) => (
-                          <li
-                            key={idx}
-                            className="flex items-start gap-2 text-xs md:text-sm text-slate-300"
-                          >
-                            <CheckCircle
-                              size={14}
-                              className="text-medical-cyan shrink-0 mt-0.5"
-                            />
-                            {det}
-                          </li>
-                        ))}
-                      </ul>
+                        <ul className="space-y-2 border-t border-white/10 pt-3">
+                          {step.details.map((det, idx) => (
+                            <li
+                              key={idx}
+                              className="flex items-start gap-2 text-xs md:text-sm text-slate-300"
+                            >
+                              {/* 5. GERMAN ACCENT: Checkmark Cycles Colors */}
+                              <CheckCircle
+                                size={14}
+                                className={`${colors.check} shrink-0 mt-0.5`}
+                              />
+                              {det}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
       </section>
 
-      {/* --- ADMIN EXTRAS (Dark Blue Background) --- */}
+      {/* --- ADMIN EXTRAS --- */}
       <section className="py-12 bg-medical-navy text-white">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-2xl font-black text-white mb-8 text-center">
@@ -442,9 +500,9 @@ const IntegrationGuide = ({ lang }) => {
           </h2>
 
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Driving License */}
+            {/* Driving License - Red Accent */}
             <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10 flex items-start gap-4 hover:bg-white/15 transition-colors">
-              <div className="bg-amber-500/20 p-3 rounded-xl text-amber-300 shrink-0">
+              <div className="bg-red-600/20 p-3 rounded-xl text-red-500 shrink-0">
                 <Car size={24} />
               </div>
               <div>
@@ -457,9 +515,9 @@ const IntegrationGuide = ({ lang }) => {
               </div>
             </div>
 
-            {/* Residence Permit */}
+            {/* Residence Permit - Gold Accent */}
             <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10 flex items-start gap-4 hover:bg-white/15 transition-colors">
-              <div className="bg-emerald-500/20 p-3 rounded-xl text-emerald-300 shrink-0">
+              <div className="bg-yellow-500/20 p-3 rounded-xl text-yellow-500 shrink-0">
                 <FileText size={24} />
               </div>
               <div>
@@ -473,11 +531,11 @@ const IntegrationGuide = ({ lang }) => {
             </div>
           </div>
 
-          {/* CTA Bottom */}
           <div className="mt-12 text-center">
             <Link
               to="/#contact"
-              className="inline-flex items-center gap-3 bg-medical-cyan text-medical-navy px-8 py-4 rounded-xl font-bold hover:bg-white transition-colors shadow-lg"
+              // 6. GERMAN ACCENT: Button Black -> Red Hover
+              className="inline-flex items-center gap-3 bg-black text-white px-8 py-4 rounded-xl font-bold hover:bg-red-600 transition-colors shadow-lg"
             >
               {t.cta}
             </Link>
