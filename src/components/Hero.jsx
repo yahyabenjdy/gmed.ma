@@ -47,17 +47,13 @@ const Hero = ({ lang }) => {
 
   const t = content[lang] || content.fr;
 
-  // Helper function to assign flag colors to stats icons
+  // Helper function: All icons are now Red
   const getStatColor = (index) => {
-    if (index === 0) return "text-black"; // CHANGED: First icon is now Black
-    if (index === 1) return "text-red-500"; // Red for 2nd
-    if (index === 2) return "text-yellow-400"; // Gold for 3rd
-    return "text-medical-cyan";
+    return "text-red-500";
   };
 
   return (
     <section
-      // 1. Added dir attribute for automatic text alignment
       dir={lang === "ar" ? "rtl" : "ltr"}
       className="relative min-h-[75vh] flex items-center justify-center bg-medical-navy pt-10 pb-10 overflow-hidden text-center"
     >
@@ -72,19 +68,19 @@ const Hero = ({ lang }) => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex flex-col items-center">
-        {/* Tagline */}
-        <div className="inline-flex items-center gap-2 bg-medical-navy/40 backdrop-blur-sm border border-white/20 text-medical-cyan px-5 py-2 rounded-full text-sm font-bold mb-6">
-          <span className="w-2 h-2 rounded-full bg-medical-cyan animate-pulse"></span>
+        {/* Tagline - Changed to Mustard Yellow (#E1AD01) */}
+        <div className="inline-flex items-center gap-2 bg-[#E1AD01]/10 backdrop-blur-sm border border-[#E1AD01]/20 text-[#E1AD01] px-5 py-2 rounded-full text-sm font-bold mb-6">
+          <span className="w-2 h-2 rounded-full bg-[#E1AD01] animate-pulse"></span>
           {t.tag}
         </div>
 
         {/* Headline */}
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-8 max-w-4xl drop-shadow-lg">
           {t.title}
-          {/* UPDATED HIGHLIGHT: Text Gradient starts with Black */}
-          <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-black via-red-500 to-yellow-500">
+          {/* UPDATED HIGHLIGHT: White text + Solid Mustard Yellow Underline */}
+          <span className="relative inline-block text-white">
             {t.highlight}
-            <div className="absolute -bottom-2 left-0 w-full h-1.5 bg-gradient-to-r from-black via-red-600 to-yellow-500 rounded-full" />
+            <div className="absolute -bottom-2 left-0 w-full h-1.5 bg-[#E1AD01] rounded-full" />
           </span>
         </h1>
 
@@ -97,17 +93,16 @@ const Hero = ({ lang }) => {
         <div className="flex flex-wrap items-center justify-center gap-6 mb-8">
           <Link
             to="/register"
-            className="relative group overflow-hidden px-10 py-4 bg-gradient-to-r from-medical-cyan to-[#0096b4] text-white font-bold text-lg rounded-xl transition-all duration-300 shadow-xl hover:-translate-y-1 flex items-center gap-2"
+            // CHANGED: Solid Dark Blue (#004C73) matching the Navbar/Sign Up button
+            className="relative group overflow-hidden px-10 py-4 bg-[#004C73] text-white font-bold text-lg rounded-xl transition-all duration-300 shadow-xl hover:bg-[#003a57] hover:-translate-y-1 flex items-center gap-2"
           >
             <span className="relative z-10">{t.ctaPrimary}</span>
-            {/* 2. Arrow Rotation Logic for Arabic */}
             <ArrowRight
               size={22}
               className={`relative z-10 transition-transform duration-300 group-hover:translate-x-1 ${
                 lang === "ar" ? "rotate-180 group-hover:-translate-x-1" : ""
               }`}
             />
-            <div className="absolute inset-0 w-1/2 h-full bg-white/20 skew-x-[-25deg] -translate-x-full group-hover:animate-shine" />
           </Link>
 
           <Link
@@ -115,12 +110,12 @@ const Hero = ({ lang }) => {
             className="px-10 py-4 bg-medical-navy/40 backdrop-blur-md border border-white/30 text-white font-bold text-lg rounded-xl transition-all duration-300 hover:bg-medical-navy/60 flex items-center gap-2 group"
           >
             {t.ctaSecondary}
-            <div className="w-1.5 h-1.5 rounded-full bg-white/40 group-hover:bg-medical-cyan transition-colors" />
+            {/* Dot changed to Mustard Yellow to match theme */}
+            <div className="w-1.5 h-1.5 rounded-full bg-white/40 group-hover:bg-[#E1AD01] transition-colors" />
           </Link>
         </div>
 
         {/* Compact Statistics Card */}
-        {/* CHANGED: w-[90%] for mobile, sm:w-full for tablet/desktop */}
         <div
           className={`w-[90%] sm:w-full max-w-2xl grid grid-cols-1 sm:grid-cols-3 bg-medical-navy/50 backdrop-blur-lg rounded-xl border border-white/20 shadow-2xl divide-y sm:divide-y-0 sm:divide-x divide-white/10 ${
             lang === "ar" ? "sm:divide-x-reverse" : ""
@@ -131,7 +126,7 @@ const Hero = ({ lang }) => {
               key={idx}
               className="px-6 py-4 flex flex-col items-center justify-center text-center group transition-colors hover:bg-white/5"
             >
-              {/* UPDATED ICON COLOR: Cycles through Black -> Red -> Gold */}
+              {/* UPDATED ICON COLOR: All Red */}
               <div
                 className={`${getStatColor(
                   idx
