@@ -87,7 +87,11 @@ const Contact = ({ lang }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-left mb-8">
-          <h2 className="text-3xl font-black mb-2">{t.title}</h2>
+          {/* 1. GERMAN ACCENT: Kept the Gold Underline */}
+          <h2 className="text-3xl font-black mb-2 relative inline-block">
+            {t.title}
+            <div className="absolute -bottom-1 left-0 w-1/3 h-1 bg-yellow-500 rounded-full" />
+          </h2>
           <p className="text-slate-400 text-base">{t.subtitle}</p>
         </div>
 
@@ -95,7 +99,7 @@ const Contact = ({ lang }) => {
           {/* LEFT: Form */}
           <div className="bg-white/5 backdrop-blur-md border border-white/10 p-6 rounded-2xl shadow-xl h-full flex flex-col justify-center">
             <form className="space-y-4">
-              {/* Row 1: Name & Phone - CHANGED to grid-cols-2 to be side-by-side on mobile */}
+              {/* Row 1: Name & Phone */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-300 mb-1.5">
@@ -103,7 +107,8 @@ const Contact = ({ lang }) => {
                   </label>
                   <input
                     type="text"
-                    className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-medical-cyan focus:outline-none"
+                    // 2. FOCUS COLOR: Changed to Black
+                    className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-black focus:outline-none transition-colors"
                   />
                 </div>
                 <div>
@@ -112,7 +117,8 @@ const Contact = ({ lang }) => {
                   </label>
                   <input
                     type="tel"
-                    className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-medical-cyan focus:outline-none"
+                    // 2. FOCUS COLOR: Changed to Black
+                    className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-black focus:outline-none transition-colors"
                   />
                 </div>
               </div>
@@ -123,7 +129,8 @@ const Contact = ({ lang }) => {
                 </label>
                 <input
                   type="email"
-                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-medical-cyan focus:outline-none"
+                  // 2. FOCUS COLOR: Changed to Black
+                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-black focus:outline-none transition-colors"
                 />
               </div>
 
@@ -133,7 +140,8 @@ const Contact = ({ lang }) => {
                 </label>
                 <textarea
                   rows="3"
-                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white resize-none focus:border-medical-cyan focus:outline-none"
+                  // 2. FOCUS COLOR: Changed to Black
+                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white resize-none focus:border-black focus:outline-none transition-colors"
                 ></textarea>
               </div>
 
@@ -142,6 +150,7 @@ const Contact = ({ lang }) => {
                 className="w-full bg-medical-cyan text-white font-bold py-3 rounded-lg hover:bg-[#0096b4] transition-all shadow-lg flex items-center justify-center gap-2 text-sm"
               >
                 {t.form.btn}
+                {/* 3. Removed German Flag Icon */}
                 <Send size={16} className={lang === "ar" ? "rotate-180" : ""} />
               </button>
             </form>
@@ -161,6 +170,7 @@ const Contact = ({ lang }) => {
                     href="https://www.instagram.com/gmed.ma/"
                     target="_blank"
                     rel="noreferrer"
+                    // 4. REVERTED: Instagram Gradient
                     className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-gradient-to-tr hover:from-purple-500 hover:to-pink-500 transition-all text-white"
                   >
                     <Instagram size={16} />
@@ -169,6 +179,7 @@ const Contact = ({ lang }) => {
                     href="https://web.facebook.com/profile.php?id=61581045256544#"
                     target="_blank"
                     rel="noreferrer"
+                    // 4. REVERTED: Facebook Blue
                     className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-all text-white"
                   >
                     <Facebook size={16} />
@@ -177,6 +188,7 @@ const Contact = ({ lang }) => {
                     href="https://www.tiktok.com/@gmed.ma?lang=fr"
                     target="_blank"
                     rel="noreferrer"
+                    // 4. REVERTED: TikTok Black
                     className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-black transition-all text-white"
                   >
                     <TikTokIcon size={14} />
