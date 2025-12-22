@@ -25,7 +25,7 @@ const Work = ({ lang }) => {
             "Facharztanerkennung",
             "Blue Card EU",
           ],
-          link: "/work/doctor", // Make sure this matches your App.jsx route
+          link: "/work/doctor",
           btn: "Infos für Ärzte",
         },
         {
@@ -39,7 +39,7 @@ const Work = ({ lang }) => {
             "Unbefristete Verträge",
             "Familiennachzug",
           ],
-          link: "/work/nurse", // Make sure this matches your App.jsx route
+          link: "/work/nurse",
           btn: "Infos für Pflegekräfte",
         },
       ],
@@ -110,7 +110,6 @@ const Work = ({ lang }) => {
   const t = content[lang] || content.fr;
 
   return (
-    // 1. CRITICAL: Add the ID so the page can scroll back here
     <section
       id="work-section"
       className="pt-12 pb-16 bg-[#e0f9fd]"
@@ -119,8 +118,10 @@ const Work = ({ lang }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className="text-3xl md:text-4xl font-black text-medical-navy mb-3">
+          <h2 className="text-3xl md:text-4xl font-black text-medical-navy mb-3 relative inline-block">
             {t.title}
+            {/* UPDATED: Increased width to w-1/2 (was w-1/4) */}
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-1.5 bg-yellow-500 rounded-full" />
           </h2>
           <p className="text-lg text-slate-500 font-medium">{t.subtitle}</p>
         </div>
@@ -132,12 +133,8 @@ const Work = ({ lang }) => {
               key={index}
               className="group bg-white rounded-3xl p-8 border border-white/50 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 relative overflow-hidden"
             >
-              {/* Top Accent Line */}
-              <div
-                className={`absolute top-0 left-0 w-full h-2 ${
-                  card.id === "doctor" ? "bg-medical-navy" : "bg-medical-cyan"
-                }`}
-              ></div>
+              {/* German Accent: Top Gradient Line */}
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-black via-red-600 to-yellow-500"></div>
 
               <div className="flex flex-col h-full justify-between">
                 <div>
@@ -145,14 +142,14 @@ const Work = ({ lang }) => {
                     <div
                       className={`p-4 rounded-2xl ${
                         card.id === "doctor"
-                          ? "bg-medical-navy/10 text-medical-navy"
-                          : "bg-medical-cyan/10 text-medical-cyan"
-                      }`}
+                          ? "bg-medical-navy/10"
+                          : "bg-medical-cyan/10"
+                      } text-yellow-500`}
                     >
                       {card.icon}
                     </div>
                     <div className="text-right flex items-center">
-                      <span className="block text-medical-navy font-black text-lg">
+                      <span className="block text-red-600 font-black text-lg">
                         {card.salary}
                       </span>
                     </div>
@@ -171,14 +168,7 @@ const Work = ({ lang }) => {
                         key={i}
                         className="flex items-center gap-3 text-sm font-bold text-slate-600"
                       >
-                        <CheckCircle2
-                          size={18}
-                          className={`${
-                            card.id === "doctor"
-                              ? "text-medical-navy"
-                              : "text-medical-cyan"
-                          }`}
-                        />
+                        <CheckCircle2 size={18} className="text-black" />
                         {feat}
                       </li>
                     ))}
@@ -187,7 +177,6 @@ const Work = ({ lang }) => {
 
                 <Link
                   to={card.link}
-                  // 2. CRITICAL: Pass the state so the next page knows where to return
                   state={{ fromHomeSection: true }}
                   className={`w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold transition-all text-white shadow-lg ${
                     card.id === "doctor"
