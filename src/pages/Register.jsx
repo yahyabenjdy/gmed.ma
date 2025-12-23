@@ -132,12 +132,11 @@ const Register = ({ lang }) => {
     window.scrollTo(0, 0);
   };
 
-  // Shared CSS for inputs to ensure borders/icons are visible and focus is Dark Blue
-  const inputClasses = `w-full py-4 bg-slate-50 border border-slate-300 rounded-xl focus:ring-1 focus:ring-[#004C73] focus:border-[#004C73] outline-none transition-all font-medium ${
+  // Inputs have permanent Dark Blue border
+  const inputClasses = `w-full py-4 bg-slate-50 border border-[#004C73] rounded-xl focus:ring-1 focus:ring-[#004C73] focus:border-[#004C73] outline-none transition-all font-medium ${
     lang === "ar" ? "pr-12 pl-4" : "pl-12 pr-4"
   }`;
 
-  // Shared CSS for icons inside inputs
   const iconClasses = `absolute top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-[#004C73] transition-colors ${
     lang === "ar" ? "right-4" : "left-4"
   }`;
@@ -201,7 +200,7 @@ const Register = ({ lang }) => {
           </p>
         </div>
 
-        {/* Form Card - Border Slate-300 for visibility */}
+        {/* Form Card */}
         <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-slate-300 relative overflow-hidden">
           {/* Solid Rouge Bordeaux Top Border */}
           <div className="absolute top-0 left-0 w-full h-2 bg-[#800020]"></div>
@@ -291,17 +290,19 @@ const Register = ({ lang }) => {
                   <div
                     key={i}
                     onClick={() => setSelectedLevel(level)}
+                    // UPDATED: Border is ALWAYS border-[#004C73]
                     className={`relative p-3 rounded-full border-2 cursor-pointer transition-all duration-300 flex items-center justify-center gap-2 group ${
                       selectedLevel === level
                         ? "border-[#004C73] bg-[#004C73]/10 text-[#004C73] shadow-md transform scale-105"
-                        : "border-slate-300 bg-slate-50 text-slate-600 hover:border-[#004C73] hover:bg-slate-100"
+                        : "border-[#004C73] bg-slate-50 text-slate-600 hover:bg-slate-100"
                     }`}
                   >
                     <div
+                      // UPDATED: Border is ALWAYS border-[#004C73]
                       className={`w-3 h-3 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
                         selectedLevel === level
                           ? "border-[#004C73] bg-[#004C73]"
-                          : "border-slate-300 group-hover:border-slate-400"
+                          : "border-[#004C73] group-hover:border-[#004C73]"
                       }`}
                     />
                     <span className="text-xs md:text-xs lg:text-sm font-bold whitespace-nowrap overflow-hidden text-ellipsis">
@@ -330,7 +331,6 @@ const Register = ({ lang }) => {
                 {t.form.message}
               </label>
               <div className="relative group">
-                {/* Custom icon position specific to textarea needs */}
                 <HelpCircle
                   className={`absolute top-5 text-slate-500 group-focus-within:text-[#004C73] transition-colors ${
                     lang === "ar" ? "right-4" : "left-4"
