@@ -114,8 +114,8 @@ const Study = ({ lang }) => {
       className="py-14 bg-medical-navy relative overflow-hidden"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
-      {/* Background Decor */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-medical-cyan/10 rounded-full blur-[120px] pointer-events-none"></div>
+      {/* Background Decor - White/5 for subtle effect */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-[120px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12">
@@ -123,7 +123,8 @@ const Study = ({ lang }) => {
           <div
             className={`lg:w-1/2 ${lang === "ar" ? "text-right" : "text-left"}`}
           >
-            <span className="inline-block py-1 px-3 rounded-lg bg-medical-cyan/10 text-medical-cyan font-bold text-xs uppercase tracking-wider mb-4 border border-medical-cyan/20">
+            {/* Tag: Dark Blue Background with White Text */}
+            <span className="inline-block py-1 px-3 rounded-lg bg-[#004C73] text-white font-bold text-xs uppercase tracking-wider mb-4 border border-white/20">
               {t.tag}
             </span>
 
@@ -140,7 +141,8 @@ const Study = ({ lang }) => {
             <Link
               to="/study"
               state={{ fromHomeSection: true }}
-              className="inline-flex items-center gap-2 bg-white text-medical-navy px-8 py-4 rounded-xl font-bold text-base hover:bg-medical-cyan hover:text-white transition-all shadow-lg hover:shadow-medical-cyan/30 group"
+              // CHANGED: Default is Dark Blue, Hover is White
+              className="inline-flex items-center gap-2 bg-[#004C73] text-white px-8 py-4 rounded-xl font-bold text-base hover:bg-white hover:text-[#004C73] transition-all shadow-lg hover:shadow-white/20 group"
             >
               {t.cta}
               <ArrowRight
