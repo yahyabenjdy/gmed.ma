@@ -6,7 +6,6 @@ import {
   useLocation,
   useNavigationType,
 } from "react-router-dom";
-// 1. Import Helmet
 import { Helmet } from "react-helmet-async";
 
 const News = ({ lang }) => {
@@ -15,12 +14,9 @@ const News = ({ lang }) => {
   const navType = useNavigationType();
 
   useEffect(() => {
-    // Check if we were sent here with a specific Article ID (from Home)
-    // AND ensure we are not "popping" (coming back via Back button)
     if (location.state && location.state.targetArticleId && navType !== "POP") {
       navigate(`/news/${location.state.targetArticleId}`);
     } else {
-      // Normal behavior: Scroll to top
       window.scrollTo(0, 0);
     }
   }, [location, navType, navigate]);
@@ -133,7 +129,6 @@ const News = ({ lang }) => {
     },
   };
 
-  // 2. Define SEO Data
   const seo = {
     fr: {
       title: "Actualités & Ressources - Visa et Médecine en Allemagne",
@@ -154,16 +149,14 @@ const News = ({ lang }) => {
 
   return (
     <>
-      {/* 3. SEO Block */}
       <Helmet>
         <title>{tSeo.title}</title>
         <meta name="description" content={tSeo.desc} />
         <link rel="canonical" href="https://gmed.ma/news" />
       </Helmet>
 
-      {/* Background #caf0f8 (30% intensity) */}
       <div
-        className="pt-28 pb-16 min-h-screen bg-[#caf0f8]"
+        className="pt-28 pb-16 min-h-screen bg-medical-navy/15"
         dir={lang === "ar" ? "rtl" : "ltr"}
       >
         <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
@@ -171,9 +164,10 @@ const News = ({ lang }) => {
           <div
             className={`mb-12 ${lang === "ar" ? "text-right" : "text-left"}`}
           >
+            {/* 1. BUTTON: Changed 'inline-flex' to 'flex w-fit' to ensure it takes its own line ABOVE the title */}
             <Link
               to="/#infohub"
-              className="inline-flex items-center gap-2 text-[#0077b6] text-sm font-bold mb-6 hover:-translate-x-1 transition-transform cursor-pointer"
+              className="flex w-fit items-center gap-2 text-[#004C73] text-sm font-bold mb-6 hover:-translate-x-1 transition-transform cursor-pointer"
             >
               <ArrowLeft
                 size={16}
@@ -181,9 +175,13 @@ const News = ({ lang }) => {
               />
               {t.back}
             </Link>
-            <h1 className="text-3xl md:text-4xl font-black text-medical-navy mb-2">
+
+            {/* 2. TITLE: Inline-block with Mustard Underline */}
+            <h1 className="text-3xl md:text-4xl font-black text-medical-navy mb-3 relative inline-block">
               {t.title}
+              <div className="absolute -bottom-1 left-0 w-1/3 h-1.5 bg-[#E1AD01] rounded-full" />
             </h1>
+
             <p className="text-slate-700 text-base font-medium">{t.subtitle}</p>
           </div>
 
@@ -193,6 +191,7 @@ const News = ({ lang }) => {
               <Link
                 to={`/news/${article.id}`}
                 key={article.id}
+                // REMOVED: Rouge Bordeaux top border
                 className={`group flex flex-col sm:flex-row bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-white/60 ${
                   lang === "ar" ? "sm:flex-row-reverse" : ""
                 }`}
@@ -217,25 +216,27 @@ const News = ({ lang }) => {
                       lang === "ar" ? "flex-row-reverse" : ""
                     }`}
                   >
-                    {/* Tag bg slightly darker to match the new page bg */}
-                    <span className="text-[#0077b6] uppercase tracking-widest bg-[#caf0f8] px-2 py-1 rounded">
+                    <span className="text-[#004C73] uppercase tracking-widest bg-medical-navy/10 px-2 py-1 rounded">
                       {article.tag}
                     </span>
                     <div className="flex items-center gap-1 text-slate-400">
-                      <Calendar size={12} /> {article.date}
+                      <Calendar size={12} className="text-[#800020]" />{" "}
+                      {article.date}
                     </div>
                   </div>
-                  <h2 className="text-xl font-bold text-medical-navy mb-2 group-hover:text-medical-cyan transition-colors">
+
+                  <h2 className="text-xl font-bold text-medical-navy mb-2 group-hover:text-[#004C73] transition-colors">
                     {article.title}
                   </h2>
                   <p className="text-slate-500 text-sm line-clamp-2 mb-4">
                     {article.desc}
                   </p>
-                  <div className="text-medical-cyan text-xs font-black uppercase flex items-center gap-1 group/link">
+
+                  <div className="text-[#004C73] text-xs font-black uppercase flex items-center gap-1 group/link">
                     {t.readMore}{" "}
                     <ArrowRight
                       size={14}
-                      className={`transition-transform group-hover/link:translate-x-1 ${
+                      className={`transition-transform group-hover/link:text-[#E1AD01] group-hover/link:translate-x-1 ${
                         lang === "ar"
                           ? "rotate-180 group-hover/link:-translate-x-1"
                           : ""
@@ -250,7 +251,7 @@ const News = ({ lang }) => {
           {/* CTA Card */}
           <div className="mt-12 p-6 bg-white rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm border border-white/60">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-[#caf0f8] rounded-full flex items-center justify-center text-medical-cyan">
+              <div className="w-12 h-12 bg-[#004C73]/10 rounded-full flex items-center justify-center text-[#E1AD01]">
                 <Send size={20} />
               </div>
               <div className={lang === "ar" ? "text-right" : "text-left"}>
@@ -258,10 +259,9 @@ const News = ({ lang }) => {
                 <p className="text-xs text-slate-500">{t.ctaDesc}</p>
               </div>
             </div>
-            {/* CHANGED LINK HERE */}
             <Link
-              to="/#contact" // <--- Updated to point to Homepage Contact Section
-              className="px-6 py-2.5 bg-medical-navy text-white text-xs font-bold rounded-lg hover:bg-medical-cyan transition-all shadow-lg shadow-medical-navy/20"
+              to="/#contact"
+              className="px-6 py-2.5 bg-[#004C73] text-white text-xs font-bold rounded-lg hover:bg-[#003a57] transition-all shadow-lg shadow-[#004C73]/20"
             >
               {t.contactBtn}
             </Link>
