@@ -83,10 +83,15 @@ const InfoHub = ({ lang }) => {
     }, 10);
   };
 
+  // Define consistent color classes
+  const accentColorClass = "text-[#004C73]"; // Dark Blue
+  const hoverColorClass = "group-hover:text-[#004C73]";
+
   return (
     <section
       id="infohub"
-      className="py-20 bg-[#e0f9fd] scroll-mt-24 relative overflow-hidden"
+      // CHANGED: Background to bg-medical-navy/15 (15% opacity)
+      className="py-20 bg-medical-navy/15 scroll-mt-24 relative overflow-hidden"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -94,16 +99,17 @@ const InfoHub = ({ lang }) => {
           className={`flex flex-col md:flex-row justify-between items-end mb-12 gap-6`}
         >
           <div className={lang === "ar" ? "text-right" : "text-left"}>
-            {/* 1. GERMAN ACCENT: Added a Gold Underline to the title */}
             <h2 className="text-3xl md:text-4xl font-black text-medical-navy mb-3 relative inline-block">
               {t.title}
-              <div className="absolute -bottom-2 left-0 w-1/3 h-1.5 bg-yellow-500 rounded-full" />
+              {/* Underline: Mustard Yellow (#E1AD01) */}
+              <div className="absolute -bottom-2 left-0 w-1/3 h-1.5 bg-[#E1AD01] rounded-full" />
             </h2>
             <p className="text-slate-600 font-medium max-w-xl">{t.subtitle}</p>
           </div>
           <Link
             to="/news"
-            className={`flex items-center gap-2 text-medical-cyan font-bold hover:text-medical-navy group ${
+            // Replaced Cyan with Dark Blue, matching Navbar Hover
+            className={`flex items-center gap-2 ${accentColorClass} font-bold hover:text-medical-navy group ${
               lang === "ar" ? "flex-row-reverse" : ""
             }`}
           >
@@ -145,11 +151,14 @@ const InfoHub = ({ lang }) => {
                       lang === "ar" ? "flex-row-reverse" : ""
                     }`}
                   >
-                    {/* 2. GERMAN ACCENT: Changed Calendar Icon to Red */}
-                    <Calendar size={14} className="text-red-500" />
+                    {/* Calendar Icon: Red (#800020 - Rouge Bordeaux) */}
+                    <Calendar size={14} className="text-[#800020]" />
                     <span>{article.date}</span>
                   </div>
-                  <h3 className="text-xl font-bold text-medical-navy mb-3 group-hover:text-medical-cyan transition-colors">
+                  {/* Title Hover: Changes to Dark Blue */}
+                  <h3
+                    className={`text-xl font-bold text-medical-navy mb-3 ${hoverColorClass} transition-colors`}
+                  >
                     {article.title}
                   </h3>
                   <p className="text-slate-500 text-sm line-clamp-3 mb-6">
@@ -159,16 +168,16 @@ const InfoHub = ({ lang }) => {
 
                 <button
                   onClick={() => handleReadMore(article.id)}
-                  // 3. GERMAN ACCENT: Gradient Text on Hover + Gold Arrow
-                  className={`inline-flex items-center gap-2 text-medical-cyan font-black text-sm group/btn transition-all duration-300 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-black hover:to-red-600 ${
+                  // Replaced Cyan & Gradients with Dark Blue (#004C73)
+                  className={`inline-flex items-center gap-2 ${accentColorClass} font-black text-sm group/btn transition-all duration-300 hover:text-medical-navy ${
                     lang === "ar" ? "flex-row-reverse" : ""
                   }`}
                 >
                   {t.readMore}
                   <ArrowRight
                     size={16}
-                    // Arrow turns Gold on hover
-                    className={`transition-transform group-hover/btn:translate-x-1 group-hover/btn:text-yellow-500 ${
+                    // Arrow turns Mustard Yellow on hover
+                    className={`transition-transform group-hover/btn:translate-x-1 group-hover/btn:text-[#E1AD01] ${
                       lang === "ar"
                         ? "rotate-180 group-hover/btn:-translate-x-1"
                         : ""
