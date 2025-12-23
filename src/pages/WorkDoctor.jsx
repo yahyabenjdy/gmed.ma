@@ -9,7 +9,6 @@ import {
   Landmark,
 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-// 1. IMPORT HELMET
 import { Helmet } from "react-helmet-async";
 
 const WorkDoctor = ({ lang }) => {
@@ -25,7 +24,6 @@ const WorkDoctor = ({ lang }) => {
     if (location.state && location.state.fromHomeSection) {
       navigate("/");
       setTimeout(() => {
-        // Ensure your Homepage Work Section has id="work-section"
         const section = document.getElementById("work-section");
         if (section) {
           const yOffset = -80;
@@ -43,7 +41,8 @@ const WorkDoctor = ({ lang }) => {
     de: {
       hero: {
         tag: "Medizinische Karriere",
-        title: "Arbeiten als Arzt in Deutschland",
+        title: "Arbeiten als Arzt in ", // Split for highlight
+        highlight: "Deutschland",
         subtitle:
           "Der Weg zur Approbation und Facharztweiterbildung. Wir begleiten Sie durch den Anerkennungsprozess.",
         cta: "Beratung starten",
@@ -108,7 +107,8 @@ const WorkDoctor = ({ lang }) => {
     fr: {
       hero: {
         tag: "Carrière Médicale",
-        title: "Travailler comme Médecin en Allemagne",
+        title: "Travailler comme Médecin en ", // Split for highlight
+        highlight: "Allemagne",
         subtitle:
           "Le parcours vers l'Approbation et la spécialisation. Nous vous guidons à travers le processus de reconnaissance.",
         cta: "Commencer la procédure",
@@ -173,7 +173,8 @@ const WorkDoctor = ({ lang }) => {
     ar: {
       hero: {
         tag: "مهنة الطب",
-        title: "العمل كطبيب في ألمانيا",
+        title: "العمل كطبيب في ", // Split for highlight
+        highlight: "ألمانيا",
         subtitle:
           "طريقك نحو الحصول على ترخيص مزاولة المهنة (Approbation) والتخصص. نرافقك في جميع مراحل الاعتراف.",
         cta: "ابدأ الإجراءات",
@@ -237,7 +238,6 @@ const WorkDoctor = ({ lang }) => {
     },
   };
 
-  // 2. SEO Content
   const seo = {
     fr: {
       title: "Travailler comme Médecin en Allemagne - Guide & Recrutement",
@@ -256,7 +256,6 @@ const WorkDoctor = ({ lang }) => {
   const t = content[lang] || content.fr;
   const tSeo = seo[lang] || seo.fr;
 
-  // Helper for flag colors (Black -> Red -> Gold)
   const getFlagColors = (index) => {
     if (index % 3 === 0)
       return {
@@ -281,12 +280,10 @@ const WorkDoctor = ({ lang }) => {
   };
 
   return (
-    // MAIN WRAPPER: pb-0 ensures flush footer
     <div
-      className="bg-[#e0f9fd] min-h-screen pb-0"
+      className="bg-medical-navy/15 min-h-screen pb-0"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
-      {/* 3. SEO BLOCK */}
       <Helmet>
         <title>{tSeo.title}</title>
         <meta name="description" content={tSeo.desc} />
@@ -295,13 +292,13 @@ const WorkDoctor = ({ lang }) => {
 
       {/* --- HERO SECTION --- */}
       <section className="relative pt-12 pb-20 bg-medical-navy overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00b4d8_1px,transparent_1px)] [background-size:20px_20px]"></div>
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#004C73_1px,transparent_1px)] [background-size:20px_20px]"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Back Button */}
           <button
             onClick={handleBack}
-            className={`flex items-center gap-2 text-medical-cyan font-bold mb-6 hover:text-white transition-colors text-sm group ${
+            className={`flex items-center gap-2 text-yellow-500 font-bold mb-6 hover:text-white transition-colors text-sm group ${
               lang === "ar" ? "flex-row-reverse" : ""
             }`}
           >
@@ -311,34 +308,49 @@ const WorkDoctor = ({ lang }) => {
             />
             <span className="relative">
               {t.back}
-              {/* GERMAN ACCENT: Gold Underline */}
               <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full"></span>
             </span>
           </button>
 
           <div className="flex flex-col md:flex-row items-center gap-12">
-            {/* Text Content */}
             <div
               className={`md:w-1/2 ${
                 lang === "ar" ? "text-right" : "text-left"
               }`}
             >
-              {/* GERMAN ACCENT: Tag is Gold */}
               <div className="inline-flex items-center gap-2 bg-yellow-500/10 text-yellow-500 px-4 py-1.5 rounded-full text-sm font-bold mb-6 border border-yellow-500/20">
                 <Stethoscope size={16} />
                 {t.hero.tag}
               </div>
+
+              {/* CHANGED: White Text with Rouge Bordeaux Highlight */}
               <h1 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
                 {t.hero.title}
+                <span className="relative inline-block text-white ml-2">
+                  {t.hero.highlight}
+                  {/* SVG Underline #800020 */}
+                  <svg
+                    className="absolute -bottom-2 left-0 w-full h-3 text-[#800020] -z-10"
+                    viewBox="0 0 100 15"
+                    preserveAspectRatio="none"
+                  >
+                    <path
+                      d="M0 10 Q 50 15 100 10"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      fill="none"
+                    />
+                  </svg>
+                </span>
               </h1>
+
               <p className="text-lg text-slate-300 mb-8 leading-relaxed">
                 {t.hero.subtitle}
               </p>
 
               <Link
                 to="/register"
-                // GERMAN ACCENT: Button is Black -> Red hover
-                className="inline-flex items-center gap-2 bg-black text-white px-8 py-3 rounded-xl font-bold hover:bg-red-600 transition-all shadow-lg shadow-black/20 group"
+                className="inline-flex items-center gap-2 bg-[#004C73] text-white px-8 py-3 rounded-xl font-bold hover:bg-[#003a57] transition-all shadow-lg shadow-[#004C73]/20 group"
               >
                 {t.hero.cta}
                 <ArrowRight
@@ -350,9 +362,8 @@ const WorkDoctor = ({ lang }) => {
               </Link>
             </div>
 
-            {/* Hero Image/Card */}
             <div className="md:w-1/2 relative">
-              <div className="absolute inset-0 bg-medical-cyan blur-3xl opacity-20 rounded-full"></div>
+              <div className="absolute inset-0 bg-[#004C73] blur-3xl opacity-20 rounded-full"></div>
               <img
                 src="/doctor.png"
                 onError={(e) => {
@@ -368,15 +379,14 @@ const WorkDoctor = ({ lang }) => {
       </section>
 
       {/* --- INTRO & REQUIREMENTS --- */}
-      <section className="py-12 bg-white/50">
+      {/* CHANGED: Removed bg-white/50, now transparent (shows main navy/15 bg) */}
+      <section className="py-12">
         <div className="max-w-6xl mx-auto px-4">
           <p className="text-slate-600 text-lg mb-12 text-center max-w-3xl mx-auto font-medium leading-relaxed">
             {t.intro}
           </p>
 
-          {/* Requirements Alert Box */}
           <div className="bg-white border border-slate-100 shadow-lg rounded-3xl p-8 flex flex-col md:flex-row gap-8 items-center -mt-6">
-            {/* GERMAN ACCENT: Alert Icon bg is Red */}
             <div className="bg-red-600 text-white p-5 rounded-2xl shadow-md">
               <AlertCircle size={32} />
             </div>
@@ -394,7 +404,6 @@ const WorkDoctor = ({ lang }) => {
                       lang === "ar" ? "flex-row-reverse" : ""
                     }`}
                   >
-                    {/* GERMAN ACCENT: Bullet point is Gold */}
                     <div className="w-2 h-2 bg-yellow-500 rounded-full shrink-0" />
                     {req}
                   </div>
@@ -414,10 +423,8 @@ const WorkDoctor = ({ lang }) => {
               return (
                 <div
                   key={idx}
-                  // GERMAN ACCENT: Border hover cycles colors
                   className={`bg-white p-8 rounded-3xl shadow-sm border border-slate-100 relative group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 ${colors.borderHover}`}
                 >
-                  {/* GERMAN ACCENT: Background Number cycles colors */}
                   <span
                     className={`absolute top-4 right-6 text-7xl font-black select-none transition-colors ${colors.number}`}
                   >
@@ -449,10 +456,9 @@ const WorkDoctor = ({ lang }) => {
                           lang === "ar" ? "flex-row-reverse text-right" : ""
                         }`}
                       >
-                        {/* GERMAN ACCENT: Check Icon cycles colors */}
                         <ShieldCheck
                           size={16}
-                          className={`${colors.check} shrink-0`}
+                          className="text-[#004C73] shrink-0"
                         />
                         <span>{item}</span>
                       </li>
@@ -465,17 +471,16 @@ const WorkDoctor = ({ lang }) => {
         </div>
       </section>
 
-      {/* --- COMPACT SERVICES SECTION (Flush to footer) --- */}
+      {/* --- COMPACT SERVICES SECTION --- */}
       <section className="py-8 bg-medical-navy relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-medical-cyan/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-medical-cyan/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#004C73]/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#004C73]/20 rounded-full blur-3xl"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="bg-white/5 backdrop-blur-lg rounded-3xl p-6 md:p-8 border border-white/10">
             <div className="grid md:grid-cols-2 gap-8 items-center">
-              {/* Left Column: Services List */}
               <div className={lang === "ar" ? "text-right" : "text-left"}>
-                <div className="inline-flex items-center gap-2 text-medical-cyan font-bold mb-3 text-sm">
+                <div className="inline-flex items-center gap-2 text-yellow-500 font-bold mb-3 text-sm">
                   <Landmark size={18} /> GMED SUPPORT
                 </div>
                 <h2 className="text-2xl md:text-3xl font-black text-white mb-4">
@@ -487,7 +492,6 @@ const WorkDoctor = ({ lang }) => {
                       key={i}
                       className="flex items-start gap-3 text-slate-300 text-sm"
                     >
-                      {/* GERMAN ACCENT: Checkmark is Gold */}
                       <CheckCircle
                         size={18}
                         className="text-yellow-500 shrink-0 mt-0.5"
@@ -498,7 +502,6 @@ const WorkDoctor = ({ lang }) => {
                 </ul>
               </div>
 
-              {/* Right Column: CTA Box */}
               <div className="bg-white rounded-2xl p-6 text-center shadow-2xl">
                 <h3 className="text-xl font-black text-medical-navy mb-2">
                   {t.ctaBox.title}
@@ -507,8 +510,7 @@ const WorkDoctor = ({ lang }) => {
 
                 <Link
                   to="/#contact"
-                  // GERMAN ACCENT: Button is Black -> Red hover
-                  className="w-full block bg-black text-white py-3 rounded-xl font-bold hover:bg-red-600 transition-colors shadow-lg text-sm"
+                  className="w-full block bg-[#004C73] text-white py-3 rounded-xl font-bold hover:bg-[#003a57] transition-colors shadow-lg shadow-[#004C73]/20 text-sm"
                 >
                   {t.ctaBox.btn}
                 </Link>
