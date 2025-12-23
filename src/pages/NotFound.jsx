@@ -26,17 +26,18 @@ const NotFound = ({ lang }) => {
 
   return (
     <div
-      className="min-h-[70vh] flex flex-col items-center justify-center bg-[#e0f9fd] px-4 text-center"
+      // CHANGED: Reduced height from min-h-[70vh] to min-h-[50vh] to close the gap to the footer
+      className="min-h-[50vh] flex flex-col items-center justify-center bg-medical-navy/15 px-4 text-center py-10"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
       <Helmet>
         <title>404 - {t.title} | GMED</title>
-        {/* Crucial for SEO: Tells Google NOT to index error pages */}
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <div className="bg-white p-10 rounded-3xl shadow-xl border border-white/50 max-w-lg w-full">
-        <div className="w-20 h-20 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+        {/* Icon uses Rouge Bordeaux (#800020) */}
+        <div className="w-20 h-20 bg-[#800020]/10 text-[#800020] rounded-full flex items-center justify-center mx-auto mb-6">
           <AlertTriangle size={40} />
         </div>
 
@@ -46,7 +47,8 @@ const NotFound = ({ lang }) => {
 
         <Link
           to="/"
-          className="inline-flex items-center gap-2 bg-medical-cyan text-white px-6 py-3 rounded-xl font-bold hover:bg-medical-navy transition-colors"
+          // Button uses Dark Blue (#004C73)
+          className="inline-flex items-center gap-2 bg-[#004C73] text-white px-6 py-3 rounded-xl font-bold hover:bg-[#003a57] transition-colors"
         >
           <Home size={18} />
           {t.btn}

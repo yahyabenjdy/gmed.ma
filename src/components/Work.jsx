@@ -112,7 +112,8 @@ const Work = ({ lang }) => {
   return (
     <section
       id="work-section"
-      className="pt-12 pb-16 bg-[#e0f9fd]"
+      // CHANGED: Background to bg-medical-navy/15 (15% opacity)
+      className="pt-12 pb-16 bg-medical-navy/15"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -120,8 +121,8 @@ const Work = ({ lang }) => {
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="text-3xl md:text-4xl font-black text-medical-navy mb-3 relative inline-block">
             {t.title}
-            {/* UPDATED: Increased width to w-1/2 (was w-1/4) */}
-            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-1.5 bg-yellow-500 rounded-full" />
+            {/* Underline: Mustard Yellow */}
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-1.5 bg-[#E1AD01] rounded-full" />
           </h2>
           <p className="text-lg text-slate-500 font-medium">{t.subtitle}</p>
         </div>
@@ -133,8 +134,8 @@ const Work = ({ lang }) => {
               key={index}
               className="group bg-white rounded-3xl p-8 border border-white/50 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 relative overflow-hidden"
             >
-              {/* German Accent: Top Gradient Line */}
-              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-black via-red-600 to-yellow-500"></div>
+              {/* Solid Rouge Bordeaux Top Border */}
+              <div className="absolute top-0 left-0 w-full h-2 bg-[#800020]"></div>
 
               <div className="flex flex-col h-full justify-between">
                 <div>
@@ -143,13 +144,14 @@ const Work = ({ lang }) => {
                       className={`p-4 rounded-2xl ${
                         card.id === "doctor"
                           ? "bg-medical-navy/10"
-                          : "bg-medical-cyan/10"
-                      } text-yellow-500`}
+                          : "bg-[#004C73]/10"
+                      } text-[#E1AD01]`}
                     >
                       {card.icon}
                     </div>
                     <div className="text-right flex items-center">
-                      <span className="block text-red-600 font-black text-lg">
+                      {/* Salary color is text-medical-navy */}
+                      <span className="block text-medical-navy font-black text-lg">
                         {card.salary}
                       </span>
                     </div>
@@ -178,11 +180,8 @@ const Work = ({ lang }) => {
                 <Link
                   to={card.link}
                   state={{ fromHomeSection: true }}
-                  className={`w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold transition-all text-white shadow-lg ${
-                    card.id === "doctor"
-                      ? "bg-medical-navy hover:bg-[#1a2c4e] shadow-medical-navy/30"
-                      : "bg-medical-cyan hover:bg-[#0096b4] shadow-medical-cyan/30"
-                  }`}
+                  // Both buttons use Dark Blue (#004C73)
+                  className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold transition-all text-white shadow-lg bg-[#004C73] hover:bg-[#003a57] shadow-[#004C73]/30"
                 >
                   {card.btn}
                   <ArrowRight
