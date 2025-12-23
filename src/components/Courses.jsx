@@ -147,6 +147,10 @@ const Courses = ({ lang }) => {
 
   const t = content[lang] || content.de;
 
+  // Define consistent color classes
+  const accentColorClass = "text-[#004C73]"; // Dark Blue
+  const buttonBgColorClass = "bg-[#004C73]"; // Dark Blue BG
+
   return (
     <section
       id="courses-section"
@@ -158,7 +162,8 @@ const Courses = ({ lang }) => {
           <div className={lang === "ar" ? "text-right" : "text-left"}>
             <h2 className="text-3xl md:text-4xl font-black text-white mb-2 relative inline-block">
               {t.title}
-              <div className="absolute -bottom-1 left-0 w-1/4 h-1 bg-yellow-500 rounded-full" />
+              {/* Underline: Mustard Yellow (#E1AD01) */}
+              <div className="absolute -bottom-1 left-0 w-1/4 h-1 bg-[#E1AD01] rounded-full" />
             </h2>
             <p className="text-medical-light/80 text-lg max-w-2xl font-medium">
               {t.subtitle}
@@ -168,7 +173,8 @@ const Courses = ({ lang }) => {
           <Link
             to="/courses"
             state={{ fromHomeSection: true }}
-            className={`hidden md:flex items-center gap-2 text-medical-cyan font-bold hover:text-white transition-colors ${
+            // CHANGED: Removed Cyan, now uses Dark Blue on hover (inverse because background is dark)
+            className={`hidden md:flex items-center gap-2 text-[#E1AD01] font-bold hover:text-white transition-colors ${
               lang === "ar" ? "flex-row-reverse" : ""
             }`}
           >
@@ -200,10 +206,10 @@ const Courses = ({ lang }) => {
                       : "shadow-xl hover:-translate-y-2"
                   }`}
               >
-                {/* 2. GERMAN ACCENT: Full Gradient Border (Background Layer) */}
-                {/* This div sits behind the white card to create the border effect */}
+                {/* 2. GERMAN ACCENT: Solid Border (Rouge Bordeaux) */}
+                {/* Changed from gradient to solid color */}
                 <div
-                  className={`absolute -inset-[3px] rounded-[1.6rem] bg-gradient-to-r from-black via-red-600 to-yellow-500 transition-opacity duration-300 -z-10 ${
+                  className={`absolute -inset-[3px] rounded-[1.6rem] bg-[#800020] transition-opacity duration-300 -z-10 ${
                     isActive ? "opacity-100" : "opacity-0"
                   }`}
                 />
@@ -216,7 +222,8 @@ const Courses = ({ lang }) => {
                 >
                   {card.featured && (
                     <span
-                      className={`absolute top-0 left-1/2 -translate-x-1/2 bg-yellow-500 text-black px-3 py-1 rounded-b-lg text-[10px] font-black uppercase tracking-widest shadow-lg transition-all duration-300 ${
+                      // Badge uses Mustard Yellow (#E1AD01)
+                      className={`absolute top-0 left-1/2 -translate-x-1/2 bg-[#E1AD01] text-black px-3 py-1 rounded-b-lg text-[10px] font-black uppercase tracking-widest shadow-lg transition-all duration-300 ${
                         isActive
                           ? "opacity-100 pt-3"
                           : "opacity-50 grayscale pt-1"
@@ -231,16 +238,16 @@ const Courses = ({ lang }) => {
                       {card.title}
                     </h3>
                     <div className="flex items-center gap-2 text-slate-500 text-sm mb-3">
-                      {/* 4. ICON: Removed hover color change (Kept Cyan) */}
-                      <Signal size={16} className="text-medical-cyan" />
-                      <span className="font-bold text-medical-cyan">
+                      {/* 4. ICON: Removed Cyan, replaced with Dark Blue */}
+                      <Signal size={16} className={accentColorClass} />
+                      <span className={`font-bold ${accentColorClass}`}>
                         {card.level}
                       </span>
                     </div>
                     {/* Price turns Red on hover */}
                     <div
                       className={`text-3xl font-black transition-colors ${
-                        isActive ? "text-red-600" : "text-medical-navy"
+                        isActive ? "text-[#800020]" : "text-medical-navy"
                       }`}
                     >
                       {card.price}
@@ -267,7 +274,8 @@ const Courses = ({ lang }) => {
                     className={`w-full block text-center py-3 rounded-xl font-bold transition-all shadow-md active:scale-95 text-sm
                     ${
                       isActive
-                        ? "bg-medical-cyan text-white shadow-medical-cyan/30"
+                        ? // Button becomes Dark Blue (#004C73) on hover
+                          `${buttonBgColorClass} text-white shadow-medical-navy/30`
                         : "bg-slate-100 text-medical-navy hover:bg-slate-200"
                     }`}
                   >
@@ -284,7 +292,8 @@ const Courses = ({ lang }) => {
           <Link
             to="/courses"
             state={{ fromHomeSection: true }}
-            className="inline-flex items-center gap-2 text-medical-cyan font-bold"
+            // Cyan removed, using Mustard Yellow for visibility on Dark Navy bg
+            className="inline-flex items-center gap-2 text-[#E1AD01] font-bold"
           >
             {t.cta}{" "}
             <ArrowRight
