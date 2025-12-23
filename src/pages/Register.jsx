@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   User,
-  Mail,
   Phone,
   Briefcase,
   Send,
@@ -10,7 +9,6 @@ import {
   GraduationCap,
   Award,
 } from "lucide-react";
-// 1. IMPORT HELMET
 import { Helmet } from "react-helmet-async";
 
 const Register = ({ lang }) => {
@@ -25,7 +23,6 @@ const Register = ({ lang }) => {
         "Starten Sie Ihre Karriere in Deutschland. Füllen Sie das Formular aus.",
       form: {
         name: "Vollständiger Name",
-        email: "E-Mail-Adresse",
         phone: "Telefonnummer",
         role_label: "Aktueller Status",
         roles: [
@@ -58,7 +55,6 @@ const Register = ({ lang }) => {
         "Commencez votre carrière en Allemagne. Remplissez le formulaire ci-dessous.",
       form: {
         name: "Nom complet",
-        email: "Adresse e-mail",
         phone: "Numéro de téléphone",
         role_label: "Statut actuel",
         roles: [
@@ -90,7 +86,6 @@ const Register = ({ lang }) => {
       subtitle: "ابدأ مسيرتك المهنية في ألمانيا. املأ النموذج التالي.",
       form: {
         name: "الاسم الكامل",
-        email: "البريد الإلكتروني",
         phone: "رقم الهاتف",
         role_label: "الوضع الحالي",
         roles: ["تلميذ / طالب", "طبيب", "ممرض", "آخر"],
@@ -113,7 +108,6 @@ const Register = ({ lang }) => {
     },
   };
 
-  // 2. SEO Content
   const seo = {
     fr: {
       title: "Inscription & Candidature - Commencez votre parcours",
@@ -138,10 +132,19 @@ const Register = ({ lang }) => {
     window.scrollTo(0, 0);
   };
 
+  // Shared CSS for inputs to ensure borders/icons are visible and focus is Dark Blue
+  const inputClasses = `w-full py-4 bg-slate-50 border border-slate-300 rounded-xl focus:ring-1 focus:ring-[#004C73] focus:border-[#004C73] outline-none transition-all font-medium ${
+    lang === "ar" ? "pr-12 pl-4" : "pl-12 pr-4"
+  }`;
+
+  // Shared CSS for icons inside inputs
+  const iconClasses = `absolute top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-[#004C73] transition-colors ${
+    lang === "ar" ? "right-4" : "left-4"
+  }`;
+
   if (submitted) {
     return (
-      <div className="min-h-[80vh] flex items-center justify-center px-4 bg-[#e0f9fd]">
-        {/* Dynamic Title for Success State */}
+      <div className="min-h-[80vh] flex items-center justify-center px-4 bg-medical-navy/15">
         <Helmet>
           <title>
             {lang === "ar" ? "تم الإرسال بنجاح" : "Confirmation"} | GMED
@@ -149,8 +152,8 @@ const Register = ({ lang }) => {
           <meta name="robots" content="noindex" />
         </Helmet>
 
-        <div className="max-w-lg w-full bg-white p-12 rounded-3xl shadow-xl border border-white/50 text-center animate-fade-in">
-          <div className="w-24 h-24 bg-yellow-500/10 text-yellow-500 rounded-full flex items-center justify-center mx-auto mb-8">
+        <div className="max-w-lg w-full bg-white p-12 rounded-3xl shadow-xl border border-slate-300 text-center animate-fade-in">
+          <div className="w-24 h-24 bg-[#004C73]/10 text-[#004C73] rounded-full flex items-center justify-center mx-auto mb-8">
             <CheckCircle2 size={48} />
           </div>
           <h2 className="text-3xl font-black text-medical-navy mb-4">
@@ -161,7 +164,7 @@ const Register = ({ lang }) => {
           </p>
           <button
             onClick={() => setSubmitted(false)}
-            className="text-red-600 font-bold hover:text-black transition-colors text-lg"
+            className="text-[#004C73] font-bold hover:text-black transition-colors text-lg"
           >
             {t.success.back}
           </button>
@@ -172,10 +175,9 @@ const Register = ({ lang }) => {
 
   return (
     <div
-      className="bg-[#e0f9fd] min-h-screen py-12 px-4"
+      className="bg-medical-navy/15 min-h-screen py-12 px-4"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
-      {/* 3. SEO BLOCK */}
       <Helmet>
         <title>{tSeo.title}</title>
         <meta name="description" content={tSeo.desc} />
@@ -185,13 +187,11 @@ const Register = ({ lang }) => {
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12 flex flex-col items-center">
-          {/* 1. Gold Tag (Above Title) */}
           <div className="inline-flex items-center gap-2 bg-yellow-500/10 text-yellow-500 px-3 py-1 rounded-full text-xs font-bold mb-6 border border-yellow-500/20">
             <Award size={14} />
             {t.tag}
           </div>
 
-          {/* Title */}
           <h1 className="text-4xl md:text-5xl font-black text-medical-navy mb-4 relative inline-block">
             {t.title}
             <div className="absolute -bottom-2 left-1/4 w-1/2 h-1 bg-yellow-500 rounded-full" />
@@ -201,135 +201,91 @@ const Register = ({ lang }) => {
           </p>
         </div>
 
-        {/* Form Card */}
-        <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-white/50 relative overflow-hidden">
-          {/* Top Gradient Line */}
-          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-black via-red-600 to-yellow-500"></div>
+        {/* Form Card - Border Slate-300 for visibility */}
+        <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-slate-300 relative overflow-hidden">
+          {/* Solid Rouge Bordeaux Top Border */}
+          <div className="absolute top-0 left-0 w-full h-2 bg-[#800020]"></div>
 
           <form onSubmit={handleSubmit} className="space-y-8">
-            {/* ROW 1: Name & Email */}
+            {/* ROW 1: Name & Phone */}
             <div className="grid md:grid-cols-2 gap-8">
+              {/* Name */}
               <div>
                 <label className="block text-sm font-bold text-slate-700 mb-2">
                   {t.form.name} <span className="text-red-500">*</span>
                 </label>
                 <div className="relative group">
-                  <User
-                    className={`absolute top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-black transition-colors ${
-                      lang === "ar" ? "right-4" : "left-4"
-                    }`}
-                    size={20}
-                  />
+                  <User className={iconClasses} size={20} />
                   <input
                     required
                     type="text"
-                    className={`w-full py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-black focus:border-black outline-none transition-all font-medium ${
-                      lang === "ar" ? "pr-12 pl-4" : "pl-12 pr-4"
-                    }`}
+                    className={inputClasses}
                     placeholder="..."
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">
-                  {t.form.email} <span className="text-red-500">*</span>
-                </label>
-                <div className="relative group">
-                  <Mail
-                    className={`absolute top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-red-600 transition-colors ${
-                      lang === "ar" ? "right-4" : "left-4"
-                    }`}
-                    size={20}
-                  />
-                  <input
-                    required
-                    type="email"
-                    className={`w-full py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-black focus:border-black outline-none transition-all font-medium ${
-                      lang === "ar" ? "pr-12 pl-4" : "pl-12 pr-4"
-                    }`}
-                    placeholder="name@example.com"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* ROW 2: Phone & Role */}
-            <div className="grid md:grid-cols-2 gap-8">
+              {/* Phone */}
               <div>
                 <label className="block text-sm font-bold text-slate-700 mb-2">
                   {t.form.phone} <span className="text-red-500">*</span>
                 </label>
                 <div className="relative group">
-                  <Phone
-                    className={`absolute top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-yellow-500 transition-colors ${
-                      lang === "ar" ? "right-4" : "left-4"
-                    }`}
-                    size={20}
-                  />
+                  <Phone className={iconClasses} size={20} />
                   <input
                     required
                     type="tel"
-                    className={`w-full py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-black focus:border-black outline-none transition-all font-medium ${
-                      lang === "ar" ? "pr-12 pl-4" : "pl-12 pr-4"
-                    }`}
+                    className={inputClasses}
                     placeholder="+212 ..."
                   />
                 </div>
               </div>
+            </div>
 
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">
-                  {t.form.role_label} <span className="text-red-500">*</span>
-                </label>
-                <div className="relative group">
-                  <Briefcase
-                    className={`absolute top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-black transition-colors ${
-                      lang === "ar" ? "right-4" : "left-4"
-                    }`}
-                    size={20}
-                  />
-                  <select
-                    className={`w-full py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-black focus:border-black outline-none transition-all font-medium appearance-none cursor-pointer ${
-                      lang === "ar" ? "pr-12 pl-4" : "pl-12 pr-4"
-                    }`}
+            {/* ROW 2: Role */}
+            <div>
+              <label className="block text-sm font-bold text-slate-700 mb-2">
+                {t.form.role_label} <span className="text-red-500">*</span>
+              </label>
+              <div className="relative group">
+                <Briefcase className={iconClasses} size={20} />
+                <select
+                  className={`${inputClasses} appearance-none cursor-pointer`}
+                >
+                  {t.form.roles.map((role, i) => (
+                    <option key={i} value={role}>
+                      {role}
+                    </option>
+                  ))}
+                </select>
+                <div
+                  className={`absolute top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 ${
+                    lang === "ar" ? "left-4" : "right-4"
+                  }`}
+                >
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
-                    {t.form.roles.map((role, i) => (
-                      <option key={i} value={role}>
-                        {role}
-                      </option>
-                    ))}
-                  </select>
-                  <div
-                    className={`absolute top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 ${
-                      lang === "ar" ? "left-4" : "right-4"
-                    }`}
-                  >
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="m6 9 6 6 6-6" />
-                    </svg>
-                  </div>
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
                 </div>
               </div>
             </div>
 
-            {/* ROW 3: Levels (Round Checkboxes) */}
+            {/* ROW 3: Levels */}
             <div>
               <label className="block text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
-                <GraduationCap size={18} className="text-medical-cyan" />
+                <GraduationCap size={18} className="text-[#004C73]" />
                 {t.form.level_label} <span className="text-red-500">*</span>
               </label>
 
-              {/* 5-Column Grid for "One Line" fit on Desktop */}
               <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                 {t.form.levels.map((level, i) => (
                   <div
@@ -337,19 +293,17 @@ const Register = ({ lang }) => {
                     onClick={() => setSelectedLevel(level)}
                     className={`relative p-3 rounded-full border-2 cursor-pointer transition-all duration-300 flex items-center justify-center gap-2 group ${
                       selectedLevel === level
-                        ? "border-red-600 bg-red-50 text-red-700 shadow-md transform scale-105"
-                        : "border-slate-100 bg-slate-50 text-slate-600 hover:border-slate-300 hover:bg-slate-100"
+                        ? "border-[#004C73] bg-[#004C73]/10 text-[#004C73] shadow-md transform scale-105"
+                        : "border-slate-300 bg-slate-50 text-slate-600 hover:border-[#004C73] hover:bg-slate-100"
                     }`}
                   >
-                    {/* Tiny Indicator Dot */}
                     <div
                       className={`w-3 h-3 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
                         selectedLevel === level
-                          ? "border-red-600 bg-red-600"
+                          ? "border-[#004C73] bg-[#004C73]"
                           : "border-slate-300 group-hover:border-slate-400"
                       }`}
                     />
-                    {/* Text truncated for fit, explicit small size */}
                     <span className="text-xs md:text-xs lg:text-sm font-bold whitespace-nowrap overflow-hidden text-ellipsis">
                       {level.split(" ")[0]}{" "}
                       <span className="opacity-70 font-normal hidden xl:inline">
@@ -376,17 +330,16 @@ const Register = ({ lang }) => {
                 {t.form.message}
               </label>
               <div className="relative group">
+                {/* Custom icon position specific to textarea needs */}
                 <HelpCircle
-                  className={`absolute top-5 text-slate-400 group-focus-within:text-black transition-colors ${
+                  className={`absolute top-5 text-slate-500 group-focus-within:text-[#004C73] transition-colors ${
                     lang === "ar" ? "right-4" : "left-4"
                   }`}
                   size={20}
                 />
                 <textarea
                   rows="4"
-                  className={`w-full py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-black focus:border-black outline-none transition-all font-medium resize-none ${
-                    lang === "ar" ? "pr-12 pl-4" : "pl-12 pr-4"
-                  }`}
+                  className={`${inputClasses} resize-none`}
                   placeholder="..."
                 ></textarea>
               </div>
@@ -398,7 +351,7 @@ const Register = ({ lang }) => {
               disabled={!selectedLevel}
               className={`w-full text-white text-lg font-bold py-5 rounded-xl transition-all shadow-lg flex items-center justify-center gap-3 group ${
                 selectedLevel
-                  ? "bg-black hover:bg-red-600 shadow-black/20"
+                  ? "bg-[#004C73] hover:bg-[#003a57] shadow-[#004C73]/20"
                   : "bg-slate-300 cursor-not-allowed"
               }`}
             >
