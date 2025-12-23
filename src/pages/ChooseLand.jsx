@@ -12,7 +12,6 @@ import {
   Share2,
 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-// 1. IMPORT HELMET
 import { Helmet } from "react-helmet-async";
 
 const ChooseLand = ({ lang }) => {
@@ -578,7 +577,6 @@ const ChooseLand = ({ lang }) => {
     },
   };
 
-  // 2. SEO Content
   const seo = {
     fr: {
       title: "Choisir son Land en Allemagne - Comparatif Médecins",
@@ -597,34 +595,25 @@ const ChooseLand = ({ lang }) => {
   const t = content[lang] || content.fr;
   const tSeo = seo[lang] || seo.fr;
 
-  // Helper for tricolors
-  const getFlagColor = (index) => {
-    if (index % 3 === 0) return "text-black";
-    if (index % 3 === 1) return "text-red-600";
-    return "text-yellow-500";
-  };
-
   return (
     <div
-      className="bg-[#e0f9fd] min-h-screen pb-0"
+      className="bg-medical-navy/15 min-h-screen pb-0"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
-      {/* 3. SEO BLOCK */}
       <Helmet>
         <title>{tSeo.title}</title>
         <meta name="description" content={tSeo.desc} />
         <link rel="canonical" href="https://gmed.ma/choose-land" />
       </Helmet>
 
-      {/* --- HERO HEADER (Reduced Size: pt-8 pb-10) --- */}
+      {/* --- HERO HEADER --- */}
       <section className="relative pt-8 pb-10 bg-medical-navy overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00b4d8_1px,transparent_1px)] [background-size:20px_20px]"></div>
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#004C73_1px,transparent_1px)] [background-size:20px_20px]"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Top Bar: Back & Share */}
           <div className="flex justify-between items-center mb-6">
             <button
               onClick={handleBack}
-              className={`flex items-center gap-2 text-medical-cyan font-bold hover:text-white transition-colors text-sm group ${
+              className={`flex items-center gap-2 text-yellow-500 font-bold hover:text-white transition-colors text-sm group ${
                 lang === "ar" ? "flex-row-reverse" : ""
               }`}
             >
@@ -634,14 +623,13 @@ const ChooseLand = ({ lang }) => {
               />
               <span className="relative">
                 {lang === "ar" ? "عودة" : lang === "de" ? "Zurück" : "Retour"}
-                {/* 1. GERMAN ACCENT: Gold Underline */}
                 <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full"></span>
               </span>
             </button>
 
             <button
               onClick={handleShare}
-              className={`flex items-center gap-2 text-white/80 hover:text-medical-cyan transition-colors text-sm font-medium ${
+              className={`flex items-center gap-2 text-white/80 hover:text-yellow-500 transition-colors text-sm font-medium ${
                 lang === "ar" ? "flex-row-reverse" : ""
               }`}
             >
@@ -651,25 +639,41 @@ const ChooseLand = ({ lang }) => {
           </div>
 
           <div className="flex flex-col md:flex-row items-center gap-8">
+            {/* CHANGED: Flex column to strictly enforce Tag ABOVE Title */}
             <div
-              className={`md:w-1/2 ${
-                lang === "ar" ? "text-right" : "text-left"
+              className={`md:w-1/2 flex flex-col justify-center ${
+                lang === "ar" ? "text-right items-end" : "text-left items-start"
               }`}
             >
-              {/* 2. GERMAN ACCENT: Gold Tag */}
+              {/* Tag */}
               <div className="inline-flex items-center gap-2 bg-yellow-500/10 text-yellow-500 px-4 py-1.5 rounded-full text-sm font-bold mb-4 border border-yellow-500/20">
                 <Map size={16} />
                 {t.hero.tag}
               </div>
-              <h1 className="text-3xl md:text-5xl font-black text-white mb-4 leading-tight">
+
+              {/* Title with Curved Underline */}
+              <h1 className="text-3xl md:text-5xl font-black text-white mb-4 leading-tight relative inline-block">
                 {t.hero.title}
+                <svg
+                  className="absolute -bottom-2 left-0 w-full h-3 text-[#800020] -z-10"
+                  viewBox="0 0 100 15"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    d="M0 10 Q 50 15 100 10"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    fill="none"
+                  />
+                </svg>
               </h1>
+
               <p className="text-lg text-slate-300 leading-relaxed">
                 {t.hero.subtitle}
               </p>
             </div>
             <div className="md:w-1/2 relative flex justify-center items-center">
-              <div className="absolute inset-0 bg-medical-cyan blur-3xl opacity-20 rounded-full"></div>
+              <div className="absolute inset-0 bg-[#004C73] blur-3xl opacity-20 rounded-full"></div>
               {/* 
 
 [Image of Germany Map]
@@ -688,8 +692,9 @@ const ChooseLand = ({ lang }) => {
         </div>
       </section>
 
-      {/* --- INTRO & CRITERIA (Reduced Size: py-8) --- */}
-      <section className="py-8 bg-white/50">
+      {/* --- INTRO & CRITERIA --- */}
+      {/* Transparent BG to show the 15% Navy background */}
+      <section className="py-8">
         <div className="max-w-6xl mx-auto px-4">
           <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 mb-8 text-center">
             <p className="text-slate-700 text-base md:text-lg font-medium leading-relaxed max-w-4xl mx-auto">
@@ -703,7 +708,7 @@ const ChooseLand = ({ lang }) => {
                 key={i}
                 className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center gap-2 hover:-translate-y-1 transition-transform"
               >
-                {/* 3. GERMAN ACCENT: Icons Cycle Colors */}
+                {/* Icons Cycle Colors (Black, Red, Gold) */}
                 <div
                   className={`p-2 rounded-full ${
                     i % 3 === 0
@@ -724,7 +729,7 @@ const ChooseLand = ({ lang }) => {
         </div>
       </section>
 
-      {/* --- COMPARISON TABLE (Kept Original Size: py-12) --- */}
+      {/* --- COMPARISON TABLE --- */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-black text-medical-navy mb-8 text-center">
@@ -807,13 +812,11 @@ const ChooseLand = ({ lang }) => {
         </div>
       </section>
 
-      {/* --- SUMMARY & TIPS (Reduced Size: py-8) --- */}
+      {/* --- SUMMARY & TIPS --- */}
       <section className="py-8 bg-medical-navy text-white">
         <div className="max-w-6xl mx-auto px-4">
-          {/* Summary Cards */}
           <div className="grid md:grid-cols-3 gap-6 mb-10">
             <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10 hover:bg-white/20 transition-colors">
-              {/* 4. GERMAN ACCENT: Icons Cycle Colors */}
               <div className="flex items-center gap-3 mb-3 text-black">
                 <TrendingUp size={24} />
                 <h3 className="font-black text-xl text-white">
@@ -850,10 +853,10 @@ const ChooseLand = ({ lang }) => {
             </div>
           </div>
 
-          {/* Advice Checklist */}
           <div className="bg-white text-medical-navy rounded-3xl p-8 shadow-2xl">
+            {/* CHANGED: Icon is Dark Blue */}
             <h3 className="text-2xl font-black mb-6 flex items-center gap-3">
-              <CheckCircle className="text-medical-cyan" /> {t.tips.title}
+              <CheckCircle className="text-[#004C73]" /> {t.tips.title}
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
               {t.tips.list.map((tip, i) => (
@@ -861,7 +864,6 @@ const ChooseLand = ({ lang }) => {
                   key={i}
                   className="flex items-start gap-3 p-3 bg-slate-50 rounded-xl"
                 >
-                  {/* 5. GERMAN ACCENT: Bullet Point Cycles Colors */}
                   <div
                     className={`w-2 h-2 rounded-full mt-2 shrink-0 ${
                       i % 3 === 0
