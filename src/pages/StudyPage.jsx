@@ -10,7 +10,6 @@ import {
   Coins,
 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-// 1. IMPORT HELMET
 import { Helmet } from "react-helmet-async";
 
 const StudyPage = ({ lang }) => {
@@ -26,10 +25,9 @@ const StudyPage = ({ lang }) => {
     if (location.state && location.state.fromHomeSection) {
       navigate("/");
       setTimeout(() => {
-        // Ensure your Homepage Study Section has id="study-section"
         const section = document.getElementById("study-section");
         if (section) {
-          const yOffset = -80; // Adjust for sticky header
+          const yOffset = -80;
           const y =
             section.getBoundingClientRect().top + window.pageYOffset + yOffset;
           window.scrollTo({ top: y, behavior: "smooth" });
@@ -244,7 +242,6 @@ const StudyPage = ({ lang }) => {
     },
   };
 
-  // 2. SEO Content
   const seo = {
     fr: {
       title: "Étudier en Allemagne - Médecine & Ingénierie",
@@ -263,7 +260,6 @@ const StudyPage = ({ lang }) => {
   const t = content[lang] || content.fr;
   const tSeo = seo[lang] || seo.fr;
 
-  // Helper to assign flag colors (Black -> Red -> Gold)
   const getFlagColors = (index) => {
     if (index % 3 === 0)
       return {
@@ -289,10 +285,10 @@ const StudyPage = ({ lang }) => {
 
   return (
     <div
-      className="min-h-screen bg-[#e0f9fd] pb-0"
+      // CHANGED: Background to bg-medical-navy/15
+      className="min-h-screen bg-medical-navy/15 pb-0"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
-      {/* 3. SEO BLOCK */}
       <Helmet>
         <title>{tSeo.title}</title>
         <meta name="description" content={tSeo.desc} />
@@ -301,13 +297,15 @@ const StudyPage = ({ lang }) => {
 
       {/* --- HERO SECTION --- */}
       <section className="relative pt-12 pb-20 bg-medical-navy overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00b4d8_1px,transparent_1px)] [background-size:20px_20px]"></div>
+        {/* CHANGED: Radial gradient uses Dark Blue (#004C73) instead of Cyan */}
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#004C73_1px,transparent_1px)] [background-size:20px_20px]"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Back Button */}
           <button
             onClick={handleBack}
-            className={`flex items-center gap-2 text-medical-cyan font-bold mb-6 hover:text-white transition-colors text-sm group ${
+            // CHANGED: Text color is Mustard Yellow
+            className={`flex items-center gap-2 text-yellow-500 font-bold mb-6 hover:text-white transition-colors text-sm group ${
               lang === "ar" ? "flex-row-reverse" : ""
             }`}
           >
@@ -317,7 +315,7 @@ const StudyPage = ({ lang }) => {
             />
             <span className="relative">
               {t.back}
-              {/* GERMAN ACCENT: Gold Underline */}
+              {/* Gold Underline */}
               <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full"></span>
             </span>
           </button>
@@ -328,16 +326,17 @@ const StudyPage = ({ lang }) => {
                 lang === "ar" ? "text-right" : "text-left"
               }`}
             >
-              {/* GERMAN ACCENT: Tag is Gold */}
+              {/* Tag */}
               <div className="inline-flex items-center gap-2 bg-yellow-500/10 text-yellow-500 px-4 py-1.5 rounded-full text-sm font-bold mb-6 border border-yellow-500/20">
                 <GraduationCap size={16} />
                 {t.hero.tag}
               </div>
 
-              {/* GERMAN ACCENT: Gold Underline for Title */}
+              {/* Title */}
               <h1 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight relative inline-block">
                 {t.hero.title}
-                <div className="absolute -bottom-2 left-0 w-1/4 h-1.5 bg-yellow-500 rounded-full" />
+                {/* CHANGED: Underline is Rouge Bordeaux (#800020) */}
+                <div className="absolute -bottom-2 left-0 w-1/4 h-1.5 bg-[#800020] rounded-full" />
               </h1>
 
               <p className="text-lg text-slate-300 mb-8 leading-relaxed">
@@ -346,8 +345,8 @@ const StudyPage = ({ lang }) => {
 
               <Link
                 to="/register"
-                // GERMAN ACCENT: Button is Black -> Red hover
-                className="inline-flex items-center gap-2 bg-black text-white px-8 py-3 rounded-xl font-bold hover:bg-red-600 transition-all shadow-lg shadow-black/20 group"
+                // CHANGED: Button is Dark Blue (#004C73)
+                className="inline-flex items-center gap-2 bg-[#004C73] text-white px-8 py-3 rounded-xl font-bold hover:bg-[#003a57] transition-all shadow-lg shadow-[#004C73]/30 group"
               >
                 {t.hero.cta}
                 <ArrowRight
@@ -360,7 +359,8 @@ const StudyPage = ({ lang }) => {
             </div>
 
             <div className="md:w-1/2 relative">
-              <div className="absolute inset-0 bg-medical-cyan blur-3xl opacity-20 rounded-full"></div>
+              {/* CHANGED: Glow effect uses Dark Blue (#004C73) instead of Cyan */}
+              <div className="absolute inset-0 bg-[#004C73] blur-3xl opacity-20 rounded-full"></div>
               <img
                 src="/uni.png"
                 onError={(e) => {
@@ -384,10 +384,8 @@ const StudyPage = ({ lang }) => {
               return (
                 <div
                   key={index}
-                  // GERMAN ACCENT: Bottom border cycles colors
                   className={`bg-white p-6 rounded-2xl shadow-xl border-b-4 ${colors.border} hover:-translate-y-2 transition-transform duration-300`}
                 >
-                  {/* GERMAN ACCENT: Icon Container cycles colors */}
                   <div
                     className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${colors.bg} ${colors.text}`}
                   >
@@ -413,7 +411,7 @@ const StudyPage = ({ lang }) => {
             <h2 className="text-2xl font-black text-medical-navy mb-4">
               {t.steps.title}
             </h2>
-            {/* GERMAN ACCENT: Gradient Line */}
+            {/* Gradient Line (German Flag) */}
             <div className="w-16 h-1 bg-gradient-to-r from-black via-red-600 to-yellow-500 mx-auto rounded-full"></div>
           </div>
 
@@ -423,7 +421,6 @@ const StudyPage = ({ lang }) => {
               return (
                 <div key={index} className="flex group">
                   <div className="flex flex-col items-center mr-4 ml-4">
-                    {/* GERMAN ACCENT: Step Number Circle cycles colors */}
                     <div
                       className={`w-10 h-10 rounded-full flex items-center justify-center font-black text-white z-10 shadow-lg transition-colors ${colors.stepBg}`}
                     >
@@ -452,14 +449,16 @@ const StudyPage = ({ lang }) => {
 
       {/* --- COMPACT SERVICES SECTION --- */}
       <section className="py-8 bg-medical-navy relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-medical-cyan/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-medical-cyan/10 rounded-full blur-3xl"></div>
+        {/* CHANGED: Removed Cyan blobs, replaced with Dark Blue glow */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#004C73]/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#004C73]/20 rounded-full blur-3xl"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="bg-white/5 backdrop-blur-lg rounded-3xl p-6 md:p-8 border border-white/10">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className={lang === "ar" ? "text-right" : "text-left"}>
-                <div className="inline-flex items-center gap-2 text-medical-cyan font-bold mb-3 text-sm">
+                {/* CHANGED: Icon color is Mustard Yellow */}
+                <div className="inline-flex items-center gap-2 text-yellow-500 font-bold mb-3 text-sm">
                   <Landmark size={18} /> GMED SUPPORT
                 </div>
                 <h2 className="text-2xl md:text-3xl font-black text-white mb-4">
@@ -471,7 +470,7 @@ const StudyPage = ({ lang }) => {
                       key={i}
                       className="flex items-start gap-3 text-slate-300 text-sm"
                     >
-                      {/* GERMAN ACCENT: Checkmark is Gold */}
+                      {/* Checkmark is Gold */}
                       <CheckCircle
                         size={18}
                         className="text-yellow-500 shrink-0 mt-0.5"
@@ -490,8 +489,8 @@ const StudyPage = ({ lang }) => {
 
                 <Link
                   to="/#contact"
-                  // GERMAN ACCENT: Button is Black -> Red hover
-                  className="w-full block bg-black text-white py-3 rounded-xl font-bold hover:bg-red-600 transition-colors shadow-lg text-sm"
+                  // CHANGED: Button is Dark Blue (#004C73)
+                  className="w-full block bg-[#004C73] text-white py-3 rounded-xl font-bold hover:bg-[#003a57] transition-colors shadow-lg shadow-[#004C73]/20 text-sm"
                 >
                   {t.ctaBox.btn}
                 </Link>
