@@ -33,7 +33,8 @@ const ScrollToTop = () => {
       <button
         type="button"
         onClick={scrollToTop}
-        className={`p-3 rounded-full bg-medical-navy text-white shadow-lg border border-white/20 transition-all duration-300 hover:bg-medical-cyan hover:-translate-y-1 focus:outline-none ${
+        // CHANGED: hover:bg-medical-cyan -> hover:bg-[#004C73] (Dark Blue)
+        className={`p-3 rounded-full bg-[#004C73] text-white shadow-lg border border-white/20 transition-all duration-300 hover:bg-[#003a57] hover:-translate-y-1 focus:outline-none ${
           isVisible
             ? "opacity-100 translate-y-0"
             : "opacity-0 translate-y-10 pointer-events-none"
