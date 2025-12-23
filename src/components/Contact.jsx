@@ -75,82 +75,70 @@ const Contact = ({ lang }) => {
 
   const t = content[lang] || content.fr;
 
+  // Input styles with visible borders
+  const inputClass =
+    "w-full bg-white/10 border border-slate-500 rounded-lg px-3 py-2 text-sm text-white focus:border-white focus:outline-none transition-colors placeholder-slate-400";
+
   return (
     <section
       id="contact"
-      className="py-12 bg-medical-navy text-white relative overflow-hidden"
+      className="py-10 bg-medical-navy text-white relative overflow-hidden"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
-      {/* Subtle Background Glow */}
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-medical-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-[100px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-left mb-8">
-          {/* 1. GERMAN ACCENT: Kept the Gold Underline */}
+        <div className="text-left mb-6">
           <h2 className="text-3xl font-black mb-2 relative inline-block">
             {t.title}
-            <div className="absolute -bottom-1 left-0 w-1/3 h-1 bg-yellow-500 rounded-full" />
+            <div className="absolute -bottom-1 left-0 w-1/3 h-1 bg-[#E1AD01] rounded-full" />
           </h2>
           <p className="text-slate-400 text-base">{t.subtitle}</p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-10 items-stretch">
+        <div className="grid lg:grid-cols-2 gap-8 items-stretch">
           {/* LEFT: Form */}
-          <div className="bg-white/5 backdrop-blur-md border border-white/10 p-6 rounded-2xl shadow-xl h-full flex flex-col justify-center">
-            <form className="space-y-4">
-              {/* Row 1: Name & Phone */}
-              <div className="grid grid-cols-2 gap-4">
+          {/* CHANGED: Background opacity increased to 15% (bg-white/15) */}
+          <div className="bg-white/15 backdrop-blur-md border border-white/10 p-5 rounded-2xl shadow-xl h-full flex flex-col justify-center">
+            <form className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-bold text-slate-300 mb-1">
                     {t.form.name}
                   </label>
-                  <input
-                    type="text"
-                    // 2. FOCUS COLOR: Changed to Black
-                    className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-black focus:outline-none transition-colors"
-                  />
+                  <input type="text" className={inputClass} />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-bold text-slate-300 mb-1">
                     {t.form.phone}
                   </label>
-                  <input
-                    type="tel"
-                    // 2. FOCUS COLOR: Changed to Black
-                    className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-black focus:outline-none transition-colors"
-                  />
+                  <input type="tel" className={inputClass} />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                <label className="block text-xs font-bold text-slate-300 mb-1">
                   {t.form.email}
                 </label>
-                <input
-                  type="email"
-                  // 2. FOCUS COLOR: Changed to Black
-                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:border-black focus:outline-none transition-colors"
-                />
+                <input type="email" className={inputClass} />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                <label className="block text-xs font-bold text-slate-300 mb-1">
                   {t.form.msg}
                 </label>
                 <textarea
                   rows="3"
-                  // 2. FOCUS COLOR: Changed to Black
-                  className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white resize-none focus:border-black focus:outline-none transition-colors"
+                  className={`${inputClass} resize-none`}
                 ></textarea>
               </div>
 
               <button
                 type="button"
-                className="w-full bg-medical-cyan text-white font-bold py-3 rounded-lg hover:bg-[#0096b4] transition-all shadow-lg flex items-center justify-center gap-2 text-sm"
+                className="w-full bg-[#004C73] text-white font-bold py-2.5 rounded-lg hover:bg-[#003a57] transition-all shadow-lg flex items-center justify-center gap-2 text-sm mt-1"
               >
                 {t.form.btn}
-                {/* 3. Removed German Flag Icon */}
                 <Send size={16} className={lang === "ar" ? "rotate-180" : ""} />
               </button>
             </form>
@@ -158,10 +146,9 @@ const Contact = ({ lang }) => {
 
           {/* RIGHT: Info + Map */}
           <div className="flex flex-col h-full pt-1">
-            {/* Info Rows */}
-            <div className="flex flex-col gap-4 mb-4">
+            <div className="flex flex-col gap-3 mb-4">
               {/* Social */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-white/10 pb-3">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-white/10 pb-2">
                 <span className="text-slate-400 font-bold text-sm">
                   {t.labels.social}
                 </span>
@@ -170,7 +157,6 @@ const Contact = ({ lang }) => {
                     href="https://www.instagram.com/gmed.ma/"
                     target="_blank"
                     rel="noreferrer"
-                    // 4. REVERTED: Instagram Gradient
                     className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-gradient-to-tr hover:from-purple-500 hover:to-pink-500 transition-all text-white"
                   >
                     <Instagram size={16} />
@@ -179,7 +165,6 @@ const Contact = ({ lang }) => {
                     href="https://web.facebook.com/profile.php?id=61581045256544#"
                     target="_blank"
                     rel="noreferrer"
-                    // 4. REVERTED: Facebook Blue
                     className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-all text-white"
                   >
                     <Facebook size={16} />
@@ -188,7 +173,6 @@ const Contact = ({ lang }) => {
                     href="https://www.tiktok.com/@gmed.ma?lang=fr"
                     target="_blank"
                     rel="noreferrer"
-                    // 4. REVERTED: TikTok Black
                     className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-black transition-all text-white"
                   >
                     <TikTokIcon size={14} />
@@ -197,7 +181,7 @@ const Contact = ({ lang }) => {
               </div>
 
               {/* Phone */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-white/10 pb-3">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-white/10 pb-2">
                 <span className="text-slate-400 font-bold text-sm">
                   {t.labels.phone}
                 </span>
@@ -207,7 +191,7 @@ const Contact = ({ lang }) => {
               </div>
 
               {/* Email */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-white/10 pb-3">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-white/10 pb-2">
                 <span className="text-slate-400 font-bold text-sm">
                   {t.labels.email}
                 </span>
@@ -215,7 +199,7 @@ const Contact = ({ lang }) => {
               </div>
 
               {/* Address */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-white/10 pb-3">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-white/10 pb-2">
                 <span className="text-slate-400 font-bold text-sm">
                   {t.labels.address}
                 </span>
@@ -225,10 +209,10 @@ const Contact = ({ lang }) => {
               </div>
             </div>
 
-            {/* Map (UNCHANGED iframe, responsive container) */}
-            <div className="w-full flex-1 rounded-xl overflow-hidden border border-white/20 shadow-lg h-[260px] sm:h-auto">
+            {/* Map - Updated iframe src */}
+            <div className="w-full flex-1 rounded-xl overflow-hidden border border-white/20 shadow-lg h-[240px] sm:h-auto">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d22089.281804864466!2d-6.852858897436527!3d33.986800999760355!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda76d9d613b8661%3A0xf55dac11fdc7b425!2sGMED%20-%20German%20Medical%20institute!5e1!3m2!1sen!2sma!4v1766143555680!5m2!1sen!2sma"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d690.1821808323999!2d-6.850339968404239!3d34.00008007609704!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda76d9d613b8661%3A0xf55dac11fdc7b425!2sGMED%20-%20German%20Medical%20institute!5e1!3m2!1sen!2sma!4v1766496444022!5m2!1sen!2sma"
                 width="600"
                 height="450"
                 style={{ border: 0 }}
