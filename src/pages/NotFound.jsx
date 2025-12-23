@@ -3,7 +3,14 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Home, AlertTriangle } from "lucide-react";
 
+/**
+ * NotFound Component
+ * Displays a 404 error page with multilingual support (FR, DE, AR).
+ * Styles are matched to the specific color palette: Medical Navy (15% opacity background),
+ * Rouge Bordeaux (Icon), and Dark Blue (Button).
+ */
 const NotFound = ({ lang }) => {
+  // Translations for the 404 page content
   const content = {
     fr: {
       title: "Page non trouvée",
@@ -22,21 +29,27 @@ const NotFound = ({ lang }) => {
     },
   };
 
+  // Fallback to French if language is not found
   const t = content[lang] || content.fr;
 
   return (
     <div
-      // CHANGED: Reduced height from min-h-[70vh] to min-h-[50vh] to close the gap to the footer
+      // LAYOUT & BACKGROUND:
+      // - min-h-[50vh]: Reduced height to minimize gap between card and footer.
+      // - bg-medical-navy/15: 15% opacity of the main theme color for a subtle tinted background.
+      // - dir: Handles Right-to-Left layout for Arabic.
       className="min-h-[50vh] flex flex-col items-center justify-center bg-medical-navy/15 px-4 text-center py-10"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
       <Helmet>
         <title>404 - {t.title} | GMED</title>
+        {/* SEO: Crucial 'noindex' to prevent search engines from indexing error pages */}
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <div className="bg-white p-10 rounded-3xl shadow-xl border border-white/50 max-w-lg w-full">
-        {/* Icon uses Rouge Bordeaux (#800020) */}
+        {/* ICON STYLING:
+            Using 'Rouge Bordeaux' (#800020) for the alert icon and its background tint. */}
         <div className="w-20 h-20 bg-[#800020]/10 text-[#800020] rounded-full flex items-center justify-center mx-auto mb-6">
           <AlertTriangle size={40} />
         </div>
@@ -47,7 +60,8 @@ const NotFound = ({ lang }) => {
 
         <Link
           to="/"
-          // Button uses Dark Blue (#004C73)
+          // BUTTON STYLING:
+          // Uses 'Dark Blue' (#004C73) for the background to match the site's primary call-to-actions.
           className="inline-flex items-center gap-2 bg-[#004C73] text-white px-6 py-3 rounded-xl font-bold hover:bg-[#003a57] transition-colors"
         >
           <Home size={18} />
