@@ -107,10 +107,16 @@ const Ausbildung = ({ lang }) => {
 
   const t = content[lang] || content.de;
 
+  // Define consistent color classes
+  const accentColorClass = "text-[#004C73]"; // Dark Blue text
+  const hoverBgClass = "group-hover:bg-[#004C73]"; // Dark Blue BG on hover
+  const iconHoverTextClass = "group-hover:text-white"; // White text on hover
+
   return (
     <section
       id="ausbildung-section"
-      className="py-16 bg-[#e0f9fd]"
+      // CHANGED: Background to bg-medical-navy/15 (15% opacity)
+      className="py-16 bg-medical-navy/15"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -126,7 +132,7 @@ const Ausbildung = ({ lang }) => {
 
         {/* 4-Step Process Grid */}
         <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {/* Reverted Connecting Line to original Grey/Blue */}
+          {/* Connecting Line */}
           <div className="hidden lg:block absolute top-10 left-0 w-full h-0.5 bg-medical-navy/10 -z-10 px-12">
             <div className="w-full h-full bg-medical-navy/10"></div>
           </div>
@@ -136,9 +142,11 @@ const Ausbildung = ({ lang }) => {
               key={index}
               className="relative bg-white p-6 rounded-2xl border border-white/50 shadow-md hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 ease-out group text-center"
             >
-              {/* MAIN ICON CIRCLE - Reverted to Cyan/Medical Theme */}
+              {/* MAIN ICON CIRCLE */}
               <div className="relative w-20 h-20 mx-auto mb-6">
-                <div className="w-full h-full bg-slate-50 border-4 border-white rounded-full flex items-center justify-center text-medical-cyan shadow-inner group-hover:bg-medical-cyan group-hover:text-white transition-all duration-300">
+                <div
+                  className={`w-full h-full bg-slate-50 border-4 border-white rounded-full flex items-center justify-center ${accentColorClass} shadow-inner ${hoverBgClass} ${iconHoverTextClass} transition-all duration-300`}
+                >
                   {step.icon}
                 </div>
 
@@ -148,8 +156,8 @@ const Ausbildung = ({ lang }) => {
                 </div>
               </div>
 
-              {/* Text Content - Reverted Hover to Cyan */}
-              <h3 className="text-lg font-bold text-medical-navy mb-2 group-hover:text-medical-cyan transition-colors">
+              {/* Text Content */}
+              <h3 className="text-lg font-bold text-medical-navy mb-2 group-hover:text-[#004C73] transition-colors">
                 {step.title}
               </h3>
               <p className="text-slate-500 text-sm leading-relaxed">
@@ -164,7 +172,7 @@ const Ausbildung = ({ lang }) => {
           <Link
             to="/ausbildung"
             state={{ fromHomeSection: true }}
-            className="inline-flex items-center gap-2 bg-medical-navy text-white px-8 py-4 rounded-xl font-bold text-base shadow-xl shadow-medical-navy/20 hover:bg-medical-cyan hover:shadow-medical-cyan/30 transition-all hover:-translate-y-1 group"
+            className="inline-flex items-center gap-2 bg-[#004C73] text-white px-8 py-4 rounded-xl font-bold text-base shadow-xl shadow-medical-navy/20 hover:bg-[#003a57] hover:shadow-medical-navy/30 transition-all hover:-translate-y-1 group"
           >
             {t.cta}
             <ArrowRight
