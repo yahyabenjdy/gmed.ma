@@ -278,7 +278,6 @@ const CoursesPage = ({ lang }) => {
 
   const t = content[lang] || content.de;
 
-  // 2. SEO Content
   const seo = {
     fr: {
       title: "Cours d'Allemand Médical & Intensif - Préparation FSP/KP",
@@ -297,11 +296,11 @@ const CoursesPage = ({ lang }) => {
   const tSeo = seo[lang] || seo.fr;
 
   return (
+    // Background: bg-medical-navy/15
     <div
-      className="bg-[#e0f9fd] min-h-screen pb-12"
+      className="bg-medical-navy/15 min-h-screen pb-12"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
-      {/* 3. SEO BLOCK */}
       <Helmet>
         <title>{tSeo.title}</title>
         <meta name="description" content={tSeo.desc} />
@@ -314,7 +313,8 @@ const CoursesPage = ({ lang }) => {
           {/* Back Button */}
           <button
             onClick={handleBack}
-            className={`flex items-center gap-2 text-medical-cyan font-bold mb-4 hover:text-white transition-colors text-sm group ${
+            // Text: Yellow for visibility on Navy
+            className={`flex items-center gap-2 text-yellow-500 font-bold mb-4 hover:text-white transition-colors text-sm group ${
               lang === "ar" ? "flex-row-reverse" : ""
             }`}
           >
@@ -324,7 +324,7 @@ const CoursesPage = ({ lang }) => {
             />
             <span className="relative">
               {t.back}
-              {/* GERMAN ACCENT: Gold Underline on hover */}
+              {/* Gold Underline on hover */}
               <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full"></span>
             </span>
           </button>
@@ -336,24 +336,27 @@ const CoursesPage = ({ lang }) => {
         </div>
       </div>
 
-      {/* Courses List */}
-      <div className="max-w-4xl mx-auto px-4 -mt-6">
-        <div className="space-y-5">
+      {/* Courses Grid */}
+      {/* CHANGED: max-w-7xl to accommodate grid, -mt-6 for overlap effect */}
+      <div className="max-w-7xl mx-auto px-4 -mt-6">
+        {/* CHANGED: Grid layout (1 col mobile, 2 cols medium, 3 cols large) */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {t.courses.map((course) => (
             <div
               key={course.id}
-              className={`bg-white rounded-[1.5rem] shadow-md overflow-hidden border border-slate-100 flex flex-col md:flex-row hover:shadow-xl transition-all duration-300 group ${
-                // GERMAN ACCENT: Ring color for featured
+              // CHANGED: flex-col (vertical card) + h-full to equal height in grid
+              className={`bg-white rounded-[1.5rem] shadow-md overflow-hidden border border-slate-100 flex flex-col hover:shadow-xl transition-all duration-300 group h-full ${
+                // Ring color for featured is Yellow/Gold
                 course.featured ? "ring-2 ring-yellow-500/50" : ""
               }`}
             >
-              {/* Left Side: Icon & Title - NAVY BLUE GRADIENT */}
-              <div className="bg-gradient-to-br from-medical-navy to-[#0a2e4f] p-6 md:w-1/3 flex flex-col justify-center items-center text-white text-center relative overflow-hidden">
-                {/* Background Pattern */}
+              {/* Top Side: Icon & Title - NAVY BLUE GRADIENT */}
+              {/* CHANGED: Width full, padding adjusted */}
+              <div className="bg-gradient-to-br from-medical-navy to-[#0a2e4f] p-8 w-full flex flex-col justify-center items-center text-white text-center relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
 
                 {course.featured && (
-                  // GERMAN ACCENT: Gold Badge
+                  // Gold Badge
                   <div className="absolute top-3 right-3 bg-yellow-500 text-black text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-sm">
                     Recommended
                   </div>
@@ -361,19 +364,19 @@ const CoursesPage = ({ lang }) => {
 
                 <GraduationCap
                   size={36}
-                  // CHANGED: Icon is Yellow/Gold
+                  // Icon is Yellow/Gold
                   className="mb-3 text-yellow-500"
                 />
                 <h3 className="text-xl font-black">{course.name}</h3>
-                {/* Text in Medical Light */}
                 <div className="mt-2 inline-flex items-center gap-1.5 bg-white/10 px-2.5 py-0.5 rounded-full text-xs font-bold text-medical-light">
                   <Signal size={12} /> {course.level}
                 </div>
               </div>
 
-              {/* Right Side: Content */}
+              {/* Bottom Side: Content */}
+              {/* CHANGED: flex-grow to push button down, w-full */}
               <div
-                className={`p-6 md:w-2/3 flex flex-col justify-between ${
+                className={`p-6 w-full flex-grow flex flex-col justify-between ${
                   lang === "ar" ? "text-right" : "text-left"
                 }`}
               >
@@ -384,21 +387,23 @@ const CoursesPage = ({ lang }) => {
                       lang === "ar" ? "justify-end" : "justify-start"
                     }`}
                   >
-                    <div className="flex items-center gap-1.5">
-                      <Clock size={14} className="text-black" />
+                    {/* Clock icon: Dark Blue */}
+                    <div className="flex items-center gap-1.5 text-[#004C73]">
+                      <Clock size={14} />
                       {course.schedule}
                     </div>
-                    {/* GERMAN ACCENT: Price is Red */}
-                    <div className="flex items-center gap-1.5 text-red-600 font-bold text-base">
+                    {/* Price: Rouge Bordeaux */}
+                    <div className="flex items-center gap-1.5 text-[#800020] font-bold text-base">
                       {course.price}
                     </div>
                   </div>
 
-                  <p className="text-slate-600 mb-4 text-sm leading-relaxed">
+                  <p className="text-slate-600 mb-6 text-sm leading-relaxed">
                     {course.desc}
                   </p>
 
-                  <div className="grid sm:grid-cols-2 gap-2 mb-6">
+                  {/* Features: Stacked for grid card width */}
+                  <div className="space-y-2 mb-8">
                     {course.features.map((feature, i) => (
                       <div
                         key={i}
@@ -406,9 +411,9 @@ const CoursesPage = ({ lang }) => {
                           lang === "ar" ? "flex-row-reverse" : ""
                         }`}
                       >
-                        {/* GERMAN ACCENT: Checkmark is Black */}
+                        {/* Checkmark: Dark Blue Icon */}
                         <div className="w-4 h-4 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
-                          <Check size={10} className="text-black" />
+                          <Check size={10} className="text-[#004C73]" />
                         </div>
                         <span>{feature}</span>
                       </div>
@@ -418,8 +423,8 @@ const CoursesPage = ({ lang }) => {
 
                 <Link
                   to="/register"
-                  // GERMAN ACCENT: CTA is Black -> Red on hover
-                  className="btn-primary w-full sm:w-auto self-start flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-bold bg-black text-white hover:bg-red-600 transition-colors shadow-lg text-sm"
+                  // Button: Dark Blue
+                  className="btn-primary w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold bg-[#004C73] text-white hover:bg-[#003a57] transition-colors shadow-lg shadow-[#004C73]/20 text-sm mt-auto"
                 >
                   {t.cta}
                   <ArrowRight
