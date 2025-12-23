@@ -17,7 +17,6 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-// 1. IMPORT HELMET
 import { Helmet } from "react-helmet-async";
 
 const FinancialAid = ({ lang }) => {
@@ -97,7 +96,7 @@ const FinancialAid = ({ lang }) => {
           },
         },
         tips: {
-          title: "Astuces & Documents",
+          title: "Astuces",
           tipsList: [
             "Cherchez les écoles certifiées BAMF pour la prise en charge.",
             "Utilisez les bibliothèques universitaires médicales (gratuites).",
@@ -180,7 +179,7 @@ const FinancialAid = ({ lang }) => {
           },
         },
         tips: {
-          title: "Tipps & Dokumente",
+          title: "Tipps",
           tipsList: [
             "Suchen Sie nach BAMF-zertifizierten Schulen.",
             "Nutzen Sie kostenlose Universitätsbibliotheken.",
@@ -262,7 +261,7 @@ const FinancialAid = ({ lang }) => {
           },
         },
         tips: {
-          title: "نصائح ووثائق",
+          title: "نصائح",
           tipsList: [
             "ابحث عن مدارس معتمدة من BAMF لضمان التمويل.",
             "استخدم المكتبات الطبية الجامعية للمراجعة مجاناً.",
@@ -322,29 +321,7 @@ const FinancialAid = ({ lang }) => {
 
   const t = content[lang] || content.fr;
 
-  // Helper for flag colors
-  const getFlagColors = (index) => {
-    if (index % 3 === 0)
-      return {
-        text: "text-black",
-        bg: "bg-black/10",
-        border: "border-black",
-      };
-    if (index % 3 === 1)
-      return {
-        text: "text-red-600",
-        bg: "bg-red-600/10",
-        border: "border-red-600",
-      };
-    return {
-      text: "text-yellow-500",
-      bg: "bg-yellow-500/10",
-      border: "border-yellow-500",
-    };
-  };
-
-  // 2. SEO Content
-  const seo = {
+  const tSeo = {
     fr: {
       title: "Aides Financières & Financement - Médecins en Allemagne",
       desc: "Comment financer vos cours FSP/KP en Allemagne ? Guide sur le BAMF, l'Agentur für Arbeit et le Bildungsgutschein.",
@@ -357,16 +334,19 @@ const FinancialAid = ({ lang }) => {
       title: "المساعدات المالية والتمويل - للأطباء في ألمانيا",
       desc: "كيف تمول دورات اللغة والامتحانات في ألمانيا؟ دليل شامل حول BAMF، مكتب العمل، وقسائم التعليم (Bildungsgutschein).",
     },
-  };
+  }[lang];
 
-  const tSeo = seo[lang] || seo.fr;
+  // SHARED CARD STYLING FOR UNIFORMITY
+  const cardClasses =
+    "bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-all group h-full";
+  const iconContainerClasses =
+    "bg-[#004C73]/10 w-12 h-12 rounded-xl flex items-center justify-center text-[#004C73] mb-4 group-hover:scale-110 transition-transform";
 
   return (
     <div
-      className="bg-[#e0f9fd] min-h-screen pb-0"
+      className="bg-medical-navy/15 min-h-screen pb-0"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
-      {/* 3. SEO BLOCK */}
       <Helmet>
         <title>{tSeo.title}</title>
         <meta name="description" content={tSeo.desc} />
@@ -375,12 +355,12 @@ const FinancialAid = ({ lang }) => {
 
       {/* --- HERO SECTION --- */}
       <section className="relative pt-10 pb-12 bg-medical-navy overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00b4d8_1px,transparent_1px)] [background-size:20px_20px]"></div>
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#004C73_1px,transparent_1px)] [background-size:20px_20px]"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex justify-between items-center mb-6">
             <button
               onClick={handleBack}
-              className={`flex items-center gap-2 text-medical-cyan font-bold hover:text-white transition-colors text-sm group ${
+              className={`flex items-center gap-2 text-yellow-500 font-bold hover:text-white transition-colors text-sm group ${
                 lang === "ar" ? "flex-row-reverse" : ""
               }`}
             >
@@ -390,14 +370,13 @@ const FinancialAid = ({ lang }) => {
               />
               <span className="relative">
                 {lang === "ar" ? "عودة" : lang === "de" ? "Zurück" : "Retour"}
-                {/* 1. GERMAN ACCENT: Gold Underline */}
                 <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full"></span>
               </span>
             </button>
 
             <button
               onClick={handleShare}
-              className={`flex items-center gap-2 text-white/80 hover:text-medical-cyan transition-colors text-sm font-medium ${
+              className={`flex items-center gap-2 text-white/80 hover:text-yellow-500 transition-colors text-sm font-medium ${
                 lang === "ar" ? "flex-row-reverse" : ""
               }`}
             >
@@ -412,16 +391,16 @@ const FinancialAid = ({ lang }) => {
                 lang === "ar" ? "text-right" : "text-left"
               }`}
             >
-              {/* 2. GERMAN ACCENT: Gold Tag */}
+              {/* Tag is Gold */}
               <div className="inline-flex items-center gap-2 bg-yellow-500/10 text-yellow-500 px-3 py-1 rounded-full text-xs font-bold mb-4 border border-yellow-500/20">
                 <Euro size={14} />
                 {t.hero.tag}
               </div>
 
-              {/* 3. GERMAN ACCENT: Gold Underline Title */}
+              {/* Title with Rouge Bordeaux Underline */}
               <h1 className="text-2xl md:text-4xl font-black text-white mb-4 leading-tight relative inline-block">
                 {t.hero.title}
-                <div className="absolute -bottom-2 left-0 w-1/4 h-1 bg-yellow-500 rounded-full" />
+                <div className="absolute -bottom-2 left-0 w-1/4 h-1 bg-[#800020] rounded-full" />
               </h1>
 
               <p className="text-base text-slate-300 leading-relaxed">
@@ -430,7 +409,7 @@ const FinancialAid = ({ lang }) => {
             </div>
 
             <div className="md:w-1/2 relative flex justify-center items-center">
-              <div className="absolute inset-0 bg-medical-cyan blur-3xl opacity-20 rounded-full"></div>
+              <div className="absolute inset-0 bg-[#004C73] blur-3xl opacity-20 rounded-full"></div>
               <img
                 src="/finance.png"
                 onError={(e) => {
@@ -446,7 +425,7 @@ const FinancialAid = ({ lang }) => {
       </section>
 
       {/* --- SECTION 1: MAIN AIDS --- */}
-      <section className="py-12 bg-white/50">
+      <section className="py-12">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-2xl font-black text-medical-navy mb-8 text-center">
             {t.sections.aids.title}
@@ -454,8 +433,8 @@ const FinancialAid = ({ lang }) => {
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* BAMF Card */}
-            <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-all group">
-              <div className="bg-indigo-50 w-12 h-12 rounded-xl flex items-center justify-center text-indigo-600 mb-4 group-hover:scale-110 transition-transform">
+            <div className={cardClasses}>
+              <div className={iconContainerClasses}>
                 <Landmark size={24} />
               </div>
               <h3 className="text-xl font-black text-medical-navy mb-1">
@@ -473,8 +452,10 @@ const FinancialAid = ({ lang }) => {
                     key={i}
                     className="flex items-center gap-2 text-sm font-bold text-slate-700"
                   >
-                    {/* 4. GERMAN ACCENT: Checkmark cycles colors */}
-                    <CheckCircle size={16} className={getFlagColors(i).text} />
+                    <CheckCircle
+                      size={16}
+                      className="text-[#004C73]" // Dark Blue check
+                    />
                     {item}
                   </li>
                 ))}
@@ -482,8 +463,8 @@ const FinancialAid = ({ lang }) => {
             </div>
 
             {/* Agentur Card */}
-            <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-all group">
-              <div className="bg-red-50 w-12 h-12 rounded-xl flex items-center justify-center text-red-600 mb-4 group-hover:scale-110 transition-transform">
+            <div className={cardClasses}>
+              <div className={iconContainerClasses}>
                 <Briefcase size={24} />
               </div>
               <h3 className="text-xl font-black text-medical-navy mb-1">
@@ -501,12 +482,15 @@ const FinancialAid = ({ lang }) => {
                     key={i}
                     className="flex items-center gap-2 text-sm font-bold text-slate-700"
                   >
-                    {/* 4. GERMAN ACCENT: Checkmark cycles colors */}
-                    <CheckCircle size={16} className={getFlagColors(i).text} />
+                    <CheckCircle
+                      size={16}
+                      className="text-[#004C73]" // Dark Blue check
+                    />
                     {item}
                   </li>
                 ))}
               </ul>
+              {/* Alert kept Red for semantic meaning */}
               <div className="flex items-start gap-2 bg-red-50 p-3 rounded-lg text-xs text-red-700 font-medium">
                 <AlertTriangle size={14} className="shrink-0 mt-0.5" />
                 {t.sections.aids.agentur.note}
@@ -520,11 +504,13 @@ const FinancialAid = ({ lang }) => {
       <section className="py-12">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8">
-            {/* Tips */}
-            <div className="bg-emerald-50 rounded-3xl p-8 border border-emerald-100">
+            {/* Tips - UNIFIED CARD STYLE */}
+            <div className={cardClasses}>
               <div className="flex items-center gap-3 mb-6">
-                <Lightbulb className="text-emerald-600" />
-                <h3 className="text-xl font-black text-emerald-900">
+                <div className={iconContainerClasses + " mb-0"}>
+                  <Lightbulb size={24} />
+                </div>
+                <h3 className="text-xl font-black text-medical-navy">
                   {t.sections.tips.title}
                 </h3>
               </div>
@@ -532,28 +518,22 @@ const FinancialAid = ({ lang }) => {
                 {t.sections.tips.tipsList.map((tip, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-3 text-emerald-800 text-sm font-medium"
+                    className="flex items-start gap-3 text-slate-700 text-sm font-medium"
                   >
-                    {/* 5. GERMAN ACCENT: Bullet point cycles colors */}
-                    <div
-                      className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${
-                        i % 3 === 0
-                          ? "bg-black"
-                          : i % 3 === 1
-                          ? "bg-red-600"
-                          : "bg-yellow-500"
-                      }`}
-                    />
+                    {/* Bullet point uses Dark Blue */}
+                    <div className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 bg-[#004C73]" />
                     {tip}
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Documents */}
-            <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
+            {/* Documents - UNIFIED CARD STYLE */}
+            <div className={cardClasses}>
               <div className="flex items-center gap-3 mb-6">
-                <FileCheck className="text-medical-cyan" />
+                <div className={iconContainerClasses + " mb-0"}>
+                  <FileCheck size={24} />
+                </div>
                 <h3 className="text-xl font-black text-medical-navy">
                   Documents
                 </h3>
@@ -564,11 +544,8 @@ const FinancialAid = ({ lang }) => {
                     key={i}
                     className="flex items-center gap-3 text-slate-700 text-sm font-bold"
                   >
-                    <div
-                      className={`w-6 h-6 rounded-full flex items-center justify-center text-xs shrink-0 ${
-                        getFlagColors(i).bg
-                      } ${getFlagColors(i).text}`}
-                    >
+                    {/* Circle uses Dark Blue */}
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs shrink-0 bg-[#004C73]/10 text-[#004C73]">
                       {i + 1}
                     </div>
                     {doc}
@@ -586,7 +563,7 @@ const FinancialAid = ({ lang }) => {
 
         <div className="max-w-4xl mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-medical-cyan/20 text-medical-cyan px-4 py-1.5 rounded-full text-sm font-bold mb-4 border border-medical-cyan/30">
+            <div className="inline-flex items-center gap-2 bg-yellow-500/10 text-yellow-500 px-4 py-1.5 rounded-full text-sm font-bold mb-4 border border-yellow-500/20">
               <Building2 size={16} /> Guide
             </div>
             <h2 className="text-2xl md:text-4xl font-black mb-4 leading-tight">
@@ -598,9 +575,9 @@ const FinancialAid = ({ lang }) => {
           </div>
 
           <div className="relative pl-2 md:pl-8">
-            {/* 6. GERMAN ACCENT: Gradient Chain Line */}
+            {/* CHANGED: Solid Mustard Yellow Line for Process */}
             <div
-              className={`absolute top-4 bottom-4 w-0.5 bg-gradient-to-b from-black via-red-600 to-yellow-500 ${
+              className={`absolute top-4 bottom-4 w-0.5 bg-[#E1AD01] ${
                 lang === "ar" ? "right-5 md:right-10" : "left-5 md:left-10"
               }`}
             ></div>
@@ -613,15 +590,14 @@ const FinancialAid = ({ lang }) => {
                     lang === "ar" ? "flex-row-reverse" : "flex-row"
                   }`}
                 >
-                  {/* 7. GERMAN ACCENT: Border/Icon Colors Cycle */}
+                  {/* CHANGED: Circle border is Mustard Yellow */}
                   <div
-                    className={`absolute top-0 w-10 h-10 bg-medical-navy border-2 rounded-full flex items-center justify-center z-10 ${
-                      getFlagColors(i).border
-                    } ${
+                    className={`absolute top-0 w-10 h-10 bg-medical-navy border-2 border-[#E1AD01] rounded-full flex items-center justify-center z-10 ${
                       lang === "ar" ? "right-0 md:right-5" : "left-0 md:left-5"
                     }`}
                   >
-                    <div className={getFlagColors(i).text}>{step.icon}</div>
+                    {/* Icon uses Mustard Yellow */}
+                    <div className="text-[#E1AD01]">{step.icon}</div>
                   </div>
 
                   <div
@@ -655,8 +631,8 @@ const FinancialAid = ({ lang }) => {
           <div className="mt-12 text-center">
             <Link
               to="/#contact"
-              // 8. GERMAN ACCENT: Button Black -> Red Hover
-              className="inline-flex items-center gap-3 bg-black text-white px-10 py-4 rounded-2xl font-bold hover:bg-red-600 transition-colors shadow-lg shadow-black/20"
+              // CHANGED: Button is Dark Blue (#004C73)
+              className="inline-flex items-center gap-3 bg-[#004C73] text-white px-10 py-4 rounded-2xl font-bold hover:bg-[#003a57] transition-colors shadow-lg shadow-[#004C73]/20"
             >
               {t.cta}
             </Link>
