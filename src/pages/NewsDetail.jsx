@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Calendar, User, Clock } from "lucide-react";
-// 1. Import Helmet for SEO
 import { Helmet } from "react-helmet-async";
 
 const NewsDetail = ({ lang }) => {
@@ -36,7 +35,7 @@ const NewsDetail = ({ lang }) => {
       },
     ],
     de: {
-      id: 1, // Fallback for specific text labels if needed
+      id: 1,
     },
     de_articles: [
       {
@@ -86,7 +85,6 @@ const NewsDetail = ({ lang }) => {
     ],
   };
 
-  // Logic to handle the 'de' structure safely
   let articleData;
   if (lang === "de") articleData = articles.de_articles;
   else if (lang === "ar") articleData = articles.ar;
@@ -94,7 +92,6 @@ const NewsDetail = ({ lang }) => {
 
   const article = articleData.find((a) => a.id === parseInt(id));
 
-  // Translation helpers for UI
   const uiText = {
     fr: {
       back: "Retour aux articles",
@@ -123,11 +120,9 @@ const NewsDetail = ({ lang }) => {
     );
 
   return (
-    // 2. SEO Helmet Block
     <>
       <Helmet>
         <title>{article.title}</title>
-        {/* Uses the first 160 characters of content as description */}
         <meta
           name="description"
           content={article.content.substring(0, 160) + "..."}
@@ -135,13 +130,12 @@ const NewsDetail = ({ lang }) => {
         <link rel="canonical" href={`https://gmed.ma/news/${id}`} />
       </Helmet>
 
-      {/* BACKGROUND: Exact #caf0f8 (30% Blue) */}
-      <div className="pt-28 pb-24 min-h-screen bg-[#caf0f8]">
+      <div className="pt-28 pb-24 min-h-screen bg-medical-navy/15">
         <div className="max-w-4xl mx-auto px-4">
           {/* Back Link */}
           <Link
             to="/news"
-            className={`inline-flex items-center gap-2 text-[#0077b6] font-bold mb-8 hover:-translate-x-2 transition-transform ${
+            className={`inline-flex items-center gap-2 text-[#004C73] font-bold mb-8 hover:-translate-x-2 transition-transform ${
               lang === "ar" ? "flex-row-reverse" : ""
             }`}
           >
@@ -149,20 +143,21 @@ const NewsDetail = ({ lang }) => {
               size={20}
               className={lang === "ar" ? "rotate-180" : ""}
             />
-            <span className="text-slate-600 hover:text-medical-cyan transition-colors">
+            <span className="text-slate-600 hover:text-medical-navy transition-colors">
               {t.back}
             </span>
           </Link>
 
           {/* Article Card */}
-          <article className="bg-white rounded-[2rem] overflow-hidden shadow-xl border border-white/60">
+          <article className="relative bg-white rounded-[2rem] overflow-hidden shadow-xl border border-white/60">
+            {/* CHANGED: Removed the top border div here */}
+
             <div className="relative h-[350px] md:h-[500px]">
               <img
                 src={article.img}
                 alt={article.title}
                 className="w-full h-full object-cover"
               />
-              {/* Subtle gradient to make text over image readable if we had any */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
 
@@ -177,14 +172,14 @@ const NewsDetail = ({ lang }) => {
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <Calendar size={16} className="text-medical-cyan" />{" "}
+                  <Calendar size={16} className="text-[#800020]" />{" "}
                   {article.date}
                 </div>
                 <div className="flex items-center gap-2">
-                  <User size={16} className="text-medical-cyan" /> {t.author}
+                  <User size={16} className="text-[#800020]" /> {t.author}
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock size={16} className="text-medical-cyan" /> {t.readTime}
+                  <Clock size={16} className="text-[#800020]" /> {t.readTime}
                 </div>
               </div>
 
@@ -194,10 +189,7 @@ const NewsDetail = ({ lang }) => {
 
               <div className="prose prose-lg max-w-none text-slate-600 leading-relaxed">
                 {article.content.split("\n\n").map((para, i) => (
-                  <p
-                    key={i}
-                    className="mb-6 first-letter:text-3xl first-letter:font-bold first-letter:text-medical-cyan"
-                  >
+                  <p key={i} className="mb-6">
                     {para}
                   </p>
                 ))}
