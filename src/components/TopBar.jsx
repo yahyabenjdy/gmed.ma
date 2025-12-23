@@ -19,11 +19,14 @@ const TopBar = ({ lang }) => {
 
   const t = content[lang] || content.fr;
 
+  // VISIBILITY FIX: Using Light Blue (#60A5FA)
+  // This is bright enough to see on Navy, but is definitely Blue (not Cyan)
+  const iconColorClass = "text-[#60A5FA]";
+  const hoverColorClass = "hover:text-[#60A5FA]";
+
   return (
-    // CHANGED: Removed 'border-b-2 border-[#800020]' completely.
     <div className="bg-medical-navy text-white py-2.5 text-[10px] xl:text-xs hidden lg:block">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Container with equal spacing between all 4 elements */}
         <div
           className={`flex items-center justify-between w-full ${
             lang === "ar" ? "flex-row-reverse" : ""
@@ -31,24 +34,24 @@ const TopBar = ({ lang }) => {
         >
           {/* 1. Address */}
           <div className="flex items-center gap-2">
-            <MapPin size={14} className="text-medical-cyan shrink-0" />
+            <MapPin size={14} className={`${iconColorClass} shrink-0`} />
             <span className="whitespace-nowrap">{t.address}</span>
           </div>
 
           {/* 2. Phone Numbers */}
           <div className="flex items-center gap-2">
-            <Phone size={14} className="text-medical-cyan shrink-0" />
+            <Phone size={14} className={`${iconColorClass} shrink-0`} />
             <div className="flex gap-2">
               <a
                 href="tel:+212702455555"
-                className="hover:text-medical-cyan transition-colors whitespace-nowrap"
+                className={`${hoverColorClass} transition-colors whitespace-nowrap`}
               >
                 07 02 45 55 55
               </a>
               <span className="text-white/30">/</span>
               <a
                 href="tel:+212775430287"
-                className="hover:text-medical-cyan transition-colors whitespace-nowrap"
+                className={`${hoverColorClass} transition-colors whitespace-nowrap`}
               >
                 07 75 43 02 87
               </a>
@@ -57,10 +60,10 @@ const TopBar = ({ lang }) => {
 
           {/* 3. Email */}
           <div className="flex items-center gap-2">
-            <Mail size={14} className="text-medical-cyan shrink-0" />
+            <Mail size={14} className={`${iconColorClass} shrink-0`} />
             <a
               href="mailto:contact@gmed.ma"
-              className="hover:text-medical-cyan transition-colors lowercase whitespace-nowrap"
+              className={`${hoverColorClass} transition-colors lowercase whitespace-nowrap`}
             >
               contact@gmed.ma
             </a>
@@ -68,7 +71,7 @@ const TopBar = ({ lang }) => {
 
           {/* 4. Working Time */}
           <div className="flex items-center gap-2">
-            <Clock size={14} className="text-medical-cyan shrink-0" />
+            <Clock size={14} className={`${iconColorClass} shrink-0`} />
             <span className="whitespace-nowrap">{t.workingHours}</span>
           </div>
         </div>
