@@ -7,7 +7,15 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
+/**
+ * Work Component
+ * Displays career opportunities for Doctors and Nurses in Germany.
+ * Features a dual-card layout with specific branding colors:
+ * - Background: Medical Navy (15% opacity)
+ * - Accents: Rouge Bordeaux (Borders), Mustard Yellow (Icons/Underlines), Dark Blue (Buttons).
+ */
 const Work = ({ lang }) => {
+  // Multilingual content configuration
   const content = {
     de: {
       title: "Arbeiten in Deutschland",
@@ -107,21 +115,24 @@ const Work = ({ lang }) => {
     },
   };
 
+  // Language fallback logic
   const t = content[lang] || content.fr;
 
   return (
     <section
       id="work-section"
-      // CHANGED: Background to bg-medical-navy/15 (15% opacity)
+      // SECTION BACKGROUND:
+      // Uses 'bg-medical-navy/15' (15% opacity) for a cohesive look with other sections.
       className="pt-12 pb-16 bg-medical-navy/15"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+        {/* Header Section */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="text-3xl md:text-4xl font-black text-medical-navy mb-3 relative inline-block">
             {t.title}
-            {/* Underline: Mustard Yellow */}
+            {/* UNDERLINE ACCENT:
+                Uses 'Mustard Yellow' (#E1AD01) to represent the German flag color scheme. */}
             <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-1.5 bg-[#E1AD01] rounded-full" />
           </h2>
           <p className="text-lg text-slate-500 font-medium">{t.subtitle}</p>
@@ -134,13 +145,17 @@ const Work = ({ lang }) => {
               key={index}
               className="group bg-white rounded-3xl p-8 border border-white/50 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 relative overflow-hidden"
             >
-              {/* Solid Rouge Bordeaux Top Border */}
+              {/* CARD ACCENT:
+                  Top border uses solid 'Rouge Bordeaux' (#800020). */}
               <div className="absolute top-0 left-0 w-full h-2 bg-[#800020]"></div>
 
               <div className="flex flex-col h-full justify-between">
                 <div>
+                  {/* Card Header (Icon + Salary) */}
                   <div className="flex justify-between items-start mb-6">
                     <div
+                      // ICON BACKGROUND:
+                      // Distinct background tints for Doctor vs Nurse, both using Mustard Yellow icons.
                       className={`p-4 rounded-2xl ${
                         card.id === "doctor"
                           ? "bg-medical-navy/10"
@@ -150,7 +165,8 @@ const Work = ({ lang }) => {
                       {card.icon}
                     </div>
                     <div className="text-right flex items-center">
-                      {/* Salary color is text-medical-navy */}
+                      {/* SALARY TEXT:
+                          Consistent 'text-medical-navy' for professional readability. */}
                       <span className="block text-medical-navy font-black text-lg">
                         {card.salary}
                       </span>
@@ -164,6 +180,7 @@ const Work = ({ lang }) => {
                     {card.desc}
                   </p>
 
+                  {/* Features List */}
                   <ul className="space-y-3 mb-8">
                     {card.features.map((feat, i) => (
                       <li
@@ -177,15 +194,18 @@ const Work = ({ lang }) => {
                   </ul>
                 </div>
 
+                {/* Call to Action Button */}
                 <Link
                   to={card.link}
                   state={{ fromHomeSection: true }}
-                  // Both buttons use Dark Blue (#004C73)
+                  // BUTTON STYLING:
+                  // Standardized to 'Dark Blue' (#004C73) for both cards.
                   className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold transition-all text-white shadow-lg bg-[#004C73] hover:bg-[#003a57] shadow-[#004C73]/30"
                 >
                   {card.btn}
                   <ArrowRight
                     size={20}
+                    // Rotates arrow for RTL (Arabic) support
                     className={lang === "ar" ? "rotate-180" : ""}
                   />
                 </Link>
