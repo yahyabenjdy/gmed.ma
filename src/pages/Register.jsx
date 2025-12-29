@@ -5,15 +5,28 @@ import {
   Briefcase,
   Send,
   CheckCircle2,
-  HelpCircle,
   GraduationCap,
   Award,
+  Loader2,
 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import axios from "axios";
 
 const Register = ({ lang }) => {
   const [submitted, setSubmitted] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState("");
+
+  // New States for Backend Integration
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Removed 'message' from state
+  // Changed default role to match new options
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    role: "Online", // Default value for the new dropdown
+  });
 
   const content = {
     de: {
@@ -24,12 +37,10 @@ const Register = ({ lang }) => {
       form: {
         name: "Vollständiger Name",
         phone: "Telefonnummer",
-        role_label: "Aktueller Status",
+        role_label: "Unterrichtsform", // Changed Label
         roles: [
-          "Schüler / Student",
-          "Arzt / Ärztin",
-          "Pflegekraft",
-          "Sonstiges",
+          "Online", // New Option 1
+          "Präsenzunterricht (Vor Ort)", // New Option 2
         ],
         level_label: "Gewünschtes Sprachniveau",
         levels: [
@@ -39,8 +50,9 @@ const Register = ({ lang }) => {
           "B2 (Berufsniveau)",
           "C1 (Experte)",
         ],
-        message: "Zusätzliche Nachricht (Optional)",
+        // Removed message label
         btn: "Anmeldung abschicken",
+        sending: "Wird gesendet...",
       },
       success: {
         title: "Vielen Dank!",
@@ -56,12 +68,10 @@ const Register = ({ lang }) => {
       form: {
         name: "Nom complet",
         phone: "Numéro de téléphone",
-        role_label: "Statut actuel",
+        role_label: "Format du cours", // Changed Label
         roles: [
-          "Élève / Étudiant",
-          "Médecin",
-          "Infirmier / Infirmière",
-          "Autre",
+          "En ligne", // New Option 1
+          "Présentiel (Sur place)", // New Option 2
         ],
         level_label: "Niveau souhaité / actuel",
         levels: [
@@ -71,8 +81,9 @@ const Register = ({ lang }) => {
           "B2 (Avancé / Pro)",
           "C1 (Expert)",
         ],
-        message: "Message supplémentaire (Optionnel)",
+        // Removed message label
         btn: "Envoyer l'inscription",
+        sending: "Envoi en cours...",
       },
       success: {
         title: "Merci !",
@@ -87,8 +98,11 @@ const Register = ({ lang }) => {
       form: {
         name: "الاسم الكامل",
         phone: "رقم الهاتف",
-        role_label: "الوضع الحالي",
-        roles: ["تلميذ / طالب", "طبيب", "ممرض", "آخر"],
+        role_label: "نظام الدراسة", // Changed Label
+        roles: [
+          "أونلاين (عن بُعد)", // New Option 1
+          "حضوري (في المركز)", // New Option 2
+        ],
         level_label: "المستوى المطلوب / الحالي",
         levels: [
           "A1 (مبتدئ)",
@@ -97,8 +111,9 @@ const Register = ({ lang }) => {
           "B2 (متقدم / مهني)",
           "C1 (خبير)",
         ],
-        message: "رسالة إضافية (اختياري)",
+        // Removed message label
         btn: "إرسال الطلب",
+        sending: "جاري الإرسال...",
       },
       success: {
         title: "شكراً لك!",
@@ -126,10 +141,44 @@ const Register = ({ lang }) => {
   const t = content[lang] || content.fr;
   const tSeo = seo[lang] || seo.fr;
 
-  const handleSubmit = (e) => {
+  // Handle Input Changes
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // --- SUBMIT HANDLER ---
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    window.scrollTo(0, 0);
+    setLoading(true);
+    setError("");
+
+    try {
+      // Send data to backend (Removed message field)
+      const response = await axios.post("http://localhost:5000/api/register", {
+        name: formData.name,
+        phone: formData.phone,
+        role: formData.role, // Now contains "Online" or "Presential"
+        level: selectedLevel,
+        // Message field removed
+      });
+
+      if (response.status === 201) {
+        setSubmitted(true);
+        window.scrollTo(0, 0);
+        // Reset form
+        setFormData({
+          name: "",
+          phone: "",
+          role: t.form.roles[0], // Resets to the first option (Online)
+        });
+        setSelectedLevel("");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Une erreur s'est produite. Vérifiez votre connexion.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Inputs have permanent Dark Blue border
@@ -218,6 +267,9 @@ const Register = ({ lang }) => {
                   <input
                     required
                     type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                     className={inputClasses}
                     placeholder="..."
                   />
@@ -234,6 +286,9 @@ const Register = ({ lang }) => {
                   <input
                     required
                     type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
                     className={inputClasses}
                     placeholder="+212 ..."
                   />
@@ -241,7 +296,7 @@ const Register = ({ lang }) => {
               </div>
             </div>
 
-            {/* ROW 2: Role */}
+            {/* ROW 2: Course Mode (Previously Role) */}
             <div>
               <label className="block text-sm font-bold text-slate-700 mb-2">
                 {t.form.role_label} <span className="text-red-500">*</span>
@@ -249,6 +304,9 @@ const Register = ({ lang }) => {
               <div className="relative group">
                 <Briefcase className={iconClasses} size={20} />
                 <select
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
                   className={`${inputClasses} appearance-none cursor-pointer`}
                 >
                   {t.form.roles.map((role, i) => (
@@ -290,7 +348,6 @@ const Register = ({ lang }) => {
                   <div
                     key={i}
                     onClick={() => setSelectedLevel(level)}
-                    // UPDATED: Border is ALWAYS border-[#004C73]
                     className={`relative p-3 rounded-full border-2 cursor-pointer transition-all duration-300 flex items-center justify-center gap-2 group ${
                       selectedLevel === level
                         ? "border-[#004C73] bg-[#004C73]/10 text-[#004C73] shadow-md transform scale-105"
@@ -298,7 +355,6 @@ const Register = ({ lang }) => {
                     }`}
                   >
                     <div
-                      // UPDATED: Border is ALWAYS border-[#004C73]
                       className={`w-3 h-3 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
                         selectedLevel === level
                           ? "border-[#004C73] bg-[#004C73]"
@@ -325,43 +381,43 @@ const Register = ({ lang }) => {
               />
             </div>
 
-            {/* Message */}
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">
-                {t.form.message}
-              </label>
-              <div className="relative group">
-                <HelpCircle
-                  className={`absolute top-5 text-slate-500 group-focus-within:text-[#004C73] transition-colors ${
-                    lang === "ar" ? "right-4" : "left-4"
-                  }`}
-                  size={20}
-                />
-                <textarea
-                  rows="4"
-                  className={`${inputClasses} resize-none`}
-                  placeholder="..."
-                ></textarea>
-              </div>
-            </div>
+            {/* Message Box Removed Here */}
 
-            {/* Submit Button */}
+            {/* Error Message Display */}
+            {error && (
+              <p className="text-red-600 font-bold text-center bg-red-50 p-3 rounded-lg">
+                {error}
+              </p>
+            )}
+
+            {/* Submit Button with Loader */}
             <button
               type="submit"
-              disabled={!selectedLevel}
+              disabled={!selectedLevel || loading}
               className={`w-full text-white text-lg font-bold py-5 rounded-xl transition-all shadow-lg flex items-center justify-center gap-3 group ${
                 selectedLevel
                   ? "bg-[#004C73] hover:bg-[#003a57] shadow-[#004C73]/20"
                   : "bg-slate-300 cursor-not-allowed"
               }`}
             >
-              {t.form.btn}
-              <Send
-                size={22}
-                className={`transition-transform group-hover:translate-x-1 ${
-                  lang === "ar" ? "rotate-180 group-hover:-translate-x-1" : ""
-                }`}
-              />
+              {loading ? (
+                <>
+                  <Loader2 className="animate-spin" size={24} />
+                  {t.form.sending}
+                </>
+              ) : (
+                <>
+                  {t.form.btn}
+                  <Send
+                    size={22}
+                    className={`transition-transform group-hover:translate-x-1 ${
+                      lang === "ar"
+                        ? "rotate-180 group-hover:-translate-x-1"
+                        : ""
+                    }`}
+                  />
+                </>
+              )}
             </button>
           </form>
         </div>
