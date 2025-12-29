@@ -31,6 +31,9 @@ import VisaGuide from "./pages/VisaGuide";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 
+// Admin Component (New)
+import AdminDashboard from "./components/AdminDashboard";
+
 function App() {
   const [lang, setLang] = useState("fr");
   const { pathname, hash } = useLocation();
@@ -101,6 +104,9 @@ function App() {
 
             {/* Registration Route */}
             <Route path="/register" element={<Register lang={lang} />} />
+
+            {/* Admin Route (New) */}
+            <Route path="/admin" element={<AdminDashboard />} />
 
             {/* Fallback */}
             <Route path="*" element={<NotFound lang={lang} />} />
