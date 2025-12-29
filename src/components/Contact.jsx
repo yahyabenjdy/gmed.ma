@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Facebook, Instagram, Send } from "lucide-react";
+import axios from "axios";
 
 // Custom TikTok Icon
 const TikTokIcon = ({ size = 20, className }) => (
@@ -16,6 +17,52 @@ const TikTokIcon = ({ size = 20, className }) => (
 );
 
 const Contact = ({ lang }) => {
+  // --- STATE FOR FORM DATA ---
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    message: "",
+  });
+
+  const [status, setStatus] = useState({
+    loading: false,
+    success: false,
+    error: "",
+  });
+
+  // --- HANDLERS ---
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus({ loading: true, success: false, error: "" });
+
+    try {
+      // Connect to your Backend Route
+      await axios.post("http://localhost:5000/api/contact", formData);
+
+      setStatus({ loading: false, success: true, error: "" });
+      setFormData({ name: "", phone: "", email: "", message: "" }); // Clear form
+
+      // Auto-hide success message after 3 seconds
+      setTimeout(
+        () => setStatus((prev) => ({ ...prev, success: false })),
+        3000
+      );
+    } catch (err) {
+      console.error(err);
+      setStatus({
+        loading: false,
+        success: false,
+        error: "Failed to send message. Please try again.",
+      });
+    }
+  };
+
+  // --- CONTENT TRANSLATIONS ---
   const content = {
     de: {
       title: "Kontaktieren Sie uns",
@@ -29,9 +76,11 @@ const Contact = ({ lang }) => {
       form: {
         name: "Name",
         phone: "Telefon",
-        email: "E-Mail Adresse",
+        email: "E-Mail Adresse (Optional)", // Added (Optional)
         msg: "Nachricht",
         btn: "Senden",
+        sending: "Senden...",
+        success: "Nachricht gesendet!",
       },
       address: "Apprt 8, Résidence Al Masjid | Av Fal Ould Oumeir, Rabat",
     },
@@ -47,9 +96,11 @@ const Contact = ({ lang }) => {
       form: {
         name: "Nom complet",
         phone: "Téléphone",
-        email: "Adresse E-mail",
+        email: "Adresse E-mail (Optionnel)", // Added (Optionnel)
         msg: "Message",
         btn: "Envoyer",
+        sending: "Envoi en cours...",
+        success: "Message envoyé !",
       },
       address: "Apprt 8, Résidence Al Masjid | Av Fal Ould Oumeir, Rabat",
     },
@@ -65,9 +116,11 @@ const Contact = ({ lang }) => {
       form: {
         name: "الاسم الكامل",
         phone: "الهاتف",
-        email: "البريد الإلكتروني",
+        email: "البريد الإلكتروني (اختياري)", // Added (Optional)
         msg: "الرسالة",
         btn: "إرسال",
+        sending: "جاري الإرسال...",
+        success: "تم الإرسال بنجاح!",
       },
       address: "شقة 8، إقامة المسجد | شارع فال ولد عمير، الرباط",
     },
@@ -99,21 +152,34 @@ const Contact = ({ lang }) => {
 
         <div className="grid lg:grid-cols-2 gap-8 items-stretch">
           {/* LEFT: Form */}
-          {/* CHANGED: Background opacity increased to 15% (bg-white/15) */}
           <div className="bg-white/15 backdrop-blur-md border border-white/10 p-5 rounded-2xl shadow-xl h-full flex flex-col justify-center">
-            <form className="space-y-3">
+            <form className="space-y-3" onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-300 mb-1">
                     {t.form.name}
                   </label>
-                  <input type="text" className={inputClass} />
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className={inputClass}
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-300 mb-1">
                     {t.form.phone}
                   </label>
-                  <input type="tel" className={inputClass} />
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    className={inputClass}
+                  />
                 </div>
               </div>
 
@@ -121,7 +187,14 @@ const Contact = ({ lang }) => {
                 <label className="block text-xs font-bold text-slate-300 mb-1">
                   {t.form.email}
                 </label>
-                <input type="email" className={inputClass} />
+                {/* REMOVED required Attribute below */}
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
               </div>
 
               <div>
@@ -130,17 +203,44 @@ const Contact = ({ lang }) => {
                 </label>
                 <textarea
                   rows="3"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
                   className={`${inputClass} resize-none`}
                 ></textarea>
               </div>
 
               <button
-                type="button"
-                className="w-full bg-[#004C73] text-white font-bold py-2.5 rounded-lg hover:bg-[#003a57] transition-all shadow-lg flex items-center justify-center gap-2 text-sm mt-1"
+                type="submit"
+                disabled={status.loading}
+                className={`w-full font-bold py-2.5 rounded-lg transition-all shadow-lg flex items-center justify-center gap-2 text-sm mt-1 
+                  ${
+                    status.success
+                      ? "bg-green-600 hover:bg-green-700"
+                      : "bg-[#004C73] hover:bg-[#003a57] text-white"
+                  }
+                  ${status.loading ? "opacity-70 cursor-not-allowed" : ""}
+                `}
               >
-                {t.form.btn}
-                <Send size={16} className={lang === "ar" ? "rotate-180" : ""} />
+                {status.loading
+                  ? t.form.sending
+                  : status.success
+                  ? t.form.success
+                  : t.form.btn}
+                {!status.loading && !status.success && (
+                  <Send
+                    size={16}
+                    className={lang === "ar" ? "rotate-180" : ""}
+                  />
+                )}
               </button>
+
+              {status.error && (
+                <p className="text-red-400 text-xs text-center mt-2">
+                  {status.error}
+                </p>
+              )}
             </form>
           </div>
 
