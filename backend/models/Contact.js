@@ -2,10 +2,11 @@ const mongoose = require("mongoose");
 
 const ContactSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  phone: { type: String, required: true }, // <--- THIS WAS MISSING!
-  email: { type: String, required: false }, // Optional as requested
-  subject: { type: String, required: false },
+  email: { type: String, required: true },
+  phone: { type: String },
   message: { type: String, required: true },
+  // 👇 NEW FIELD
+  assignedTo: { type: String, default: null },
   date: { type: Date, default: Date.now },
 });
 
