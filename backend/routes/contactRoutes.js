@@ -2,32 +2,50 @@ const express = require("express");
 const router = express.Router();
 const Contact = require("../models/Contact");
 
-// 1. POST: Save new message (Used by Contact Form)
+// 1. CREATE NEW MESSAGE (Public Contact Form)
 router.post("/", async (req, res) => {
   try {
-    const { name, phone, email, message } = req.body;
-    const newContact = new Contact({ name, phone, email, message });
+    const { name, email, phone, message } = req.body;
+
+    const newContact = new Contact({
+      name,
+      email,
+      phone,
+      message,
+    });
+
     await newContact.save();
-
-    console.log("------------------------------------------------");
-    console.log("📩 NEW CONTACT MESSAGE SAVED");
-    console.log(`👤 Name: ${name}`);
-    console.log("------------------------------------------------");
-
-    res.status(201).json({ message: "Message saved successfully!" });
-  } catch (error) {
-    console.error("❌ Contact Error:", error.message);
-    res.status(500).json({ message: "Server Error" });
+    res.status(201).json({ message: "Message sent successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
-// 2. GET: Fetch all messages (Used by Admin Dashboard)
+// 2. GET ALL MESSAGES (Admin Dashboard)
 router.get("/", async (req, res) => {
   try {
-    const contacts = await Contact.find().sort({ _id: -1 });
+    // Sort by newest first
+    const contacts = await Contact.find().sort({ date: -1 });
     res.json(contacts);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// 3. ASSIGN ADMIN TO MESSAGE (New Feature)
+router.put("/:id/assign", async (req, res) => {
+  try {
+    const { adminName } = req.body; // Can be a name string or null
+
+    const updatedContact = await Contact.findByIdAndUpdate(
+      req.params.id,
+      { assignedTo: adminName },
+      { new: true }
+    );
+
+    res.json({ success: true, contact: updatedContact });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
