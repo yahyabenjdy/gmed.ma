@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import {
   Check,
-  Calendar,
   Clock,
   GraduationCap,
   ArrowRight,
@@ -9,7 +8,6 @@ import {
   Signal,
 } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-// 1. IMPORT HELMET
 import { Helmet } from "react-helmet-async";
 
 const CoursesPage = ({ lang }) => {
@@ -43,74 +41,60 @@ const CoursesPage = ({ lang }) => {
       back: "Zurück",
       courses: [
         {
-          id: "intensiv",
+          id: "intensive",
           name: "Intensivkurs",
           level: "A1 - C1",
-          price: "1400 DH",
-          schedule: "5x pro Woche (je 2 Std.)",
-          desc: "Der schnellste Weg zum Erfolg. Ideal für Vollzeit-Lernende.",
+          price: "900 DH / Monat",
+          schedule: "3x pro Woche (je 2 Std.)",
+          desc: "Solide Grundlage für Ihren Spracherwerb.",
           features: [
-            "Täglicher Unterricht",
-            "Medizinisch erfahrene Lehrer",
-            "Intensive Prüfungsvorbereitung",
-            "Schneller Fortschritt",
+            "3 Sitzungen pro Woche",
+            "2 Stunden pro Sitzung",
+            "Medizinisch orientiert",
+            "Kontinuierlicher Fortschritt",
+          ],
+        },
+        {
+          id: "very-intensive",
+          name: "Sehr Intensiver Kurs",
+          level: "A1 - C1",
+          price: "1400 DH / Monat",
+          schedule: "5x pro Woche (je 2 Std.)",
+          desc: "Der schnellste Weg zum Erfolg. Tägliches Training.",
+          features: [
+            "5 Sitzungen pro Woche",
+            "2 Stunden pro Sitzung",
+            "Maximale Immersion",
+            "Schnelle Ergebnisse",
           ],
           featured: true,
-        },
-        {
-          id: "standard",
-          name: "Standardkurs",
-          level: "A1 - C1",
-          price: "900 DH",
-          schedule: "3x pro Woche (je 2 Std.)",
-          desc: "Perfekte Balance zwischen Lernen und Alltag.",
-          features: [
-            "Regelmäßiger Unterricht",
-            "Medizinisch erfahrene Lehrer",
-            "Solide Grundlagen",
-            "Flexibles Lernen",
-          ],
-        },
-        {
-          id: "flexibel",
-          name: "Flexibler Kurs",
-          level: "A1 - C1",
-          price: "900 DH",
-          schedule: "2x pro Woche (je 3 Std.)",
-          desc: "Für Berufstätige und Studierende mit wenig Zeit.",
-          features: [
-            "Unterricht am Abend/Wochenende",
-            "Medizinisch erfahrene Lehrer",
-            "Fokus auf Kommunikation",
-            "Individuelles Tempo",
-          ],
-        },
-        {
-          id: "hybrid",
-          name: "Kombikurs (Hybrid)",
-          level: "A1 - C1",
-          price: "900 DH",
-          schedule: "1x Präsenz (3h) + 2x Online (1.5h)",
-          desc: "Das Beste aus beiden Welten: Persönlicher Kontakt & Flexibilität.",
-          features: [
-            "1x/Woche vor Ort (Agadir)",
-            "2x/Woche Online-Live-Sessions",
-            "Ideal für Pendler",
-            "Effektiver Mix",
-          ],
         },
         {
           id: "online",
           name: "Online-Kurs",
           level: "A1 - C1",
-          price: "500 DH",
+          price: "500 DH / Monat",
           schedule: "3x pro Woche (je 1.5 Std.)",
-          desc: "Lernen Sie Deutsch bequem von überall aus.",
+          desc: "Lernen Sie flexibel von überall aus.",
           features: [
-            "100% Virtueller Unterricht",
-            "Interaktive digitale Tools",
-            "Keine Anfahrtswege",
-            "Kostengünstig",
+            "3 Sitzungen pro Woche",
+            "1.5 Stunden pro Sitzung",
+            "Virtuelles Klassenzimmer",
+            "Keine Anfahrt nötig",
+          ],
+        },
+        {
+          id: "weekend",
+          name: "Wochenendkurs",
+          level: "A1 - C1",
+          price: "900 DH / Monat",
+          schedule: "Samstag & Sonntag (je 3 Std.)",
+          desc: "Ideal für Berufstätige und Studenten.",
+          features: [
+            "2 Sitzungen pro Woche",
+            "3 Stunden pro Sitzung",
+            "Samstag und Sonntag",
+            "Intensives Lernen am Wochenende",
           ],
         },
       ],
@@ -123,74 +107,60 @@ const CoursesPage = ({ lang }) => {
       back: "Retour",
       courses: [
         {
-          id: "intensiv",
+          id: "intensive",
           name: "Cours Intensif",
           level: "Niveau A1 - C1",
-          price: "1400 DH",
-          schedule: "5x par semaine (2h/séance)",
-          desc: "La voie la plus rapide vers la réussite. Idéal pour un apprentissage à temps plein.",
+          price: "900 DH / mois",
+          schedule: "3x par semaine (2h/séance)",
+          desc: "Une base solide pour votre apprentissage linguistique.",
           features: [
-            "Cours quotidiens",
-            "Enseignants experts médicaux",
-            "Préparation intensive",
-            "Progression rapide",
+            "3 séances par semaine",
+            "2 heures par séance",
+            "Orientation médicale",
+            "Progression continue",
+          ],
+        },
+        {
+          id: "very-intensive",
+          name: "Cours Très Intensif",
+          level: "Niveau A1 - C1",
+          price: "1400 DH / mois",
+          schedule: "5x par semaine (2h/séance)",
+          desc: "La voie la plus rapide vers la réussite. Entraînement quotidien.",
+          features: [
+            "5 séances par semaine",
+            "2 heures par séance",
+            "Immersion maximale",
+            "Résultats rapides",
           ],
           featured: true,
-        },
-        {
-          id: "standard",
-          name: "Cours Standard",
-          level: "Niveau A1 - C1",
-          price: "900 DH",
-          schedule: "3x par semaine (2h/séance)",
-          desc: "L'équilibre parfait entre apprentissage et vie quotidienne.",
-          features: [
-            "Cours réguliers",
-            "Enseignants experts médicaux",
-            "Bases solides",
-            "Apprentissage flexible",
-          ],
-        },
-        {
-          id: "flexibel",
-          name: "Cours Flexible",
-          level: "Niveau A1 - C1",
-          price: "900 DH",
-          schedule: "2x par semaine (3h/séance)",
-          desc: "Pour les professionnels et étudiants ayant peu de temps.",
-          features: [
-            "Cours soirs/week-ends",
-            "Enseignants experts médicaux",
-            "Focus communication",
-            "Rythme adapté",
-          ],
-        },
-        {
-          id: "hybrid",
-          name: "Cours Hybride",
-          level: "Niveau A1 - C1",
-          price: "900 DH",
-          schedule: "1x Présentiel (3h) + 2x En ligne (1h30)",
-          desc: "Le meilleur des deux mondes : Contact personnel & Flexibilité.",
-          features: [
-            "1x/semaine en centre (Agadir)",
-            "2x/semaine sessions Live",
-            "Idéal pour ceux qui habitent loin",
-            "Approche mixte efficace",
-          ],
         },
         {
           id: "online",
           name: "Cours En Ligne",
           level: "Niveau A1 - C1",
-          price: "500 DH",
+          price: "500 DH / mois",
           schedule: "3x par semaine (1h30/séance)",
-          desc: "Apprenez l'allemand confortablement de n'importe où.",
+          desc: "Apprenez en toute flexibilité, où que vous soyez.",
           features: [
-            "100% Classe virtuelle",
-            "Outils numériques interactifs",
+            "3 séances par semaine",
+            "1.5 heures par séance",
+            "Classe virtuelle",
             "Aucun déplacement",
-            "Prix accessible",
+          ],
+        },
+        {
+          id: "weekend",
+          name: "Cours Samedi & Dimanche",
+          level: "Niveau A1 - C1",
+          price: "900 DH / mois",
+          schedule: "Samedi & Dimanche (3h/séance)",
+          desc: "Idéal pour les professionnels et les étudiants.",
+          features: [
+            "2 séances par semaine",
+            "3 heures par séance",
+            "Samedi et Dimanche",
+            "Apprentissage intensif le weekend",
           ],
         },
       ],
@@ -202,74 +172,60 @@ const CoursesPage = ({ lang }) => {
       back: "عودة",
       courses: [
         {
-          id: "intensiv",
+          id: "intensive",
           name: "دورة مكثفة",
           level: "المستوى A1 - C1",
-          price: "1400 درهم",
-          schedule: "5 حصص في الأسبوع (ساعتان)",
-          desc: "أسرع طريق للنجاح. مثالي للمتفرغين للدراسة.",
+          price: "900 درهم / شهر",
+          schedule: "3 حصص في الأسبوع (ساعتان)",
+          desc: "أساس متين لتعلم اللغة.",
           features: [
-            "دروس يومية",
-            "مدرسون ذوو خبرة طبية",
-            "تحضير مكثف للامتحانات",
-            "تقدم سريع",
+            "3 حصص في الأسبوع",
+            "ساعتان لكل حصة",
+            "توجيه طبي",
+            "تقدم مستمر",
+          ],
+        },
+        {
+          id: "very-intensive",
+          name: "دورة مكثفة جداً",
+          level: "المستوى A1 - C1",
+          price: "1400 درهم / شهر",
+          schedule: "5 حصص في الأسبوع (ساعتان)",
+          desc: "أسرع طريق للنجاح. تدريب يومي.",
+          features: [
+            "5 حصص في الأسبوع",
+            "ساعتان لكل حصة",
+            "انغماس كامل",
+            "نتائج سريعة",
           ],
           featured: true,
         },
         {
-          id: "standard",
-          name: "دورة قياسية",
-          level: "المستوى A1 - C1",
-          price: "900 درهم",
-          schedule: "3 حصص في الأسبوع (ساعتان)",
-          desc: "توازن مثالي بين التعلم والحياة اليومية.",
-          features: [
-            "دروس منتظمة",
-            "مدرسون ذوو خبرة طبية",
-            "أساسيات قوية",
-            "تعلم مرن",
-          ],
-        },
-        {
-          id: "flexibel",
-          name: "دورة مرنة",
-          level: "المستوى A1 - C1",
-          price: "900 درهم",
-          schedule: "حصتان في الأسبوع (3 ساعات)",
-          desc: "للمهنيين والطلاب ذوي الوقت المحدود.",
-          features: [
-            "دروس مسائية/نهاية الأسبوع",
-            "مدرسون ذوو خبرة طبية",
-            "التركيز على التواصل",
-            "وتيرة فردية",
-          ],
-        },
-        {
-          id: "hybrid",
-          name: "دورة مدمجة (هجين)",
-          level: "المستوى A1 - C1",
-          price: "900 درهم",
-          schedule: "1x حضوري (3 ساعات) + 2x عن بعد (1.5 ساعة)",
-          desc: "الأفضل من العالمين: تواصل شخصي ومرونة.",
-          features: [
-            "1 حصة/أسبوع في المركز (أكادير)",
-            "2 حصص/أسبوع عن بعد (Live)",
-            "مثالي لمن يسكن بعيداً",
-            "مزيج تعليمي فعال",
-          ],
-        },
-        {
           id: "online",
-          name: "دورة عن بعد",
+          name: "دورة عن بعد (أونلاين)",
           level: "المستوى A1 - C1",
-          price: "500 درهم",
+          price: "500 درهم / شهر",
           schedule: "3 حصص في الأسبوع (1.5 ساعة)",
-          desc: "تعلم الألمانية براحة من أي مكان.",
+          desc: "تعلم بمرونة من أي مكان.",
           features: [
-            "100% دروس افتراضية",
-            "أدوات رقمية تفاعلية",
+            "3 حصص في الأسبوع",
+            "ساعة ونصف لكل حصة",
+            "فصول افتراضية",
             "بدون تنقل",
-            "سعر اقتصادي",
+          ],
+        },
+        {
+          id: "weekend",
+          name: "دورة السبت والأحد",
+          level: "المستوى A1 - C1",
+          price: "900 درهم / شهر",
+          schedule: "السبت والأحد (3 ساعات)",
+          desc: "مثالي للمهنيين والطلاب.",
+          features: [
+            "حصتان في الأسبوع",
+            "3 ساعات لكل حصة",
+            "السبت والأحد",
+            "تعلم مكثف في نهاية الأسبوع",
           ],
         },
       ],
@@ -280,23 +236,22 @@ const CoursesPage = ({ lang }) => {
 
   const seo = {
     fr: {
-      title: "Cours d'Allemand Médical & Intensif - Préparation FSP/KP",
-      desc: "Apprenez l'allemand du niveau A1 au C1. Cours spécialisés pour médecins et infirmiers, préparation aux examens de langue.",
+      title: "Cours d'Allemand Médical & Intensif - GMED",
+      desc: "Apprenez l'allemand du niveau A1 au C1. Cours intensifs, en ligne et weekend pour médecins et infirmiers.",
     },
     de: {
-      title: "Deutschkurse für Mediziner - A1 bis C1 & FSP Training",
-      desc: "Lernen Sie Deutsch für den medizinischen Alltag. Intensive Vorbereitung auf Fachsprachenprüfung und Approbation.",
+      title: "Deutschkurse für Mediziner - GMED",
+      desc: "Lernen Sie Deutsch für den medizinischen Alltag. Intensive, Online- und Wochenendkurse.",
     },
     ar: {
-      title: "دورات اللغة الألمانية للأطباء والممرضين - من A1 إلى C1",
-      desc: "تعلم الألمانية الطبية مع GMED. دورات مكثفة، تحضير لامتحانات اللغة FSP و KP، ودورات عن بعد.",
+      title: "دورات اللغة الألمانية للأطباء والممرضين - GMED",
+      desc: "تعلم الألمانية الطبية مع GMED. دورات مكثفة، أونلاين، ودورات نهاية الأسبوع.",
     },
   };
 
   const tSeo = seo[lang] || seo.fr;
 
   return (
-    // Background: bg-medical-navy/15
     <div
       className="bg-medical-navy/15 min-h-screen pb-12"
       dir={lang === "ar" ? "rtl" : "ltr"}
@@ -310,10 +265,8 @@ const CoursesPage = ({ lang }) => {
       {/* Header Section */}
       <div className="bg-medical-navy text-white pt-12 pb-10 px-4">
         <div className="max-w-4xl mx-auto">
-          {/* Back Button */}
           <button
             onClick={handleBack}
-            // Text: Yellow for visibility on Navy
             className={`flex items-center gap-2 text-yellow-500 font-bold mb-4 hover:text-white transition-colors text-sm group ${
               lang === "ar" ? "flex-row-reverse" : ""
             }`}
@@ -324,7 +277,6 @@ const CoursesPage = ({ lang }) => {
             />
             <span className="relative">
               {t.back}
-              {/* Gold Underline on hover */}
               <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full"></span>
             </span>
           </button>
@@ -337,83 +289,72 @@ const CoursesPage = ({ lang }) => {
       </div>
 
       {/* Courses Grid */}
-      {/* CHANGED: max-w-7xl to accommodate grid, -mt-6 for overlap effect */}
       <div className="max-w-7xl mx-auto px-4 -mt-6">
-        {/* CHANGED: Grid layout (1 col mobile, 2 cols medium, 3 cols large) */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {" "}
+          {/* Changed to 4 columns for large screens */}
           {t.courses.map((course) => (
             <div
               key={course.id}
-              // CHANGED: flex-col (vertical card) + h-full to equal height in grid
               className={`bg-white rounded-[1.5rem] shadow-md overflow-hidden border border-slate-100 flex flex-col hover:shadow-xl transition-all duration-300 group h-full ${
-                // Ring color for featured is Yellow/Gold
-                course.featured ? "ring-2 ring-yellow-500/50" : ""
+                course.featured
+                  ? "ring-2 ring-yellow-500/50 relative transform md:-translate-y-2"
+                  : ""
               }`}
             >
-              {/* Top Side: Icon & Title - NAVY BLUE GRADIENT */}
-              {/* CHANGED: Width full, padding adjusted */}
-              <div className="bg-gradient-to-br from-medical-navy to-[#0a2e4f] p-8 w-full flex flex-col justify-center items-center text-white text-center relative overflow-hidden">
+              {/* Top Side: Icon & Title */}
+              <div className="bg-gradient-to-br from-medical-navy to-[#0a2e4f] p-6 w-full flex flex-col justify-center items-center text-white text-center relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
 
                 {course.featured && (
-                  // Gold Badge
                   <div className="absolute top-3 right-3 bg-yellow-500 text-black text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-sm">
                     Recommended
                   </div>
                 )}
 
-                <GraduationCap
-                  size={36}
-                  // Icon is Yellow/Gold
-                  className="mb-3 text-yellow-500"
-                />
-                <h3 className="text-xl font-black">{course.name}</h3>
-                <div className="mt-2 inline-flex items-center gap-1.5 bg-white/10 px-2.5 py-0.5 rounded-full text-xs font-bold text-medical-light">
-                  <Signal size={12} /> {course.level}
+                <GraduationCap size={32} className="mb-2 text-yellow-500" />
+                <h3 className="text-lg font-black leading-tight">
+                  {course.name}
+                </h3>
+                <div className="mt-2 inline-flex items-center gap-1.5 bg-white/10 px-2.5 py-0.5 rounded-full text-[10px] font-bold text-medical-light">
+                  <Signal size={10} /> {course.level}
                 </div>
               </div>
 
               {/* Bottom Side: Content */}
-              {/* CHANGED: flex-grow to push button down, w-full */}
               <div
-                className={`p-6 w-full flex-grow flex flex-col justify-between ${
+                className={`p-5 w-full flex-grow flex flex-col justify-between ${
                   lang === "ar" ? "text-right" : "text-left"
                 }`}
               >
                 <div>
-                  {/* Schedule & Price Row */}
                   <div
-                    className={`flex flex-wrap gap-x-4 gap-y-1 mb-4 text-xs font-medium text-slate-500 border-b border-slate-100 pb-3 ${
+                    className={`flex flex-wrap gap-x-2 gap-y-1 mb-3 text-[11px] font-medium text-slate-500 border-b border-slate-100 pb-3 ${
                       lang === "ar" ? "justify-end" : "justify-start"
                     }`}
                   >
-                    {/* Clock icon: Dark Blue */}
-                    <div className="flex items-center gap-1.5 text-[#004C73]">
-                      <Clock size={14} />
-                      {course.schedule}
+                    <div className="flex items-center gap-1 text-[#004C73]">
+                      <Clock size={12} /> {course.schedule}
                     </div>
-                    {/* Price: Rouge Bordeaux */}
-                    <div className="flex items-center gap-1.5 text-[#800020] font-bold text-base">
+                    <div className="flex items-center gap-1 text-[#800020] font-bold text-sm w-full mt-1">
                       {course.price}
                     </div>
                   </div>
 
-                  <p className="text-slate-600 mb-6 text-sm leading-relaxed">
+                  <p className="text-slate-600 mb-4 text-xs leading-relaxed min-h-[40px]">
                     {course.desc}
                   </p>
 
-                  {/* Features: Stacked for grid card width */}
-                  <div className="space-y-2 mb-8">
+                  <div className="space-y-2 mb-6">
                     {course.features.map((feature, i) => (
                       <div
                         key={i}
-                        className={`flex items-center gap-2 text-xs text-slate-700 font-medium ${
+                        className={`flex items-start gap-2 text-[11px] text-slate-700 font-medium ${
                           lang === "ar" ? "flex-row-reverse" : ""
                         }`}
                       >
-                        {/* Checkmark: Dark Blue Icon */}
-                        <div className="w-4 h-4 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
-                          <Check size={10} className="text-[#004C73]" />
+                        <div className="w-3.5 h-3.5 rounded-full bg-slate-100 flex items-center justify-center shrink-0 mt-0.5">
+                          <Check size={8} className="text-[#004C73]" />
                         </div>
                         <span>{feature}</span>
                       </div>
@@ -423,12 +364,11 @@ const CoursesPage = ({ lang }) => {
 
                 <Link
                   to="/register"
-                  // Button: Dark Blue
-                  className="btn-primary w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold bg-[#004C73] text-white hover:bg-[#003a57] transition-colors shadow-lg shadow-[#004C73]/20 text-sm mt-auto"
+                  className="btn-primary w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold bg-[#004C73] text-white hover:bg-[#003a57] transition-colors shadow-lg shadow-[#004C73]/20 text-xs mt-auto"
                 >
                   {t.cta}
                   <ArrowRight
-                    size={16}
+                    size={14}
                     className={lang === "ar" ? "rotate-180" : ""}
                   />
                 </Link>
