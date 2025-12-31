@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   User,
   Phone,
@@ -8,6 +8,7 @@ import {
   GraduationCap,
   Award,
   Loader2,
+  MapPin,
 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import axios from "axios";
@@ -20,13 +21,349 @@ const Register = ({ lang }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Removed 'message' from state
-  // Changed default role to match new options
+  // City Search State
+  const [showCityDropdown, setShowCityDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Default role matches new options
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
-    role: "Online", // Default value for the new dropdown
+    city: "",
+    role: "Online",
   });
+
+  // --- CITIES LISTS (Based on Language) ---
+
+  // 1. French / German (International Spellings)
+  const citiesLatin = [
+    // Priority
+    "Rabat",
+    "Salé",
+    "Témara",
+    "Harhoura",
+    "Skhirate",
+    "Bouznika",
+    "Kénitra",
+    "Sidi Taibi",
+    "Mehdia",
+    "Bouknadel",
+    "Sidi Slimane",
+    "Sidi Kacem",
+    "Khemisset",
+    "Tiflet",
+    // Alphabetical
+    "Agadir",
+    "Agdz",
+    "Aghbala",
+    "Agourai",
+    "Ait Baha",
+    "Ait Iaaza",
+    "Ait Melloul",
+    "Ait Ourir",
+    "Ait Yaazem",
+    "Ajdir",
+    "Akhfenir",
+    "Aklim",
+    "Al Hoceima",
+    "Amalou Ighriben",
+    "Amezmiz",
+    "Amlil",
+    "Aoufous",
+    "Aoulouz",
+    "Aourir",
+    "Arfoud",
+    "Assa",
+    "Azemmour",
+    "Azilal",
+    "Azrou",
+    "Bab Berred",
+    "Bab Taza",
+    "Bejaad",
+    "Ben Ahmed",
+    "Ben Guerir",
+    "Beni Ansar",
+    "Beni Mellal",
+    "Beni Tadjite",
+    "Benslimane",
+    "Berkane",
+    "Berrechid",
+    "Bhalil",
+    "Biougra",
+    "Bir Jdid",
+    "Bouarfa",
+    "Bouguedra",
+    "Bouizakarne",
+    "Boujdour",
+    "Boulemane",
+    "Boumalne Dades",
+    "Boumia",
+    "Casablanca",
+    "Chefchaouen",
+    "Chichaoua",
+    "Dakhla",
+    "Dar Bouazza",
+    "Dar El Kebdani",
+    "Dar Ould Zidouh",
+    "Demnate",
+    "Deroua",
+    "El Aaiún (Laâyoune)",
+    "El Borouj",
+    "El Gara",
+    "El Hajeb",
+    "El Jadida",
+    "El Kelaa des Sraghna",
+    "El Marsa",
+    "El Menzel",
+    "El Ouatia",
+    "Errachidia",
+    "Essaouira",
+    "Fes",
+    "Figuig",
+    "Fnideq",
+    "Fquih Ben Salah",
+    "Guelmim",
+    "Guercif",
+    "Had Kourt",
+    "Had Soualem",
+    "Haj Kaddour",
+    "Ifrane",
+    "Imintanoute",
+    "Imouzzer Kandar",
+    "Imouzzer Marmoucha",
+    "Inezgane",
+    "Irherm",
+    "Jerada",
+    "Jorf",
+    "Jorf El Melha",
+    "Kalaat Mgouna",
+    "Khenifra",
+    "Khouribga",
+    "Ksar El Kebir",
+    "Larache",
+    "Lqliâa",
+    "Marrakech",
+    "Martil",
+    "Mechra Bel Ksiri",
+    "Mediouna",
+    "Meknes",
+    "Midar",
+    "Missour",
+    "Mohammedia",
+    "Moulay Abdallah",
+    "Moulay Bousselham",
+    "Moulay Driss Zerhoun",
+    "Nador",
+    "Naima",
+    "Oualidia",
+    "Ouarzazate",
+    "Oued Zem",
+    "Ouezzane",
+    "Oujda",
+    "Rissani",
+    "Safi",
+    "Sebt Ait Rahhou",
+    "Sebt El Guerdane",
+    "Sefrou",
+    "Settat",
+    "Sidi Bennour",
+    "Sidi Ifni",
+    "Sidi Rahhal",
+    "Smara",
+    "Souk El Arbaa",
+    "Tafraout",
+    "Taghazout",
+    "Tahla",
+    "Taliouine",
+    "Talmest",
+    "Tanger",
+    "Taounate",
+    "Taourirt",
+    "Taroudant",
+    "Tata",
+    "Taza",
+    "Tetouan",
+    "Tinghir",
+    "Tissa",
+    "Tiznit",
+    "Touima",
+    "Youssoufia",
+    "Zagora",
+    "Zaio",
+    "Zemamra",
+  ];
+
+  // 2. Arabic List
+  const citiesArabic = [
+    // Priority
+    "الرباط",
+    "سلا",
+    "تمارة",
+    "الهرهورة",
+    "الصخيرات",
+    "بوزنيقة",
+    "القنيطرة",
+    "سيدي الطيبي",
+    "المهدية",
+    "بوقنادل",
+    "سيدي سليمان",
+    "سيدي قاسم",
+    "الخميسات",
+    "تيفلت",
+    // Alphabetical
+    "أكادير",
+    "أكدز",
+    "أغبالة",
+    "أكوراي",
+    "آيت باها",
+    "آيت إيعزة",
+    "آيت ملول",
+    "آيت أورير",
+    "آيت يعزم",
+    "أجدير",
+    "أخفنير",
+    "أكليم",
+    "الحسيمة",
+    "أمالو إغريبن",
+    "أمزميز",
+    "أمليل",
+    "أوفوس",
+    "أولوز",
+    "أورير",
+    "أرفود",
+    "آسا",
+    "أزمور",
+    "أزيلال",
+    "أزرو",
+    "باب برد",
+    "باب تازة",
+    "بجعد",
+    "بن أحمد",
+    "بن جرير",
+    "بني أنصار",
+    "بني ملال",
+    "بني تدجيت",
+    "بنسليمان",
+    "بركان",
+    "برشيد",
+    "بهاليل",
+    "بيوكرى",
+    "بير جديد",
+    "بوعرفة",
+    "بوكدورة",
+    "بويزكارن",
+    "بوجدور",
+    "بولمان",
+    "بومالن دادس",
+    "بومية",
+    "الدار البيضاء",
+    "شفشاون",
+    "شيشاوة",
+    "الداخلة",
+    "دار بوعزة",
+    "دار الكبداني",
+    "دار ولد زيدوح",
+    "دمنات",
+    "الدروة",
+    "العيون",
+    "البروج",
+    "الݣارة",
+    "الحاجب",
+    "الجديدة",
+    "قلعة السراغنة",
+    "المرسى",
+    "المنزل",
+    "الوطية",
+    "الرشيدية",
+    "الصويرة",
+    "فاس",
+    "فكيك",
+    "الفنيدق",
+    "الفقيه بن صالح",
+    "كلميم",
+    "جرسيف",
+    "حد كورت",
+    "حد السوالم",
+    "حاج قدور",
+    "إفران",
+    "إيمنتانوت",
+    "إيموزار كندر",
+    "إيموزار مرموشة",
+    "إنزكان",
+    "إيغرم",
+    "جرادة",
+    "الجرف",
+    "جرف الملحة",
+    "قلعة مكونة",
+    "خنيفرة",
+    "خريبكة",
+    "القصر الكبير",
+    "العرائش",
+    "القليعة",
+    "مراكش",
+    "مرتيل",
+    "مشرع بلقصيري",
+    "مديونة",
+    "مكناس",
+    "ميدار",
+    "ميسور",
+    "المحمدية",
+    "مولاي عبد الله",
+    "مولاي بوسلهام",
+    "مولاي إدريس زرهون",
+    "الناظور",
+    "نعيمة",
+    "الواليدية",
+    "ورزازات",
+    "وادي زم",
+    "وزان",
+    "وجدة",
+    "الريصاني",
+    "آسفي",
+    "سبت آيت رحو",
+    "سبت الكردان",
+    "صفرو",
+    "سطات",
+    "سيدي بنور",
+    "سيدي إفني",
+    "سيدي رحال",
+    "السمارة",
+    "سوق الأربعاء",
+    "تافراوت",
+    "تغازوت",
+    "تاهلة",
+    "تليوين",
+    "تالمست",
+    "طنجة",
+    "تاونات",
+    "تاوريرت",
+    "تارودانت",
+    "طاطا",
+    "تازة",
+    "تطوان",
+    "تنغير",
+    "تيصة",
+    "تيزنيت",
+    "تويمة",
+    "اليوسفية",
+    "زاكورة",
+    "زايو",
+    "الزمامرة",
+  ];
+
+  // Select list based on language
+  const moroccanCities = lang === "ar" ? citiesArabic : citiesLatin;
+
+  // Close dropdown if clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowCityDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dropdownRef]);
 
   const content = {
     de: {
@@ -37,11 +374,10 @@ const Register = ({ lang }) => {
       form: {
         name: "Vollständiger Name",
         phone: "Telefonnummer",
-        role_label: "Unterrichtsform", // Changed Label
-        roles: [
-          "Online", // New Option 1
-          "Präsenzunterricht (Vor Ort)", // New Option 2
-        ],
+        city: "Stadt",
+        city_placeholder: "Wählen oder tippen...",
+        role_label: "Unterrichtsform",
+        roles: ["Online", "Präsenzunterricht (Vor Ort)"],
         level_label: "Gewünschtes Sprachniveau",
         levels: [
           "A1 (Anfänger)",
@@ -50,7 +386,6 @@ const Register = ({ lang }) => {
           "B2 (Berufsniveau)",
           "C1 (Experte)",
         ],
-        // Removed message label
         btn: "Anmeldung abschicken",
         sending: "Wird gesendet...",
       },
@@ -68,11 +403,10 @@ const Register = ({ lang }) => {
       form: {
         name: "Nom complet",
         phone: "Numéro de téléphone",
-        role_label: "Format du cours", // Changed Label
-        roles: [
-          "En ligne", // New Option 1
-          "Présentiel (Sur place)", // New Option 2
-        ],
+        city: "Ville",
+        city_placeholder: "Sélectionnez ou tapez...",
+        role_label: "Format du cours",
+        roles: ["En ligne", "Présentiel (Sur place)"],
         level_label: "Niveau souhaité / actuel",
         levels: [
           "A1 (Débutant)",
@@ -81,7 +415,6 @@ const Register = ({ lang }) => {
           "B2 (Avancé / Pro)",
           "C1 (Expert)",
         ],
-        // Removed message label
         btn: "Envoyer l'inscription",
         sending: "Envoi en cours...",
       },
@@ -98,11 +431,10 @@ const Register = ({ lang }) => {
       form: {
         name: "الاسم الكامل",
         phone: "رقم الهاتف",
-        role_label: "نظام الدراسة", // Changed Label
-        roles: [
-          "أونلاين (عن بُعد)", // New Option 1
-          "حضوري (في المركز)", // New Option 2
-        ],
+        city: "المدينة",
+        city_placeholder: "اختر أو اكتب...",
+        role_label: "نظام الدراسة",
+        roles: ["أونلاين (عن بُعد)", "حضوري (في المركز)"],
         level_label: "المستوى المطلوب / الحالي",
         levels: [
           "A1 (مبتدئ)",
@@ -111,7 +443,6 @@ const Register = ({ lang }) => {
           "B2 (متقدم / مهني)",
           "C1 (خبير)",
         ],
-        // Removed message label
         btn: "إرسال الطلب",
         sending: "جاري الإرسال...",
       },
@@ -126,15 +457,15 @@ const Register = ({ lang }) => {
   const seo = {
     fr: {
       title: "Inscription & Candidature - Commencez votre parcours",
-      desc: "Formulaire d'inscription GMED : Cours d'allemand, demande de visa et consultation pour médecins et infirmiers.",
+      desc: "Formulaire d'inscription GMED...",
     },
     de: {
       title: "Anmeldung & Bewerbung - Starten Sie Ihren Weg",
-      desc: "GMED Anmeldeformular: Deutschkurse, Visum-Unterstützung und Beratung für medizinisches Fachpersonal.",
+      desc: "GMED Anmeldeformular...",
     },
     ar: {
       title: "التسجيل والترشيح - ابدأ مسارك الآن",
-      desc: "استمارة التسجيل GMED: دورات اللغة الألمانية، دعم التأشيرة واستشارات للأطباء والممرضين.",
+      desc: "استمارة التسجيل GMED...",
     },
   };
 
@@ -146,6 +477,17 @@ const Register = ({ lang }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Handle City Selection
+  const handleCitySelect = (city) => {
+    setFormData({ ...formData, city: city });
+    setShowCityDropdown(false);
+  };
+
+  // Filter cities based on input
+  const filteredCities = moroccanCities.filter((city) =>
+    city.toLowerCase().startsWith(formData.city.toLowerCase())
+  );
+
   // --- SUBMIT HANDLER ---
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -153,23 +495,22 @@ const Register = ({ lang }) => {
     setError("");
 
     try {
-      // Send data to backend (Removed message field)
       const response = await axios.post("http://localhost:5000/api/register", {
         name: formData.name,
         phone: formData.phone,
-        role: formData.role, // Now contains "Online" or "Presential"
+        city: formData.city,
+        role: formData.role,
         level: selectedLevel,
-        // Message field removed
       });
 
       if (response.status === 201) {
         setSubmitted(true);
         window.scrollTo(0, 0);
-        // Reset form
         setFormData({
           name: "",
           phone: "",
-          role: t.form.roles[0], // Resets to the first option (Online)
+          city: "",
+          role: t.form.roles[0],
         });
         setSelectedLevel("");
       }
@@ -181,8 +522,8 @@ const Register = ({ lang }) => {
     }
   };
 
-  // Inputs have permanent Dark Blue border
-  const inputClasses = `w-full py-4 bg-slate-50 border border-[#004C73] rounded-xl focus:ring-1 focus:ring-[#004C73] focus:border-[#004C73] outline-none transition-all font-medium ${
+  // KEPT INPUTS WHITE TO POP AGAINST THE NEW BACKGROUND
+  const inputClasses = `w-full py-4 bg-white border border-[#004C73] rounded-xl focus:ring-1 focus:ring-[#004C73] focus:border-[#004C73] outline-none transition-all font-medium ${
     lang === "ar" ? "pr-12 pl-4" : "pl-12 pr-4"
   }`;
 
@@ -200,7 +541,9 @@ const Register = ({ lang }) => {
           <meta name="robots" content="noindex" />
         </Helmet>
 
-        <div className="max-w-lg w-full bg-white p-12 rounded-3xl shadow-xl border border-slate-300 text-center animate-fade-in">
+        {/* THE COMMENT THAT WAS HERE IS NOW REMOVED */}
+
+        <div className="max-w-lg w-full bg-[#EBF1F5] p-12 rounded-3xl shadow-xl border border-slate-300 text-center animate-fade-in">
           <div className="w-24 h-24 bg-[#004C73]/10 text-[#004C73] rounded-full flex items-center justify-center mx-auto mb-8">
             <CheckCircle2 size={48} />
           </div>
@@ -239,7 +582,6 @@ const Register = ({ lang }) => {
             <Award size={14} />
             {t.tag}
           </div>
-
           <h1 className="text-4xl md:text-5xl font-black text-medical-navy mb-4 relative inline-block">
             {t.title}
             <div className="absolute -bottom-2 left-1/4 w-1/2 h-1 bg-yellow-500 rounded-full" />
@@ -249,15 +591,13 @@ const Register = ({ lang }) => {
           </p>
         </div>
 
-        {/* Form Card */}
-        <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-slate-300 relative overflow-hidden">
-          {/* Solid Rouge Bordeaux Top Border */}
+        {/* Form Card - UPDATED COLOR TO #EBF1F5 (Cool Grey/Blue) */}
+        <div className="bg-[#EBF1F5] p-8 md:p-12 rounded-3xl shadow-xl border border-slate-300 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-2 bg-[#800020]"></div>
 
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* ROW 1: Name & Phone */}
             <div className="grid md:grid-cols-2 gap-8">
-              {/* Name */}
               <div>
                 <label className="block text-sm font-bold text-slate-700 mb-2">
                   {t.form.name} <span className="text-red-500">*</span>
@@ -275,8 +615,6 @@ const Register = ({ lang }) => {
                   />
                 </div>
               </div>
-
-              {/* Phone */}
               <div>
                 <label className="block text-sm font-bold text-slate-700 mb-2">
                   {t.form.phone} <span className="text-red-500">*</span>
@@ -296,42 +634,91 @@ const Register = ({ lang }) => {
               </div>
             </div>
 
-            {/* ROW 2: Course Mode (Previously Role) */}
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">
-                {t.form.role_label} <span className="text-red-500">*</span>
-              </label>
-              <div className="relative group">
-                <Briefcase className={iconClasses} size={20} />
-                <select
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  className={`${inputClasses} appearance-none cursor-pointer`}
-                >
-                  {t.form.roles.map((role, i) => (
-                    <option key={i} value={role}>
-                      {role}
-                    </option>
-                  ))}
-                </select>
-                <div
-                  className={`absolute top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 ${
-                    lang === "ar" ? "left-4" : "right-4"
-                  }`}
-                >
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+            {/* ROW 2: City & Course Mode (New Layout) */}
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* CITY DROPDOWN (NEW) */}
+              <div className="relative" ref={dropdownRef}>
+                <label className="block text-sm font-bold text-slate-700 mb-2">
+                  {t.form.city} <span className="text-red-500">*</span>
+                </label>
+                <div className="relative group">
+                  <MapPin className={iconClasses} size={20} />
+                  <input
+                    type="text"
+                    name="city"
+                    required
+                    autoComplete="off"
+                    value={formData.city}
+                    onChange={(e) => {
+                      handleChange(e);
+                      setShowCityDropdown(true);
+                    }}
+                    onFocus={() => setShowCityDropdown(true)}
+                    className={inputClasses}
+                    placeholder={t.form.city_placeholder}
+                  />
+                </div>
+
+                {/* Autocomplete Dropdown */}
+                {showCityDropdown && (
+                  <ul className="absolute z-50 left-0 right-0 mt-2 bg-white border border-slate-200 rounded-xl shadow-lg max-h-60 overflow-y-auto overflow-x-hidden">
+                    {filteredCities.length > 0 ? (
+                      filteredCities.map((city, i) => (
+                        <li
+                          key={i}
+                          onClick={() => handleCitySelect(city)}
+                          className="px-4 py-3 hover:bg-slate-50 cursor-pointer text-slate-700 font-medium border-b border-slate-50 last:border-none flex items-center gap-2"
+                        >
+                          <MapPin size={16} className="text-[#004C73]" />
+                          {city}
+                        </li>
+                      ))
+                    ) : (
+                      <li className="px-4 py-3 text-slate-400 italic text-sm">
+                        {lang === "ar" ? "مدينة أخرى..." : "Other city..."}
+                      </li>
+                    )}
+                  </ul>
+                )}
+              </div>
+
+              {/* Course Mode */}
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-2">
+                  {t.form.role_label} <span className="text-red-500">*</span>
+                </label>
+                <div className="relative group">
+                  <Briefcase className={iconClasses} size={20} />
+                  <select
+                    name="role"
+                    value={formData.role}
+                    onChange={handleChange}
+                    className={`${inputClasses} appearance-none cursor-pointer`}
                   >
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
+                    {t.form.roles.map((role, i) => (
+                      <option key={i} value={role}>
+                        {role}
+                      </option>
+                    ))}
+                  </select>
+                  <div
+                    className={`absolute top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 ${
+                      lang === "ar" ? "left-4" : "right-4"
+                    }`}
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
@@ -342,7 +729,6 @@ const Register = ({ lang }) => {
                 <GraduationCap size={18} className="text-[#004C73]" />
                 {t.form.level_label} <span className="text-red-500">*</span>
               </label>
-
               <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                 {t.form.levels.map((level, i) => (
                   <div
@@ -351,7 +737,7 @@ const Register = ({ lang }) => {
                     className={`relative p-3 rounded-full border-2 cursor-pointer transition-all duration-300 flex items-center justify-center gap-2 group ${
                       selectedLevel === level
                         ? "border-[#004C73] bg-[#004C73]/10 text-[#004C73] shadow-md transform scale-105"
-                        : "border-[#004C73] bg-slate-50 text-slate-600 hover:bg-slate-100"
+                        : "border-[#004C73] bg-white text-slate-600 hover:bg-slate-100"
                     }`}
                   >
                     <div
@@ -381,16 +767,12 @@ const Register = ({ lang }) => {
               />
             </div>
 
-            {/* Message Box Removed Here */}
-
-            {/* Error Message Display */}
             {error && (
               <p className="text-red-600 font-bold text-center bg-red-50 p-3 rounded-lg">
                 {error}
               </p>
             )}
 
-            {/* Submit Button with Loader */}
             <button
               type="submit"
               disabled={!selectedLevel || loading}
