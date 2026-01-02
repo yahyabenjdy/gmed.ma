@@ -9,19 +9,15 @@ const CalendarView = ({
   openViewApptModal,
 }) => {
   const getDaysInMonth = (date) => {
-    const year = date.getFullYear();
-    const month = date.getMonth();
     return {
-      days: new Date(year, month + 1, 0).getDate(),
-      firstDay: new Date(year, month, 1).getDay(),
+      days: new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate(),
+      firstDay: new Date(date.getFullYear(), date.getMonth(), 1).getDay(),
     };
   };
-
   const changeMonth = (offset) =>
     setCurrentDate(
       new Date(currentDate.setMonth(currentDate.getMonth() + offset))
     );
-
   const { days, firstDay } = getDaysInMonth(currentDate);
   const monthName = currentDate.toLocaleDateString("fr-FR", {
     month: "long",
