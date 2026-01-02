@@ -31,13 +31,16 @@ import VisaGuide from "./pages/VisaGuide";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 
-// Admin Component (New)
+// Admin Component
 import AdminDashboard from "./components/AdminDashboard";
 
 function App() {
   const [lang, setLang] = useState("fr");
   const { pathname, hash } = useLocation();
   const navType = useNavigationType();
+
+  // --- NEW: Check if current page is Admin ---
+  const isAdminPage = pathname.startsWith("/admin");
 
   // Handle scrolling logic
   useEffect(() => {
@@ -57,20 +60,19 @@ function App() {
   return (
     <HelmetProvider>
       <div className="min-h-screen bg-white flex flex-col">
-        {/* 2. GLOBAL SEO CONFIGURATION - FIXED */}
-        {/* titleTemplate goes HERE as a prop, not inside */}
+        {/* 2. GLOBAL SEO CONFIGURATION */}
         <Helmet titleTemplate="%s | GMED">
           <html lang={lang} dir={lang === "ar" ? "rtl" : "ltr"} />
           <title>GMED - Carrière Médicale en Allemagne</title>
-
           <meta
             name="description"
             content="GMED accompagne les médecins, infirmiers et étudiants marocains vers une carrière en Allemagne. Ausbildung, Études, et Emploi médical."
           />
         </Helmet>
 
-        <TopBar lang={lang} />
-        <Navbar lang={lang} setLang={setLang} />
+        {/* HIDE TopBar & Navbar on Admin Page */}
+        {!isAdminPage && <TopBar lang={lang} />}
+        {!isAdminPage && <Navbar lang={lang} setLang={setLang} />}
 
         <main className="flex-grow">
           <Routes>
@@ -105,7 +107,7 @@ function App() {
             {/* Registration Route */}
             <Route path="/register" element={<Register lang={lang} />} />
 
-            {/* Admin Route (New) */}
+            {/* Admin Route */}
             <Route path="/admin" element={<AdminDashboard />} />
 
             {/* Fallback */}
@@ -113,11 +115,12 @@ function App() {
           </Routes>
         </main>
 
-        <Footer lang={lang} />
+        {/* HIDE Footer on Admin Page */}
+        {!isAdminPage && <Footer lang={lang} />}
 
-        {/* Floating Buttons */}
-        <WhatsAppButton />
-        <ScrollToTop />
+        {/* HIDE Floating Buttons on Admin Page */}
+        {!isAdminPage && <WhatsAppButton />}
+        {!isAdminPage && <ScrollToTop />}
       </div>
     </HelmetProvider>
   );
