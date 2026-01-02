@@ -12,12 +12,16 @@ const RegistrationSchema = new mongoose.Schema({
     date: { type: Date, default: null },
     note: { type: String, default: "" },
   },
-  // 👇 NEW FIELD
   assignedClass: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Class",
     default: null,
   },
+
+  // 👇 NEW PAYMENT FIELDS
+  paymentMethod: { type: String, default: "Cash" }, // 'Cash' or 'Online'
+  paidMonths: { type: [String], default: [] }, // Stores list of paid months e.g. ["Jan", "Mar"]
+
   date: { type: Date, default: Date.now },
 });
 
