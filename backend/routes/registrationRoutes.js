@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
       city,
       role,
       level,
-      // Defaults from Model: assignedTo, status, appointment, assignedClass
+      // Defaults from Model: assignedTo, status, appointment, assignedClass, paidMonths, paymentMethod
     });
 
     await newRegistration.save();
@@ -96,7 +96,7 @@ router.put("/:id/appointment", async (req, res) => {
 });
 
 // ==================================================================
-// 6. ASSIGN CLASS TO STUDENT (New Feature)
+// 6. ASSIGN CLASS TO STUDENT
 // ==================================================================
 router.put("/:id/class", async (req, res) => {
   try {
@@ -105,6 +105,30 @@ router.put("/:id/class", async (req, res) => {
     const updatedReg = await Registration.findByIdAndUpdate(
       req.params.id,
       { assignedClass: classId },
+      { new: true }
+    );
+
+    res.json({ success: true, registration: updatedReg });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// ==================================================================
+// 7. UPDATE PAYMENT INFO (Method & Months Checklist)
+// ==================================================================
+router.put("/:id/payment", async (req, res) => {
+  try {
+    const { paymentMethod, paidMonths } = req.body;
+
+    // Build update object dynamically to allow updating fields individually
+    const updateData = {};
+    if (paymentMethod !== undefined) updateData.paymentMethod = paymentMethod;
+    if (paidMonths !== undefined) updateData.paidMonths = paidMonths;
+
+    const updatedReg = await Registration.findByIdAndUpdate(
+      req.params.id,
+      updateData,
       { new: true }
     );
 
