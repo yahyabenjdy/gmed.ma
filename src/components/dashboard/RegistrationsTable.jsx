@@ -1,5 +1,14 @@
 import React from "react";
-import { Search, MapPin, CalendarDays, ArrowUpDown } from "lucide-react";
+import {
+  Search,
+  MapPin,
+  Filter,
+  BookOpen,
+  ChevronUp,
+  ChevronDown,
+  ArrowUpDown,
+  CalendarDays,
+} from "lucide-react";
 import {
   cleanText,
   crmStatuses,
@@ -12,39 +21,37 @@ import {
 const RegistrationsTable = ({
   data,
   admins,
+  classes,
   handleSort,
   getSortIcon,
+  expandedRows,
+  toggleRow,
   handleAssignChange,
   handleStatusChange,
+  handleClassAssign,
   openApptModal,
 }) => {
   if (data.length === 0) {
     return (
-      <tr>
-        <td
-          colSpan="9"
-          className="p-12 text-center text-slate-400 flex flex-col items-center gap-2"
-        >
-          <div className="bg-slate-100 p-4 rounded-full">
-            <Search size={24} />
-          </div>
-          Aucun résultat trouvé.
-        </td>
-      </tr>
+      <div className="p-12 text-center text-slate-400 flex flex-col items-center gap-2">
+        <div className="bg-slate-100 p-4 rounded-full">
+          <Search size={24} />
+        </div>
+        Aucun résultat trouvé.
+      </div>
     );
   }
 
   return (
     <div className="overflow-x-auto flex-grow">
-      <table className="w-full text-left border-collapse border border-slate-200">
-        <thead className="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider sticky top-0 z-10 shadow-sm border-b border-slate-200">
+      <table className="w-full text-left border-collapse border border-slate-200 text-xs">
+        <thead className="bg-slate-50 text-slate-600 uppercase tracking-wider sticky top-0 z-10 shadow-sm border-b border-slate-200">
           <tr className="divide-x divide-slate-200">
+            <th className="p-3 w-8"></th>
             {[
               { key: "name", label: "Nom" },
-              { key: "city", label: "Ville" },
               { key: "phone", label: "Téléphone" },
-              { key: "role", label: "Mode" },
-              { key: "level", label: "Niveau" },
+              { key: "assignedClass", label: "Classe" },
               { key: "assignedTo", label: "Assigné à" },
               { key: "date", label: "Date" },
               { key: "status", label: "Statut" },
@@ -52,63 +59,73 @@ const RegistrationsTable = ({
             ].map((header) => (
               <th
                 key={header.key}
-                className="p-4 font-bold cursor-pointer hover:bg-slate-100"
+                className="p-3 font-bold cursor-pointer hover:bg-slate-100"
                 onClick={() => handleSort(header.key)}
               >
                 <div className="flex items-center gap-1.5">
-                  {header.label}
-                  {header.sortable !== false && getSortIcon(header.key)}
+                  {header.label}{" "}
+                  <ArrowUpDown size={12} className="text-slate-400" />
                 </div>
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
-          {data.map((reg) => {
-            const isOnline = (reg.role || "").toLowerCase().includes("online");
-            return (
+        <tbody className="divide-y divide-slate-100 text-sm">
+          {data.map((reg) => (
+            <React.Fragment key={reg._id}>
               <tr
-                key={reg._id}
-                className="hover:bg-blue-50/50 transition-colors group divide-x divide-slate-200"
+                className={`transition-colors group divide-x divide-slate-200 ${
+                  expandedRows[reg._id] ? "bg-blue-50" : "hover:bg-blue-50/30"
+                }`}
               >
-                <td className="p-4 font-bold text-slate-700">{reg.name}</td>
-                <td className="p-4">
-                  {reg.city ? (
-                    <span
-                      className={`px-2.5 py-1 rounded-full text-xs font-bold border flex w-fit items-center gap-1 ${getCityStyle(
-                        reg.city
-                      )}`}
-                    >
-                      <MapPin size={12} /> {reg.city}
-                    </span>
+                {/* Expand Toggle */}
+                <td
+                  className="p-3 text-center cursor-pointer"
+                  onClick={() => toggleRow(reg._id)}
+                >
+                  {expandedRows[reg._id] ? (
+                    <ChevronUp size={16} className="text-[#004C73]" />
                   ) : (
-                    "-"
+                    <ChevronDown size={16} className="text-slate-400" />
                   )}
                 </td>
-                <td className="p-4 text-slate-600 font-mono text-sm">
-                  {reg.phone || "--"}
+
+                {/* Name */}
+                <td className="p-3 font-bold text-slate-700">{reg.name}</td>
+
+                {/* Phone */}
+                <td className="p-3 text-slate-600 font-mono text-xs">
+                  {reg.phone}
                 </td>
-                <td className="p-4">
-                  <span
-                    className={`px-2.5 py-1 rounded-full text-xs font-bold border ${
-                      isOnline
-                        ? "bg-cyan-100 text-cyan-800 border-cyan-200"
-                        : "bg-orange-100 text-orange-800 border-orange-200"
+
+                {/* Class Assignment */}
+                <td className="p-3">
+                  <select
+                    value={reg.assignedClass || ""}
+                    onChange={(e) => handleClassAssign(reg._id, e.target.value)}
+                    className={`px-3 py-1 rounded-full text-xs font-bold border appearance-none cursor-pointer outline-none focus:ring-2 focus:ring-offset-1 focus:ring-emerald-300 transition-all ${
+                      reg.assignedClass
+                        ? "bg-emerald-100 text-emerald-800 border-emerald-200"
+                        : "bg-slate-100 text-slate-500 border-slate-200"
                     }`}
                   >
-                    {cleanText(reg.role)}
-                  </span>
+                    <option value="" className="bg-white text-slate-500">
+                      -- Classe --
+                    </option>
+                    {classes.map((cls) => (
+                      <option
+                        key={cls._id}
+                        value={cls._id}
+                        className="bg-white text-slate-800"
+                      >
+                        {cls.name}
+                      </option>
+                    ))}
+                  </select>
                 </td>
-                <td className="p-4">
-                  <span
-                    className={`px-2.5 py-1 rounded-full text-xs font-bold border ${getLevelStyle(
-                      reg.level
-                    )}`}
-                  >
-                    {cleanText(reg.level)}
-                  </span>
-                </td>
-                <td className="p-4">
+
+                {/* Admin Assignment */}
+                <td className="p-3">
                   <select
                     value={reg.assignedTo || ""}
                     onChange={(e) =>
@@ -122,22 +139,28 @@ const RegistrationsTable = ({
                       reg.assignedTo
                     )}`}
                   >
-                    <option value="">Non assigné</option>
+                    <option value="" className="bg-white text-slate-500">
+                      Non assigné
+                    </option>
                     {admins.map((a) => (
-                      <option key={a._id} value={a.name}>
+                      <option
+                        key={a._id}
+                        value={a.name}
+                        className="bg-white text-slate-800"
+                      >
                         {a.name}
                       </option>
                     ))}
                   </select>
                 </td>
-                <td className="p-4 text-slate-500 text-xs font-medium">
-                  {new Date(reg.date).toLocaleDateString("fr-FR", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  })}
+
+                {/* Registration Date */}
+                <td className="p-3 text-xs text-slate-500 font-medium">
+                  {new Date(reg.date).toLocaleDateString()}
                 </td>
-                <td className="p-4">
+
+                {/* Status Dropdown */}
+                <td className="p-3">
                   <select
                     value={reg.status || "Nouveau prospect"}
                     onChange={(e) =>
@@ -148,45 +171,85 @@ const RegistrationsTable = ({
                     )}`}
                   >
                     {crmStatuses.map((s, i) => (
-                      <option key={i} value={s}>
+                      <option
+                        key={i}
+                        value={s}
+                        className="bg-white text-slate-800"
+                      >
                         {s}
                       </option>
                     ))}
                   </select>
                 </td>
-                <td className="p-4">
+
+                {/* Appointment Button (UPDATED WITH TIME) */}
+                <td className="p-3">
                   <button
                     onClick={() => openApptModal(reg)}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border shadow-sm w-full justify-center ${
-                      reg.appointment && reg.appointment.date
-                        ? "bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200"
+                    className={`flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border shadow-sm w-full ${
+                      reg.appointment?.date
+                        ? "bg-blue-100 text-blue-700 border-blue-200 hover:bg-blue-200"
                         : "bg-slate-50 text-slate-400 border-dashed border-slate-300 hover:bg-white hover:text-slate-600 hover:border-slate-400"
                     }`}
                   >
-                    {reg.appointment && reg.appointment.date ? (
+                    {reg.appointment?.date ? (
                       <>
                         <CalendarDays size={14} />
-                        {new Date(reg.appointment.date).toLocaleDateString(
-                          "fr-FR",
-                          { day: "2-digit", month: "short" }
-                        )}
-                        <span className="opacity-60">|</span>
-                        {new Date(reg.appointment.date).toLocaleTimeString(
-                          "fr-FR",
-                          { hour: "2-digit", minute: "2-digit" }
-                        )}
+                        <span>
+                          {new Date(reg.appointment.date).toLocaleDateString(
+                            "fr-FR",
+                            { day: "2-digit", month: "2-digit" }
+                          )}
+                        </span>
+                        <span className="opacity-40">|</span>
+                        <span>
+                          {new Date(reg.appointment.date).toLocaleTimeString(
+                            "fr-FR",
+                            { hour: "2-digit", minute: "2-digit" }
+                          )}
+                        </span>
                       </>
                     ) : (
-                      <>+ Planifier</>
+                      "+ Planifier"
                     )}
                   </button>
                 </td>
               </tr>
-            );
-          })}
+
+              {/* Collapsible Details */}
+              {expandedRows[reg._id] && (
+                <tr className="bg-slate-50 border-b border-slate-200">
+                  <td colSpan="8" className="p-3 pl-12 text-xs">
+                    <div className="flex gap-8 text-slate-600">
+                      <span className="flex items-center gap-2">
+                        <MapPin size={14} className="text-red-500" /> Ville:{" "}
+                        <span className="font-bold text-slate-800">
+                          {reg.city || "-"}
+                        </span>
+                      </span>
+                      <span className="flex items-center gap-2">
+                        <Filter size={14} className="text-purple-500" /> Mode:{" "}
+                        <span className="font-bold text-slate-800">
+                          {cleanText(reg.role)}
+                        </span>
+                      </span>
+                      <span className="flex items-center gap-2">
+                        <BookOpen size={14} className="text-orange-500" />{" "}
+                        Niveau:{" "}
+                        <span className="font-bold text-slate-800">
+                          {cleanText(reg.level)}
+                        </span>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </React.Fragment>
+          ))}
         </tbody>
       </table>
     </div>
   );
 };
+
 export default RegistrationsTable;
